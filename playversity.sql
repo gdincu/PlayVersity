@@ -14056,7 +14056,8 @@ ALTER TABLE `user`
 -- Indexes for table `userplaylist`
 --
 ALTER TABLE `userplaylist`
-  ADD PRIMARY KEY (`iduser`,`idplaylist`);
+  ADD PRIMARY KEY (`iduser`,`idplaylist`),
+  ADD KEY `idplaylist` (`idplaylist`);
 
 --
 -- AUTO_INCREMENT for dumped tables
