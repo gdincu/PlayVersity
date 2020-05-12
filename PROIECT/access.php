@@ -1,18 +1,18 @@
-<?php	
-//Managementul sesiunii
-if(!isset($_SESSION["user"]))
-session_start();
-
-include "db_connect.php";
+<?php
+require_once "session.php";
+require_once "db_connect.php";
 
 $ascheck = $descheck = true;
 
-if (isset($_POST["login"]) ) {	
+if (isset($_POST["access"]) ) {	
+	if(isLoggedIn()) {
+		session_destroy();
+		header("Location: index.php");
+		// echo "Logout reusit!";
+		exit;
+	}
 
 	//Mesaje pentru client la logare
-	if(isset($_SESSION["user"]))
-		die ("Already logged in!");
-
 	//Avoiding SQL injections by using "'" and sanitising variables
 	$userFinal = "'".htmlentities($_POST["username"],ENT_HTML5,'UTF-8',TRUE)."'";
 	$passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
@@ -22,7 +22,9 @@ if (isset($_POST["login"]) ) {
 	
 	//Mesaje pentru client la logare
 	if($result->num_rows == 0) {
-	die ("Username gresit!");	
+		header("Location: inscriere.php?error=InvalidUserOrPass");
+		// echo "Username gresit!";
+		exit;
 	}
 	
 	if($result->num_rows == 1) {
@@ -32,14 +34,11 @@ if (isset($_POST["login"]) ) {
 			
 			//Mesaje pentru client la logare
 			if("'".$usercheck."'" === $userFinal && "'".$passcheck."'" != $passwordFinal) {
-			die ("Parola gresita!");
+				die ("Parola gresita!");
 			}
-			
-			//Managementul sesiunii
-			$_SESSION["user"] = $userFinal;
-			$_SESSION["password"] = $passwordFinal;
-			echo "Connected successfully!"."<br><br>";
-		}	
+
+			storeUserToSession($userFinal, $passwordFinal);
+		}
 	}
 }
 

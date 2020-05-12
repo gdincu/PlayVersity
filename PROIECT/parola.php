@@ -1,10 +1,10 @@
-<?php include "templates/header.php"; ?>
-<?php include "login.php"; ?>
-<?php include "logout.php"; ?>
-<?php include "db_connect.php"; ?>
-
 <?php
-if(!isset($_SESSION["user"]))
+require_once "session.php";
+require_once "templates/header.php";
+require_once "access.php";
+require_once "db_connect.php";
+
+if(!isLoggedIn())
     //Daca nu suntem logati redirectioneaza catre index.php
     header("Location: index.php");
 
