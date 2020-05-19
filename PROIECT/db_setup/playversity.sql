@@ -22,6 +22,23 @@ SET time_zone = "+00:00";
 -- Database: `playversity`
 --
 
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_delSongPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
+SET @tempCount = (SELECT position FROM songplaylist WHERE idsong = a AND idplaylist = b);
+DELETE FROM songplaylist WHERE idsong = a AND idplaylist = b;	
+UPDATE songplaylist SET position = position-1 WHERE idplaylist = b AND position > @tempCount;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_insSongPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
+SET @tempCount = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = b) + 1;
+INSERT INTO songplaylist VALUES (a,b,@tempCount);
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -24812,14 +24829,6 @@ INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (19, 2, 5),
 (29, 2, 6),
 (55, 1, 4);
-
---
--- Triggers `songplaylist`
---
-DELIMITER $$
-CREATE TRIGGER `position_before_insert` BEFORE INSERT ON `songplaylist` FOR EACH ROW SET NEW.position = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = NEW.idplaylist)+1
-$$
-DELIMITER ;
 
 -- --------------------------------------------------------
 
