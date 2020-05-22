@@ -4,12 +4,12 @@ require_once (__DIR__ . '/../templates/BasePage.php');
 
 class HomePage extends BasePage {
 
-    private $prenume;
-    private $nume;
-    private $email;
-    private $user;
-    private $parola;
-    private $parola2;
+    private $firstname;
+    private $lastname;
+    // private $email;
+    private $username;
+    private $password;
+    //private $parola2;
     
     public function render() {
         $this->renderHeader();
