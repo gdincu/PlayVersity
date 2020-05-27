@@ -1,0 +1,115 @@
+<!--Formulare de inscriere-->
+<div class="container form-group form-group-lg mb-3">
+<form method="post" enctype="multipart/form-data" >
+
+
+
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control form-control-sm" id="firstname" name="firstname" placeholder="<?php echo 'First Name: ' . $this->firstname;?>" value="<?php echo$this->firstname;?>"  required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control form-control-sm" id="lastname" name="lastname" placeholder="<?php echo 'Last Name: ' . $this->lastname;?>" value="<?php echo$this->lastname;?>"  required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control form-control-sm" id="username" name="username" placeholder="<?php echo 'Username: ' . $this->username;?>" value="<?php echo $this->username;?>" required> 
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="password" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control form-control-sm" id="password" name="password"  placeholder="<?php echo 'Password: ' . $this->password;?>" value="<?php echo $this->password;?>" required>
+        </div>
+    </div>
+    
+
+    <!--
+    <p>
+        <script src="passcheck.js"></script>
+        <div class="form-row col-sm-6">
+            <div class="col">
+                <input type="text" class="form-control" id="usernume" name="usernume"  placeholder="<?php echo 'User: ' . $this->user;?>" value="<?php echo $this->user;?>"  required>
+            </div>
+            <div class="col">
+                <input type="password" class="form-control" id="parola" name="parola"  placeholder="<?php echo 'Parola: ' . $this->parola;?>" value="<?php echo $this->parola;?>" required>
+            </div>
+            <div class="col">
+                <input type="password" class="form-control" id="parola2" name="parola2"  placeholder="<?php echo 'Parola: ' . $this->parola2;?>" value="<?php echo $this->parola2;?>" required>
+            
+            Checking pass match client-side
+            <div id="chkForm1"></div>
+                <span id='message'></span>
+            </div>
+        </div>
+    </p>-->
+    
+    
+    <!--
+    <p>
+        <div class="form-row col-sm-6">
+        
+        <div class="col">
+        Stare civila
+        </div>
+    
+        <div class="col">
+        <input class="form-check-input" type="checkbox" name="casatorit" value="casatorit">
+        <label class="form-check-label" for="casatorit">Casatorit(a)</label>
+        </div>
+    
+        <div class="col">
+        <input class="form-check-input" type="checkbox" name="necasatorit" value="necasatorit">
+        <label class="form-check-label" for="necasatorit">Necasatorit(a)</label>
+        </div>
+    
+        </div>
+    </p> -->
+    
+    <!--
+    <p>
+    <div class="form-row col-sm-6">
+        
+    <div class="col">
+    Sex
+    </div>
+    
+    <div class="col">
+    <input class="form-check-input" type="radio" name="barbat" value="barbat">
+    <label class="form-check-label" for="male">Barbat</label>
+    </div>
+    
+    <div class="col">
+    <input class="form-check-input" type="radio" name="femeie" value="femeie">
+    <label class="form-check-label" for="male">Femeie</label>
+    </div>
+    
+    </div>
+    </p> -->
+    
+    <!--Foto upload
+    <p>
+    <div class="form-row col-sm-6">
+    
+    <div class="col">
+    Foto
+    </div>
+    
+    <div class="col">
+    Imagine de profil:<input type="file" name="fileToUpload" id="fileToUpload">
+    </div>
+    
+    </div>
+    </p> -->
+    
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <button type="submit" name="submit" id="submit" class="btn btn-secondary btn-sm border-0" value="submit" style="background-color: #52658F;">Submit</button>
+        </div>
+    </div>
+    
+    </form>
+    </div>
+</div>
