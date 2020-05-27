@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2020 at 05:40 PM
+-- Generation Time: May 27, 2020 at 07:50 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -45,8 +45,10 @@ INNER JOIN artist e ON d.idartist = e.id
 ORDER BY d.idartist ASC;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (`a` INT(5))  BEGIN
-SELECT b.position,a.name,e.name artist,a.length 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (`a` INT(5), `b` VARCHAR(30))  BEGIN
+
+IF b IS NULL THEN 
+       SELECT b.position,a.name,e.name artist,a.length 
 FROM song a
 INNER JOIN songplaylist b ON a.id = b.idsong
 INNER JOIN playlist c ON c.id = b.idplaylist
@@ -54,6 +56,30 @@ INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 WHERE b.idplaylist = a
 ORDER BY b.position ASC;
+END IF;
+
+IF b = 'artist' THEN
+        SELECT b.position,a.name,e.name AS artist,a.length 
+FROM song a
+INNER JOIN songplaylist b ON a.id = b.idsong
+INNER JOIN playlist c ON c.id = b.idplaylist
+INNER JOIN songartist d ON a.id = d.idsong
+INNER JOIN artist e ON d.idartist = e.id
+WHERE b.idplaylist = a
+ORDER BY e.name ASC;
+END IF;
+
+IF b = 'name' THEN
+        SELECT b.position,a.name,e.name AS artist,a.length 
+FROM song a
+INNER JOIN songplaylist b ON a.id = b.idsong
+INNER JOIN playlist c ON c.id = b.idplaylist
+INNER JOIN songartist d ON a.id = d.idsong
+INNER JOIN artist e ON d.idartist = e.id
+WHERE b.idplaylist = a
+ORDER BY a.name ASC;
+    END IF;
+
 END$$
 
 DELIMITER ;
@@ -4506,7 +4532,9 @@ CREATE TABLE `playlist` (
 
 INSERT INTO `playlist` (`id`, `name`) VALUES
 (1, 'AAAPlaylist'),
-(2, 'TTT');
+(2, 'TTT'),
+(11, 'TEST'),
+(111, 'TEST');
 
 -- --------------------------------------------------------
 
@@ -24840,6 +24868,8 @@ CREATE TABLE `songplaylist` (
 
 INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (1, 1, 1),
+(1, 111, 1),
+(2, 111, 1),
 (3, 2, 5),
 (5, 1, 4),
 (6, 2, 3),
@@ -24953,7 +24983,7 @@ ALTER TABLE `artist`
 -- AUTO_INCREMENT for table `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT for table `song`
