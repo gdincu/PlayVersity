@@ -36,5 +36,28 @@ else    {
 		                        		}
 		echo "</table>";
 				}
-            }
+			}
+			
+			else if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && substr($_SERVER['REQUEST_URI'], -9) == "/allsongs") {
+				$sql = "CALL usp_returnAllSongs();";
+				$result = $connection->query($sql);
+					
+				echo "Song list:
+									<br><br>
+									<table class=\"table\">
+									<tr>
+									<th>Name</th>
+									<th>Artist</th>
+									<th>Length</th>
+									  </tr>";	
+				
+					while($row = $result->fetch_assoc()) {
+						echo "<tr>";
+						echo "<td>" . $row["artist"] . "</td>";
+						echo "<td>" . $row["name"] . "</td>";
+						echo "<td>" . $row["length"] . "</td>";
+						echo "</tr>";
+														}
+						echo "</table>";
+			}
 ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2020 at 07:50 AM
+-- Generation Time: May 27, 2020 at 05:40 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -35,6 +35,14 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_insSongPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
 SET @tempCount = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = b) + 1;
 INSERT INTO songplaylist VALUES (a,b,@tempCount);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` ()  BEGIN
+SELECT e.name artist,a.name,a.length 
+FROM song a
+INNER JOIN songartist d ON a.id = d.idsong
+INNER JOIN artist e ON d.idartist = e.id
+ORDER BY d.idartist ASC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (`a` INT(5))  BEGIN
