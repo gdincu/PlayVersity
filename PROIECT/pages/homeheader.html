@@ -12,25 +12,28 @@
 
                 <div class="form-row">
                     <div class="col-sm-4s">
-                        <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control col-sm-4s" id="username" name="username" placeholder="username"
-                            style="background-color: #F7F5E6;
+                        <!-- Checks if the user is already logged in -->
+                        <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control col-sm-4s" 
+                        id="username" name="username" 
+                        placeholder="username" value="username"
+                        style="background-color: #F7F5E6;
                             <?php
-                                    if (isset($_GET['error'])) {
+                                    if (isset($_GET['error']) && $_GET['error'] == 'InvalidUserorPassword')
                                         echo ' border: 2px solid red;';
-                                    }
                                 ?>"
+                        <?php echo isLoggedIn() ? 'hidden' : ''?>
                         >
                     </div>
 
                     <div class="col-sm-4s">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="password" 
+                        <input type="password" class="form-control" id="password" name="password" 
+                        placeholder="password" value="password"
+                        style="background-color: #E8E8E8;
                             <?php
-                                echo 'style="background-color: #E8E8E8; ';
-                                 if (isset($_GET['error'])) {
-                                    echo ' border: 2px solid red;';
-                                }
-                                echo '"';
-                            ?>
+                                 if (isset($_GET['error']) && $_GET['error'] == 'InvalidPassword')
+                                 echo ' border: 2px solid red;';
+                                ?>"
+                            <?php echo isLoggedIn() ? 'hidden' : ''?>
                         > 
                     </div> 
 
