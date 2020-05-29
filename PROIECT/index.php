@@ -13,6 +13,7 @@
         $currentPage->renderHead();
         $currentPage->startBody();
         $currentPage->render();
+        //Song.php
         include "pages/helpers/song.php";
         $currentPage->endBody();
     } else {

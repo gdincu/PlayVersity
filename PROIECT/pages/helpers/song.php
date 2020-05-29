@@ -1,78 +1,53 @@
 <?php
-//Checks if the uri includes "index.php" and whether the last char in the URI is numberic
-if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && is_numeric (substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/') + 1)))
+
+//Checks if the URI includes "index.php" and whether it contains a playlist id
+if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid']))
 {
-//Stores the last char in the URI    
-$tempPlaylist = (int)(substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/') + 1));
 
-	//Added html input dropdown to work with usp_returnSongs
-	echo "<form action='#' method='post'>
-	<select name='orderbyvalue'>
-	<option value='name'>Name</option>
-	<option value='artist'>Artist</option>
-	</select>
-	<input type='submit' name='submitorder' value='Select Order' />
-	</form>";
+//Sanitises and stores the playlistid in a variable
+$tempPlaylist = (int)htmlentities($_GET['playlistid'],ENT_HTML5,'UTF-8',TRUE);
 
-	if(isset($_POST['submitorder'])) 
-	$tempOrder = strval($_POST['orderbyvalue']);
-	else $tempOrder = NULL; 
-	//http://localhost/playversity/PROIECT/index.php?idplaylist=1&order=name
-	//Add event listener - to be done by Alex <<<<--------
+//Checks the orderby value
+$orderby = 'NULL';
+if(isset($_GET['orderby']))
+//Sanitises the value passed through the URI
+$orderby = "'".htmlentities($_GET['orderby'],ENT_HTML5,'UTF-8',TRUE)."'";
 
-//Calls the usp_returnSongs procedure
-//This returns the position, song name, artist, length based on the playlist id
-$sql = "CALL usp_returnSongs($tempPlaylist,NULL);";
+//Calls the usp_returnSongs procedure and returns the artist, song name and song length based on the playlist id and orderby value
+$sql = "CALL usp_returnSongs($tempPlaylist,$orderby);";
+}
+//Checks if the URI includes "index.php" and allsongs
+else if (strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['allsongs']))
+$sql = "CALL usp_returnAllSongs();";
+
+//Runs the SQL query
 $result = $connection->query($sql);
-	
-//Mesaje pentru client la logare
-// if($result->num_rows == 0) {
-// 	header("Location: index.php?page=home&error=playlistnotfound");
-// 	exit;
-//                             }
-// else    {
+
+//Mesaje de verificare a playlistului
+
+if($result->num_rows == 0)
+{
+	echo "Invalid playlist id";
+	exit();
+}
+else    {
     echo "Song list:
 					<br><br>
 					<table class=\"table\">
 					<tr>
-    				<th>Position</th>
+    				<th>Artist</th>
     				<th>Name</th>
-                    <th>Artist</th>
                     <th>Length</th>
                       </tr>";	
 
 	while($row = $result->fetch_assoc()) {
 		echo "<tr>";
-		echo "<td>" . $row["position"] . "</td>";
-    	echo "<td>" . $row["name"] . "</td>";
-        echo "<td>" . $row["artist"] . "</td>";
+		echo "<td>" . $row["artist"] . "</td>";
+		echo "<td>" . $row["name"] . "</td>";
         echo "<td>" . $row["length"] . "</td>";
 		echo "</tr>";
 		                        		}
 		echo "</table>";
 				// }
-			}
-			
-			else if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && substr($_SERVER['REQUEST_URI'], -9) == "/allsongs") {
-				$sql = "CALL usp_returnAllSongs();";
-				$result = $connection->query($sql);
-					
-				echo "Song list:
-									<br><br>
-									<table class=\"table\">
-									<tr>
-									<th>Name</th>
-									<th>Artist</th>
-									<th>Length</th>
-									  </tr>";	
-				
-					while($row = $result->fetch_assoc()) {
-						echo "<tr>";
-						echo "<td>" . $row["artist"] . "</td>";
-						echo "<td>" . $row["name"] . "</td>";
-						echo "<td>" . $row["length"] . "</td>";
-						echo "</tr>";
-														}
-						echo "</table>";
 			}
 ?>

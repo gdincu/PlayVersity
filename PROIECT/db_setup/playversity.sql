@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2020 at 07:50 PM
+-- Generation Time: May 29, 2020 at 09:39 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -45,7 +45,7 @@ INNER JOIN artist e ON d.idartist = e.id
 ORDER BY d.idartist ASC;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (`a` INT(5), `b` VARCHAR(30))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (IN `a` INT(5), IN `b` VARCHAR(30))  BEGIN
 
 IF b IS NULL THEN 
        SELECT b.position,a.name,e.name artist,a.length 
@@ -58,7 +58,7 @@ WHERE b.idplaylist = a
 ORDER BY b.position ASC;
 END IF;
 
-IF b = 'artist' THEN
+IF UPPER(b) = 'ARTIST' THEN
         SELECT b.position,a.name,e.name AS artist,a.length 
 FROM song a
 INNER JOIN songplaylist b ON a.id = b.idsong
@@ -69,7 +69,7 @@ WHERE b.idplaylist = a
 ORDER BY e.name ASC;
 END IF;
 
-IF b = 'name' THEN
+IF UPPER(b) = 'NAME' THEN
         SELECT b.position,a.name,e.name AS artist,a.length 
 FROM song a
 INNER JOIN songplaylist b ON a.id = b.idsong
