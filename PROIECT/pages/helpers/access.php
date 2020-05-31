@@ -36,6 +36,10 @@ if (isset($_POST["access"])) {
 			}
 			
 			storeUserToSession($userFinal, $passwordFinal);
+			$dbname     = "playversity";
+			//Re-connects to the DB with the new username
+			// $connection = mysqli_connect($servername,$userFinal,$passwordFinal,$dbname);
+			mysqli_change_user($connection,$userFinal, $passwordFinal, $dbname);
 			
 			}
 		}
