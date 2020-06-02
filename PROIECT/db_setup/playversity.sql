@@ -48,6 +48,13 @@ WHERE b.idplaylist = a
 ORDER BY b.position ASC;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylistBasedOnUser` (IN `userId` INT(5)) BEGIN
+	SELECT p.*
+    FROM playlist p
+    JOIN userplaylist usrp on usrp.idplaylist = p.id
+    WHERE usrp.iduser = userid;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
