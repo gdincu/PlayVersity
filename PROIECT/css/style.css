@@ -15,3 +15,11 @@
   #page-top {
       background-color: #F7F5E6;
   }
+
+.btnhide {
+    display: none;
+}
+
+.btnhide:hover {
+    display: inline-block;
+}

@@ -1,5 +1,8 @@
 <?php
 
+//Saves the current URI
+$currentURI = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
 //Checks if the URI includes "index.php" and whether it contains a playlist id
 if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid']))
 {
@@ -34,22 +37,38 @@ if($result->num_rows == 0)
 }
 else    {
     echo "Song list:
-					<br><br>
-					<table class=\"table\">
+					<form method='post' action=''>
+					<table class='table'>
 					<tr>
     				<th>Artist</th>
     				<th>Name</th>
-                    <th>Length</th>
-                      </tr>";	
+					<th>Length</th>
+					<th>IDSONG</th>
+					<th></th>
+					  </tr>";
 
 	while($row = $result->fetch_assoc()) {
 		echo "<tr>";
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
-        echo "<td>" . $row["length"] . "</td>";
+		echo "<td>" . $row["length"] . "</td>";
+		echo '<td><input type="submit" name="deleteItem" value="' . (int)$row['idsong'] . '" /></td>"';
 		echo "</tr>";
-		                        		}
-		echo "</table>";
-				// }
-			}
+		}
+		
+		echo "</table></form>";
+	}
+
+
 ?>
+
+<?php
+	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
+	{
+$toDel = (int)$_POST['deleteItem'];
+$sqlTemp = "CALL usp_delSongFromPlaylist($tempPlaylist,$toDel);";
+$con2 = mysqli_connect("localhost","root","","playversity");
+mysqli_query($con2,$sqlTemp);
+}
+?>
+

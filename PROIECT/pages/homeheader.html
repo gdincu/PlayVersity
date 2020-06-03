@@ -42,6 +42,17 @@
                             name = "access" style="background-color: #52658F; border-color: #52658F; color: #E8E8E8; margin-left: 3%;">
                             <?php echo isLoggedIn() ? 'Log Out' : 'Log In'?></button>
                     </div>
+
+                    <!-- To be done -->
+                    <div class="col-sm-2s">
+                        <button type="submit" class="btn btn-sm btn-info btn-block" 
+                        href="www.google.com"
+                        onClick="window.location = 'www.google.com'"
+                        <?php echo isLoggedIn() ? '' : 'hidden'?>
+                        name = "reset" style="background-color: #52658F; border-color: #52658F; color: #E8E8E8; margin-left: 3%;">
+                        Password Reset</button>
+                </div>
+
                 </div>
 
                 <!--<div class="form-row">
