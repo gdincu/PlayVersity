@@ -1,13 +1,13 @@
 <?php 
 
-$servername       = "localhost";
-$username   = "root";
-$password   = "";
-$dbname     = "playversity";
+$dbservername = "localhost";
+$dbusername = "root";
+$dbpassword = "";
+$dbname = "playversity";
 
 //DB connection
 // require_once('config.php');
-$connection = mysqli_connect($servername,$username,$password,$dbname);
+$connection = mysqli_connect($dbservername,$dbusername,$dbpassword,$dbname);
 
 //Verificarea conexiunii
 if(!$connection)
