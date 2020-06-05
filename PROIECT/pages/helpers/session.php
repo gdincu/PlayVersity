@@ -1,12 +1,14 @@
 <?php
-//Managementul sesiunii
+/**
+ * Session management.
+ */
 
 function isLoggedIn() {
     return isset($_SESSION["user"]);
 }
 
 function storeUserToSession($userFinal,$passwordFinal) {
-    //Managementul sesiunii
+    //Session management.
     $_SESSION["user"] = $userFinal;
     $_SESSION["password"] = $passwordFinal;
 }

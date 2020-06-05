@@ -1,9 +1,10 @@
 <!--User SignUp Form-->
 <!--Location: HomePage-->
+<!--htmlspecialchars() function converts special characters to HTML entities-->
 <div class="container form-group form-group-lg mb-3">
     <form   method="post" 
             enctype="multipart/form-data" 
-            action="<?php echo $_SERVER['PHP_SELF'] ?>" 
+            action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" 
             name="savedata"
             target="_self"
             id="savedata">

@@ -1,7 +1,5 @@
 <?php
 
-//session_start();
-
 function getError($param) {
     $result = "valueok";
     $errorArray = isset($_SESSION["error"]) ? $_SESSION["error"] : null;
@@ -37,8 +35,8 @@ function getChecked($param, $value) {
 }
 
 /**
- * validation of sign up form fields
- * save the user into the db 
+ * Validation of sign up form fields.
+ * Save the user into the db. 
  */
 function saveUser() {
     require_once("validate_signup_form_fields.php");
@@ -122,126 +120,4 @@ function saveUser() {
 if(isset($_POST["savedata"])) {
     saveUser();
 }
-
-// function loginUser() {
-// 	// Create connection
-// 	require_once("config.php");
-
-// 	try {		
-// 		$conn = new PDO("mysql:host=$dbservername;dbname=$dbname", $dbusername, $dbpassword);
-// 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-// 		$stmt = $conn->prepare("SELECT username, sex, starecivila, nume, prenume, email, datainregistrare, telefon FROM utilizatori WHERE username=? and parola =?");
-// 		$param = array($_POST["username"], md5($_POST["password"]));
-// 		$stmt->execute($param);
-
-// 		// set the resulting array to associative
-// 		$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-		
-// 		$count = $stmt->rowCount();
-		
-// 		if ($count > 0) {
-// 			echo 'Found login info:';
-// 			echo '<table style="border:1px solid black">';
-// 			foreach($stmt->fetchAll() as $k=>$v) {
-// 				echo '<tr>';
-// 				echo '<td>' . $v['username'] . '</td>';
-// 				echo '<td>' . $v['sex'] . '</td>';
-// 				echo '<td>' . $v['starecivila'] . '</td>';
-// 				echo '<td>' . $v['nume'] . '</td>';
-// 				echo '<td>' . $v['prenume'] . '</td>';
-//                 echo '<td>' . $v['email'] . '</td>';
-//                 echo '<td>' . $v['datainregistrare'] . '</td>';
-//                 echo '<td>' . $v['telefon'] . '</td>';
-// 				echo '</tr>';
-// 			}
-// 			echo '</table></br>';
-			
-//             $_SESSION["loggedinuser"] = $_POST["username"];
-//             $_SESSION["loggedinuserpass"] = $_POST["password"];
-//             $_SESSION["sorting"] = isset($_POST["orderByName"]) ? $_POST["orderByName"] : "ASC";
-// 		} else {
-// 			echo 'Login info not found.';
-// 		}
-
-// 	}
-// 	catch(PDOException $e) {
-// 		echo "Error: " . $e->getMessage();
-// 	}
-// 	$conn = null;
-// }
-
-// function listAllUsers() {
-// 	// Create connection
-// 	require("config.php");
-
-// 	try {		
-// 		$conn = new PDO("mysql:host=$dbservername;dbname=$dbname", $dbusername, $dbpassword);
-//         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-//         $orderbyName = isset($_SESSION["sorting"]) ? $_SESSION["sorting"] : "ASC";
-// 		$stmt = $conn->prepare("SELECT username, sex, starecivila, nume, prenume, email, datainregistrare, extensie, telefon FROM utilizatori ORDER BY username " . $orderbyName);
-// 		$param = array();
-// 		$stmt->execute();
-
-// 		// set the resulting array to associative
-// 		$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-		
-// 		$count = $stmt->rowCount();
-		
-// 		if ($count > 0) {
-//             $loggedInUser = isset($_SESSION["loggedinuser"]) ? $_SESSION["loggedinuser"] : "";
-
-//             echo '<div>Logged in as: '. $loggedInUser .'</div></br>';
-// 			echo '<table style="border:1px solid black">';
-// 			foreach($stmt->fetchAll() as $k=>$v) {
-// 				echo '<tr>';
-//                 echo '<td>' . $v['username'] . '</td>';
-                
-//                 if ($loggedInUser != "") {
-//                     echo '<td>' . $v['sex'] . '</td>';
-//                     echo '<td>' . $v['starecivila'] . '</td>';
-//                     echo '<td>' . $v['nume'] . '</td>';
-//                     echo '<td>' . $v['prenume'] . '</td>';
-//                     echo '<td>' . $v['email'] . '</td>';
-//                     echo '<td>' . $v['datainregistrare'] . '</td>';
-//                     echo '<td>' . $v['telefon'] . '</td>';
-//                     if (isset($v['extensie'])) {
-//                         echo '<td>' . $v['username'].'.'.$v['extensie'] . '</td>';
-//                     }
-//                 }
-
-// 				echo '</tr>';
-// 			}
-// 			echo '</table></br>';
-// 		} else {
-// 			echo 'No user info found!';
-// 		}
-
-// 	}
-// 	catch(PDOException $e) {
-// 		echo "Error: " . $e->getMessage();
-// 	}
-// 	$conn = null;
-// }
-
-
-
-
-// if(isset($_POST["save"]))
-// {
-//     if (saveUser()) {
-//         header("Location: http://localhost/appWeb/index.php"); /* Redirect browser */
-//         exit();
-//     }
-// } else if(isset($_POST["Login"]) && isset($_POST["username"]) && isset($_POST["password"])) {
-//     if (isset($_SESSION["loggedinuser"])) {
-// 		echo 'Already logged in';
-// 	} else {
-// 		loginUser();
-// 	}
-// } else if(isset($_POST["Logout"])) {
-//     // Finally, destroy the session.
-//     $_SESSION["loggedinuser"] = "";
-// 	session_destroy();
-// }
 ?>
