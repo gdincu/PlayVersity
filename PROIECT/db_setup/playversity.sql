@@ -2,10 +2,10 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 22, 2020 at 07:50 AM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.1.28
+-- Gazdă: 127.0.0.1
+-- Timp de generare: iun. 11, 2020 la 03:01 PM
+-- Versiune server: 10.1.38-MariaDB
+-- Versiune PHP: 7.1.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,12 +19,12 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `playversity`
+-- Bază de date: `playversity`
 --
 
 DELIMITER $$
 --
--- Procedures
+-- Proceduri
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_delSongPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
 SET @tempCount = (SELECT position FROM songplaylist WHERE idsong = a AND idplaylist = b);
@@ -35,6 +35,13 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_insSongPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
 SET @tempCount = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = b) + 1;
 INSERT INTO songplaylist VALUES (a,b,@tempCount);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylistBasedOnUser` (IN `userId` INT(5))  BEGIN
+	SELECT p.*
+    FROM playlist p
+    JOIN userplaylist usrp on usrp.idplaylist = p.id
+    WHERE usrp.iduser = userid;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (`a` INT(5))  BEGIN
@@ -48,19 +55,12 @@ WHERE b.idplaylist = a
 ORDER BY b.position ASC;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylistBasedOnUser` (IN `userId` INT(5)) BEGIN
-	SELECT p.*
-    FROM playlist p
-    JOIN userplaylist usrp on usrp.idplaylist = p.id
-    WHERE usrp.iduser = userid;
-END$$
-
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `artist`
+-- Structură tabel pentru tabel `artist`
 --
 
 CREATE TABLE `artist` (
@@ -69,7 +69,7 @@ CREATE TABLE `artist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_romanian_ci;
 
 --
--- Dumping data for table `artist`
+-- Eliminarea datelor din tabel `artist`
 --
 
 INSERT INTO `artist` (`id`, `name`) VALUES
@@ -4491,7 +4491,7 @@ INSERT INTO `artist` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `playlist`
+-- Structură tabel pentru tabel `playlist`
 --
 
 CREATE TABLE `playlist` (
@@ -4500,7 +4500,7 @@ CREATE TABLE `playlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_romanian_ci;
 
 --
--- Dumping data for table `playlist`
+-- Eliminarea datelor din tabel `playlist`
 --
 
 INSERT INTO `playlist` (`id`, `name`) VALUES
@@ -4510,7 +4510,7 @@ INSERT INTO `playlist` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `song`
+-- Structură tabel pentru tabel `song`
 --
 
 CREATE TABLE `song` (
@@ -4520,7 +4520,7 @@ CREATE TABLE `song` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_romanian_ci;
 
 --
--- Dumping data for table `song`
+-- Eliminarea datelor din tabel `song`
 --
 
 INSERT INTO `song` (`id`, `name`, `length`) VALUES
@@ -13985,7 +13985,7 @@ INSERT INTO `song` (`id`, `name`, `length`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `songartist`
+-- Structură tabel pentru tabel `songartist`
 --
 
 CREATE TABLE `songartist` (
@@ -13994,7 +13994,7 @@ CREATE TABLE `songartist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `songartist`
+-- Eliminarea datelor din tabel `songartist`
 --
 
 INSERT INTO `songartist` (`idsong`, `idartist`) VALUES
@@ -24824,7 +24824,7 @@ INSERT INTO `songartist` (`idsong`, `idartist`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `songplaylist`
+-- Structură tabel pentru tabel `songplaylist`
 --
 
 CREATE TABLE `songplaylist` (
@@ -24834,7 +24834,7 @@ CREATE TABLE `songplaylist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `songplaylist`
+-- Eliminarea datelor din tabel `songplaylist`
 --
 
 INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
@@ -24852,7 +24852,7 @@ INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Structură tabel pentru tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -24860,21 +24860,34 @@ CREATE TABLE `user` (
   `firstname` varchar(50) CHARACTER SET utf8 NOT NULL,
   `lastname` varchar(50) CHARACTER SET utf8 NOT NULL,
   `username` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `password` varchar(150) COLLATE utf8_romanian_ci NOT NULL
+  `password` varchar(150) COLLATE utf8_romanian_ci NOT NULL,
+  `image` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_romanian_ci;
 
 --
--- Dumping data for table `user`
+-- Eliminarea datelor din tabel `user`
 --
 
-INSERT INTO `user` (`id`, `firstname`, `lastname`, `username`, `password`) VALUES
-(1, 'AAA', 'AAA', 'AAA', 'cb1ad2119d8fafb69566510ee712661f9f14b83385006ef92aec47f523a38358'),
-(2, 'BBB', 'BBB', 'BBB', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273');
+INSERT INTO `user` (`id`, `firstname`, `lastname`, `username`, `password`, `image`) VALUES
+(1, 'AAA', 'AAA', 'AAA', 'cb1ad2119d8fafb69566510ee712661f9f14b83385006ef92aec47f523a38358', ''),
+(2, 'BBB', 'BBB', 'BBB', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273', ''),
+(4, 'lola', 'lola', 'root', '', ''),
+(5, 'lola', 'lola', 'root', '', ''),
+(6, 'lola', 'lola', 'root', '', ''),
+(7, 'lola', 'lola', 'root', '', ''),
+(8, 'me', 'me', 'root', '', ''),
+(9, 'me', 'me', 'root', '', ''),
+(10, 'john', 'doe', 'root', '', ''),
+(11, 'john', 'doe', 'root', '', ''),
+(12, 'john', 'doe', 'root', '', ''),
+(13, 'lola', 'lola', 'root', '', ''),
+(14, 'test3', 'test3', 'root', '', ''),
+(15, 'ana', 'ana', 'ana123', 'f7a6e922a96c9ff6c0826ed39272e21f', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `userplaylist`
+-- Structură tabel pentru tabel `userplaylist`
 --
 
 CREATE TABLE `userplaylist` (
@@ -24883,109 +24896,109 @@ CREATE TABLE `userplaylist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_romanian_ci;
 
 --
--- Dumping data for table `userplaylist`
+-- Eliminarea datelor din tabel `userplaylist`
 --
 
 INSERT INTO `userplaylist` (`iduser`, `idplaylist`) VALUES
 (1, 1);
 
 --
--- Indexes for dumped tables
+-- Indexuri pentru tabele eliminate
 --
 
 --
--- Indexes for table `artist`
+-- Indexuri pentru tabele `artist`
 --
 ALTER TABLE `artist`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `playlist`
+-- Indexuri pentru tabele `playlist`
 --
 ALTER TABLE `playlist`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `song`
+-- Indexuri pentru tabele `song`
 --
 ALTER TABLE `song`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `songartist`
+-- Indexuri pentru tabele `songartist`
 --
 ALTER TABLE `songartist`
   ADD PRIMARY KEY (`idsong`,`idartist`),
   ADD KEY `fk_artist` (`idartist`);
 
 --
--- Indexes for table `songplaylist`
+-- Indexuri pentru tabele `songplaylist`
 --
 ALTER TABLE `songplaylist`
   ADD PRIMARY KEY (`idsong`,`idplaylist`),
   ADD KEY `idplaylist` (`idplaylist`);
 
 --
--- Indexes for table `user`
+-- Indexuri pentru tabele `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `userplaylist`
+-- Indexuri pentru tabele `userplaylist`
 --
 ALTER TABLE `userplaylist`
   ADD PRIMARY KEY (`iduser`,`idplaylist`),
   ADD KEY `idplaylist` (`idplaylist`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pentru tabele eliminate
 --
 
 --
--- AUTO_INCREMENT for table `artist`
+-- AUTO_INCREMENT pentru tabele `artist`
 --
 ALTER TABLE `artist`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4413;
 
 --
--- AUTO_INCREMENT for table `playlist`
+-- AUTO_INCREMENT pentru tabele `playlist`
 --
 ALTER TABLE `playlist`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `song`
+-- AUTO_INCREMENT pentru tabele `song`
 --
 ALTER TABLE `song`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9451;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT pentru tabele `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- Constraints for dumped tables
+-- Constrângeri pentru tabele eliminate
 --
 
 --
--- Constraints for table `songartist`
+-- Constrângeri pentru tabele `songartist`
 --
 ALTER TABLE `songartist`
   ADD CONSTRAINT `fk_artist` FOREIGN KEY (`idartist`) REFERENCES `artist` (`id`),
   ADD CONSTRAINT `fk_song` FOREIGN KEY (`idsong`) REFERENCES `song` (`id`);
 
 --
--- Constraints for table `songplaylist`
+-- Constrângeri pentru tabele `songplaylist`
 --
 ALTER TABLE `songplaylist`
   ADD CONSTRAINT `songplaylist_ibfk_1` FOREIGN KEY (`idsong`) REFERENCES `song` (`id`),
   ADD CONSTRAINT `songplaylist_ibfk_2` FOREIGN KEY (`idplaylist`) REFERENCES `playlist` (`id`);
 
 --
--- Constraints for table `userplaylist`
+-- Constrângeri pentru tabele `userplaylist`
 --
 ALTER TABLE `userplaylist`
   ADD CONSTRAINT `userplaylist_ibfk_1` FOREIGN KEY (`iduser`) REFERENCES `user` (`id`),

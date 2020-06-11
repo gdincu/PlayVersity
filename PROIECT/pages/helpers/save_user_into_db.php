@@ -44,8 +44,10 @@ function saveUser() {
     $firstname = isset($_POST["firstname"]) ? $_POST["firstname"] : "";
     $lastname = isset($_POST["lastname"]) ? $_POST["lastname"] : "";
     $username = isset($_POST["username"]) ? $_POST["username"] : "";
-    $password = isset($_POST["password"]) ? md5($_POST["password"]) : "";
-    
+    $password = isset($_POST["password"])
+        ? hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))
+        : "";
+
     $errorArray = array();
     $error = false;
     $errorMessage = "";

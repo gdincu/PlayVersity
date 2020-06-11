@@ -1,10 +1,43 @@
 <!--User Data-->
 <!--Location: UserPage-->
-<div class="container">User data.</div></br>
+<div class="container">User Name: <?php echo getLoggedInUser(); ?></div></br>
+<div class="container">Profile Photo(Upload option)
+    
+    <img src='<?php echo $this->userImage; ?>' alt="No Photo" width="100px" style="width: 100px;border:1px solid grey">
 
-<div class="container">Profile Photo(Upload option)</div></br>
+    <form action="pages/uploadUserProfilePhoto.php" method="post" enctype="multipart/form-data">
+        <label>Select Your Profile File Photo:</label>
+        <input type="file" name="image">
+        <input type="submit" name="submit" value="Upload">
+    </form>
 
-<div class="container">Form Data: First Name/ Last Name/ Username/ Chage(Reset) Password</div></br>
+</div></br>
+
+<div class="container">Form Data: First Name/ Last Name</div></br>
+
+    <div class="input-group-sm mb-3">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">First Name</span>
+        </div>
+        <input  type="text" 
+                class="form-control" 
+                placeholder="firstname" 
+                aria-label="firstname" 
+                aria-describedby="basic-addon1"
+                value='<?php echo $this->userFirstName; ?>'>
+    </div>
+
+    <div class="input-group-sm mb-3">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Last Name</span>
+        </div>
+        <input  type="text" 
+                class="form-control" 
+                placeholder="lastname" 
+                aria-label="lastname" 
+                aria-describedby="basic-addon1"
+                value='<?php echo $this->userLastName; ?>'>
+    </div>
 
 <div class="container">Go to MyPlaylists</div></br>
 

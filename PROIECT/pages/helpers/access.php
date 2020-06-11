@@ -13,7 +13,7 @@ if (isset($_POST["access"])) {
 	//Mesaje pentru client la logare
 	//Avoiding SQL injections by using "'" and sanitising variables
 	$userFinal = "'".htmlentities($_POST["username"],ENT_HTML5,'UTF-8',TRUE)."'";
-	$passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
+    $passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
 	
 	$sql = "SELECT username,password FROM user WHERE username=$userFinal";
 	$result = $connection->query($sql);
@@ -35,10 +35,10 @@ if (isset($_POST["access"])) {
 				exit;
 			}
 			
-			storeUserToSession($userFinal, $passwordFinal);
-			
-			}
-		}
-	}
+            storeUserToSession($usercheck, $passcheck);
+            header("Location: index.php?page=user");
+        }
+    }
+}
 
 ?>
