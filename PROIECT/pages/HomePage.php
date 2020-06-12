@@ -7,8 +7,8 @@ require_once (__DIR__ . '/helpers/save_user_into_db.php');
 
 class HomePage extends BasePage {
 
-     private $firstname;
-     private $lastname;
+    private $firstname;
+    private $lastname;
     private $username;
     private $password;
     

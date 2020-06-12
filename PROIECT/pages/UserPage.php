@@ -7,10 +7,10 @@ class UserPage extends BasePage {
     private $userFirstName = '';
     private $userLastName = '';
     private $userImage = '';
+    private $userPlaylists = '';
 
     function render() {
         $this->fetchDbContent();
-
         $this->renderHeader();
         $this->renderContent();//self::renderContent();
         self::renderFooter();
@@ -27,7 +27,7 @@ class UserPage extends BasePage {
     function fetchDbContent() {
         if (isLoggedIn()) {
             $user = getLoggedInUser();
-            $sql = "SELECT image, firstname, lastname FROM user WHERE username='$user'";
+            $sql = "SELECT image, firstname, lastname, userplaylist FROM user WHERE username='$user'";
             global $connection;
             $result = $connection->query($sql);
     
@@ -36,6 +36,7 @@ class UserPage extends BasePage {
                 $row = $result->fetch_assoc();
                 $this->userFirstName = $row['firstname'];
                 $this->userLastName = $row['lastname'];
+                $this->userPlaylists = $row['userplaylist'];
                 $imageContent = $row["image"];
                 if (!empty($imageContent)) {
                     $this->userImage = 'data:image/jpeg;base64,'. base64_encode($imageContent); 
