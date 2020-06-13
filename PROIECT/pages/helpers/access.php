@@ -15,7 +15,7 @@ if (isset($_POST["access"])) {
 	$userFinal = "'".htmlentities($_POST["username"],ENT_HTML5,'UTF-8',TRUE)."'";
     $passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
 	
-	$sql = "SELECT username,password FROM user WHERE username=$userFinal";
+	$sql = "SELECT id, username,password FROM user WHERE username=$userFinal";
 	$result = $connection->query($sql);
 	
 	//Mesaje pentru client la logare
@@ -27,7 +27,8 @@ if (isset($_POST["access"])) {
 	if($result->num_rows == 1) {
 		while($row = $result->fetch_assoc()) {
 			$usercheck = $row["username"];
-			$passcheck = $row["password"];
+            $passcheck = $row["password"];
+            $id = $row["id"];
 			
 			//Mesaje pentru client la logare
 			if("'".$usercheck."'" === $userFinal && "'".$passcheck."'" != $passwordFinal) {
@@ -35,7 +36,7 @@ if (isset($_POST["access"])) {
 				exit;
 			}
 			
-            storeUserToSession($usercheck, $passcheck);
+            storeUserToSession($usercheck, $passcheck, $id);
             header("Location: index.php?page=user");
         }
     }

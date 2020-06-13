@@ -1,5 +1,7 @@
 <?php 
 
+global $dbservername, $dbusername, $dbpassword, $dbname;
+
 $dbservername = "localhost";
 $dbusername = "root";
 $dbpassword = "";

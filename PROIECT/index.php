@@ -5,6 +5,12 @@
     
     $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
+    /*
+    if (!isLoggedIn() && $page != 'home') {
+        $page = 'home';
+    }
+    */
+
     $requestedPage = ucwords($page) . 'Page';
     $pageLocation = 'pages/'. $page . 'Page.php';
     if (file_exists($pageLocation)) {

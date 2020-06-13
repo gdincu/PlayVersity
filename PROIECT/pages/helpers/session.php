@@ -15,10 +15,19 @@ function getLoggedInUser() {
     return $user;
 }
 
-function storeUserToSession($userFinal,$passwordFinal) {
+function getLoggedInUserId() {
+    $userId = 0;
+    if (isLoggedIn()) {
+        $userId = $_SESSION["userid"];
+    }
+    return $userId;
+}
+
+function storeUserToSession($userFinal,$passwordFinal, $userId) {
     //Session management.
     $_SESSION["user"] = $userFinal;
     $_SESSION["password"] = $passwordFinal;
+    $_SESSION["userid"] = $userId;
 }
 
 if(!isLoggedIn()) {
