@@ -1,4 +1,5 @@
 <?php
+//Connecting to the DB using a generic login
 require_once (__DIR__ . '/../../db_setup/db_connect.php');
 require_once "session.php";
 
@@ -14,7 +15,7 @@ if (isset($_POST["access"])) {
 	//Avoiding SQL injections by using "'" and sanitising variables
 	$userFinal = "'".htmlentities($_POST["username"],ENT_HTML5,'UTF-8',TRUE)."'";
 	$passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
-	
+
 	$sql = "SELECT username,password FROM user WHERE username=$userFinal";
 	$result = $connection->query($sql);
 	
@@ -36,11 +37,12 @@ if (isset($_POST["access"])) {
 			}
 			
 			storeUserToSession($userFinal, $passwordFinal);
-			$dbname     = "playversity";
-			//Re-connects to the DB with the new username
-			// $connection = mysqli_connect($servername,$userFinal,$passwordFinal,$dbname);
-			mysqli_change_user($connection,$userFinal, $passwordFinal, $dbname);
 			
+			//Re-connects to the DB with the new username
+			// $connection->close();
+			// $connection = mysqli_connect("localhost","AAA","cb1ad2119d8fafb69566510ee712661f9f14b83385006ef92aec47f523a38358","playversity");
+			// $sqlTT = "INSERT INTO songplaylist (idsong,idplaylist) VALUES (777,1)";
+			// $connection->query($sqlTT);
 			}
 		}
 	}
