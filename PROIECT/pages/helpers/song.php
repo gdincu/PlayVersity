@@ -62,7 +62,9 @@ else    {
 		echo "</table>";
 			}
 
-			//Show the number of pages
-			for ($i=1; $i<=$total_pages; $i++)
-				echo "<a href='index.php?page=".$i."'>".$i."</a> "; 
+	//Show the all other pages as a dropdown list
+	echo 'Page: <select name="forma" onchange="location = this.value;">';
+	for ($i=1; $i<=$total_pages; $i++)
+	echo "<option value='index.php?page=".$i."'>".$i."</option> ";  
+	echo '</select>';
 ?>
