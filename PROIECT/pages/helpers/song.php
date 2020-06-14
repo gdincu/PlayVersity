@@ -1,8 +1,5 @@
 <?php
 
-//Saves the current URI
-$currentURI = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
 //Checks if the URI includes "index.php" and whether it contains a playlist id
 if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid']))
 {
@@ -47,7 +44,7 @@ else    {
 					<th></th>
 					  </tr>";
 
-	while($row = $result->fetch_assoc()) {
+	while($row = $result->fetch_assoc() && isset($_GET['playlistid'])) {
 		echo "<tr>";
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
@@ -55,6 +52,15 @@ else    {
 		echo '<td><input type="submit" name="deleteItem" value="' . (int)$row['idsong'] . '" /></td>"';
 		echo "</tr>";
 		}
+
+	while($row = $result->fetch_assoc() && isset($_GET['allsongs'])) {
+		echo "<tr>";
+		echo "<td>" . $row["artist"] . "</td>";
+		echo "<td>" . $row["name"] . "</td>";
+		echo "<td>" . $row["length"] . "</td>";
+		echo '<td><input type="submit" name="addItem" data-target="#portfolioModal2" data-toggle="modal" value="' . (int)$row['idsong'] . '" /></td>"';
+		echo "</tr>";
+		}	
 		
 		echo "</table></form>";
 	}
@@ -63,12 +69,25 @@ else    {
 ?>
 
 <?php
+//Deleting items
 	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
 	{
 $toDel = (int)$_POST['deleteItem'];
 $sqlTemp = "CALL usp_delSongFromPlaylist($tempPlaylist,$toDel);";
 $con2 = mysqli_connect("localhost","root","","playversity");
 mysqli_query($con2,$sqlTemp);
+}
+
+//Adding items
+if(isset($_POST['addItem']) and is_numeric($_POST['addItem']))
+{
+$toAdd = (int)$_POST['addItem'];
+$currentUser = $_SESSION["user"];
+
+
+
+$sqlTemp = "CALL usp_returnPlaylists($currentUser);";
+
 }
 ?>
 
