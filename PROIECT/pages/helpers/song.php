@@ -51,7 +51,6 @@ ORDER BY b.position ASC;";
 
 
 //Runs the SQL query
-echo $sql;
 $result = $connection->query($sql);
 
 if($result->num_rows == 0)
