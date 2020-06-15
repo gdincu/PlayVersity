@@ -1,0 +1,127 @@
+<!--User Data-->
+<!--Location: UserPage-->
+<div class="container media">
+    <fieldset>
+        <h2><?php echo getLoggedInUser(); ?></h2>
+
+        <div class="form-row align-items-center">
+            <div class="container col-sm media-body" id="userPageImage">
+                <img   src='<?php echo $this->userImage; ?>' 
+                        alt="No Photo" width="100px" 
+                        style="width: 100px;border:1px solid grey" />
+            </div>
+
+            <div class="container col-sm media-body" id="userPageFormData">
+                <form   class="container form-row" 
+                        action="index.php?page=user" 
+                        method="post" 
+                        enctype="multipart/form-data">
+                    
+                    <div class="container media-body">
+                        <small id="imageHelp" class="form-text text-muted">Choose your profile photo.</small>
+                        <input type="file" name="image" aria-describedby="imageHelp" />  
+                    </div> 
+
+                    <div class="input-group input-group-sm mb-3" >
+                        <div class="input-group-prepend">
+                            <span class="input-group-text border-0" id="inputGroup-sizing-sm" style="background-color: #F7F5E6;">First Name</span>
+                        </div>
+                        <input  type="text"
+                                id="firstname" 
+                                name="firstname"
+                                class="form-control-sm border-0" 
+                                aria-label="Small" 
+                                aria-describedby="inputGroup-sizing-sm"                                
+                                value='<?php echo $this->userFirstName; ?>' 
+                                style="background-color: #E8E8E8;"/>
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3" >
+                        <div class="input-group-prepend">
+                            <span class="input-group-text border-0" id="inputGroup-sizing-sm" style="background-color: #F7F5E6;">Last Name</span>
+                        </div>
+                        <input  type="text"
+                                id="lastname" 
+                                name="lastname"
+                                class="form-control-sm border-0" 
+                                aria-label="Small" 
+                                aria-describedby="inputGroup-sizing-sm"                                
+                                value='<?php echo $this->userLastName; ?>'
+                                style="background-color: #E8E8E8; border-right-style: 1px solid #e6e6e6;" />
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="col-sm-4">
+                            <button type="submit"
+                                    id="saveChanges" 
+                                    name="saveChanges" 
+                                    class="btn btn-secondary btn-sm border-0" 
+                                    value="saveChanges" 
+                                    style="background-color: #52658F;">Save changes
+                            </button>
+                        </div>    
+                    </div>
+                </form>
+                <div class="container" >
+                    <a href="index.php?page=userplaylists" >My Playlists</a>
+                </div></br>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<div class="container" style=<?php echo $this->hasError() ? "'color:red'" : "'color:green'" ?>'><?php echo $this->getLastSaveStatus()?></div></br>
+
+
+
+<!-- 
+
+<div class="container">User Name: <?php echo getLoggedInUser(); ?></div></br>
+
+
+<div class="container">Profile Photo(Upload option)
+    
+    <img src='<?php echo $this->userImage; ?>' alt="No Photo" width="100px" style="width: 100px;border:1px solid grey">
+
+    <form action="pages/uploadUserProfilePhoto.php" method="post" enctype="multipart/form-data">
+        <label>Select Your Profile File Photo:</label>
+        <input type="file" name="image">
+        <input type="submit" name="submit" value="Upload">
+    </form>
+
+</div></br>
+
+
+    <div class="input-group-sm mb-3">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">First Name</span>
+        </div>
+        <input  type="text" 
+                class="form-control" 
+                placeholder="firstname" 
+                aria-label="firstname" 
+                aria-describedby="basic-addon1"
+                value='<?php echo $this->userFirstName; ?>'>
+    </div>
+
+    <div class="input-group-sm mb-3">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Last Name</span>
+        </div>
+        <input  type="text" 
+                class="form-control" 
+                placeholder="lastname" 
+                aria-label="lastname" 
+                aria-describedby="basic-addon1"
+                value='<?php echo $this->userLastName; ?>'>
+    </div>
+
+      
+      <form method="post" action="<?php echo $this->userPlayLists?>">
+          <input type="submit" class="btn btn-primary" name="userPlaylistsBtn" id="userPlaylists" name="userPlaylists" />
+      </form>
+
+      <form method="post" action="<?php echo $this->userPlayLists; ?>">
+        <input type="text" class="btn btn-primary" name="userPlaylistsBtn" id="userPlaylists" placeholder="My Playlists" />
+    </form>
+
+    -->

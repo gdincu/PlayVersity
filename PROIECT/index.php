@@ -5,6 +5,12 @@
     
     $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
+    /*
+    if (!isLoggedIn() && $page != 'home') {
+        $page = 'home';
+    }
+    */
+
     $requestedPage = ucwords($page) . 'Page';
     $pageLocation = 'pages/'. $page . 'Page.php';
     if (file_exists($pageLocation)) {
@@ -13,7 +19,7 @@
         $currentPage->renderHead();
         $currentPage->startBody();
         $currentPage->render();
-        include "pages/helpers/song.php";
+       // include "pages/helpers/song.php";
         $currentPage->endBody();
     } else {
         require_once (__DIR__."/pages/ErrorPage.php");

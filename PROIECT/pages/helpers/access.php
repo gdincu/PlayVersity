@@ -14,9 +14,9 @@ if (isset($_POST["access"])) {
 	//Mesaje pentru client la logare
 	//Avoiding SQL injections by using "'" and sanitising variables
 	$userFinal = "'".htmlentities($_POST["username"],ENT_HTML5,'UTF-8',TRUE)."'";
-	$passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
-
-	$sql = "SELECT username,password FROM user WHERE username=$userFinal";
+    $passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
+	
+	$sql = "SELECT id, username,password FROM user WHERE username=$userFinal";
 	$result = $connection->query($sql);
 	
 	//Mesaje pentru client la logare
@@ -28,7 +28,8 @@ if (isset($_POST["access"])) {
 	if($result->num_rows == 1) {
 		while($row = $result->fetch_assoc()) {
 			$usercheck = $row["username"];
-			$passcheck = $row["password"];
+            $passcheck = $row["password"];
+            $id = $row["id"];
 			
 			//Mesaje pentru client la logare
 			if("'".$usercheck."'" === $userFinal && "'".$passcheck."'" != $passwordFinal) {
@@ -36,15 +37,10 @@ if (isset($_POST["access"])) {
 				exit;
 			}
 			
-			storeUserToSession($userFinal, $passwordFinal);
-			
-			//Re-connects to the DB with the new username
-			// $connection->close();
-			// $connection = mysqli_connect("localhost","AAA","cb1ad2119d8fafb69566510ee712661f9f14b83385006ef92aec47f523a38358","playversity");
-			// $sqlTT = "INSERT INTO songplaylist (idsong,idplaylist) VALUES (777,1)";
-			// $connection->query($sqlTT);
-			}
-		}
-	}
+            storeUserToSession($usercheck, $passcheck, $id);
+            header("Location: index.php?page=user");
+        }
+    }
+}
 
 ?>
