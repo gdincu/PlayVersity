@@ -1,5 +1,10 @@
 <?php
 
+//Sanitises and stores the playlistid in a variable
+$tempPlaylist = 1;
+if(isset($_GET['playlistid']))
+$tempPlaylist = (int)htmlentities($_GET['playlistid'],ENT_HTML5,'UTF-8',TRUE);
+
 //Checks the orderby value
 $orderby = 'NULL';
 if(isset($_GET['orderby']))
@@ -12,24 +17,24 @@ if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; };
 $start_from = ($page-1) * $results_per_page;
 
 //Find the total nr of records and works out the total nr of pages
-$sqlCount = "SELECT COUNT(id) AS total FROM song";
-$resultCount = $connection->query($sqlCount);
+$sqlCountAll = "SELECT COUNT(id) AS total FROM song";
+$sqlCount = "SELECT COUNT(id) AS total FROM songplaylist WHERE idplaylist = $tempPlaylist";
+// if(isset($_GET['playlistid']))
+// $resultCount = $connection->query($sqlCount);
+// else $resultCount = $connection->query($sqlCountAll);
+$resultCount = $connection->query($sqlCountAll);
 $rowCount = $resultCount->fetch_assoc();
 $total_pages = ceil($rowCount["total"] / $results_per_page);
 
 //Checks if the URI includes "index.php" and whether it contains a playlist id
 if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid']))
-{
-//Sanitises and stores the playlistid in a variable
-$tempPlaylist = (int)htmlentities($_GET['playlistid'],ENT_HTML5,'UTF-8',TRUE);
-
 //Calls the usp_returnSongs procedure and returns the artist, song name and song length based on the playlist id and orderby value
 $sql = "CALL usp_returnSongs($tempPlaylist,$orderby);";
-}
 
 //Checks if the URI includes "index.php" and allsongs
 else if (strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['allsongs']))
 $sql = "CALL usp_returnAllSongs(20);";
+// $sql = "CALL usp_returnAllSongs($start_from);";
 
 //Exits song.php if the URI doesn't contain the expected variables
 else exit();
@@ -65,6 +70,6 @@ else    {
 	//Show the all other pages as a dropdown list
 	echo 'Page: <select name="forma" onchange="location = this.value;">';
 	for ($i=1; $i<=$total_pages; $i++)
-	echo "<option value='index.php?page=".$i."'>".$i."</option> ";  
+	echo "<option value='" . $_SERVER["REQUEST_URI"] . "&page=".$i."'>".$i."</option> ";  
 	echo '</select>';
 ?>
