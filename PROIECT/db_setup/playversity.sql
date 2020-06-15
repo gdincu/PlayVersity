@@ -25074,17 +25074,7 @@ ALTER TABLE `artist`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4413;
 
 --
-<<<<<<< HEAD
--- AUTO_INCREMENT for table `logplaylist`
---
-ALTER TABLE `logplaylist`
-  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `playlist`
-=======
 -- AUTO_INCREMENT pentru tabele `playlist`
->>>>>>> oana
 --
 ALTER TABLE `playlist`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
