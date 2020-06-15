@@ -1,41 +1,53 @@
 <!--Formulare de inscriere-->
-<form method="post" enctype="multipart/form-data">
+<div class="container form-group form-group-lg mb-3">
+<form method="post" enctype="multipart/form-data" >
 
-    <p>
-        <div class="form-row col-sm-6">
-        <div class="col">
-        <input type="text" class="form-control" id="nume" name="nume" placeholder="<?php echo 'Nume: ' . $this->nume;?>" value="<?php echo $this->nume;?>" required> 
+
+
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control form-control-sm" id="firstname" name="firstname" placeholder="<?php echo 'First Name: ' . $this->firstname;?>" value="<?php echo$this->firstname;?>"  required>
         </div>
-        <div class="col">
-        <input type="text" class="form-control" id="prenume" name="prenume" placeholder="<?php echo 'Prenume: ' . $this->prenume;?>" value="<?php echo$this->prenume;?>"  required>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control form-control-sm" id="lastname" name="lastname" placeholder="<?php echo 'Last Name: ' . $this->lastname;?>" value="<?php echo$this->lastname;?>"  required>
         </div>
-        <div class="col">
-        <input type="email" class="form-control" id="email" name="email"  placeholder="<?php echo 'Email: ' . $this->email;?>" value="<?php echo $this->email;?>" required>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control form-control-sm" id="username" name="username" placeholder="<?php echo 'Username: ' . $this->username;?>" value="<?php echo $this->username;?>" required> 
         </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="password" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control form-control-sm" id="password" name="password"  placeholder="<?php echo 'Password: ' . $this->password;?>" value="<?php echo $this->password;?>" required>
         </div>
-    </p>
+    </div>
     
+
+    <!--
     <p>
         <script src="passcheck.js"></script>
         <div class="form-row col-sm-6">
-        <div class="col">
-        <input type="text" class="form-control" id="usernume" name="usernume"  placeholder="<?php echo 'User: ' . $this->user;?>" value="<?php echo $this->user;?>"  required>
+            <div class="col">
+                <input type="text" class="form-control" id="usernume" name="usernume"  placeholder="<?php echo 'User: ' . $this->user;?>" value="<?php echo $this->user;?>"  required>
+            </div>
+            <div class="col">
+                <input type="password" class="form-control" id="parola" name="parola"  placeholder="<?php echo 'Parola: ' . $this->parola;?>" value="<?php echo $this->parola;?>" required>
+            </div>
+            <div class="col">
+                <input type="password" class="form-control" id="parola2" name="parola2"  placeholder="<?php echo 'Parola: ' . $this->parola2;?>" value="<?php echo $this->parola2;?>" required>
+            
+            Checking pass match client-side
+            <div id="chkForm1"></div>
+                <span id='message'></span>
+            </div>
         </div>
-        <div class="col">
-        <input type="password" class="form-control" id="parola" name="parola"  placeholder="<?php echo 'Parola: ' . $this->parola;?>" value="<?php echo $this->parola;?>" required>
-        </div>
-        <div class="col">
-        <input type="password" class="form-control" id="parola2" name="parola2"  placeholder="<?php echo 'Parola: ' . $this->parola2;?>" value="<?php echo $this->parola2;?>" required>
-         
-         <!--Checking pass match client-side-->
-         <div id="chkForm1"></div>
-         <span id='message'></span>
-        </div>
-        </div>
-    </p>
+    </p>-->
     
     
-    
+    <!--
     <p>
         <div class="form-row col-sm-6">
         
@@ -54,8 +66,9 @@
         </div>
     
         </div>
-    </p>
+    </p> -->
     
+    <!--
     <p>
     <div class="form-row col-sm-6">
         
@@ -74,9 +87,9 @@
     </div>
     
     </div>
-    </p>
+    </p> -->
     
-    <!--Foto upload-->
+    <!--Foto upload
     <p>
     <div class="form-row col-sm-6">
     
@@ -89,12 +102,14 @@
     </div>
     
     </div>
-    </p>
+    </p> -->
     
-    <div class="form-row col-sm-6">
-        <div class="col">
-        <button type="submit" name="submit" id="submit" class="btn btn-primary">Adauga</button>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <button type="submit" name="submit" id="submit" class="btn btn-secondary btn-sm border-0" value="submit" style="background-color: #52658F;">Submit</button>
         </div>
-        </div>
+    </div>
     
     </form>
+    </div>
+</div>
