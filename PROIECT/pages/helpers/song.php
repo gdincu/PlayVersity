@@ -1,4 +1,5 @@
 <?php
+require_once "db_setup/db_connect.php";
 
 //Sanitises and stores the playlistid in a variable
 $tempPlaylist = 1;
@@ -38,6 +39,16 @@ $sql = "CALL usp_returnAllSongs(20);";
 
 //Exits song.php if the URI doesn't contain the expected variables
 else exit();
+
+$sql = "SELECT b.idsong,b.position,a.name,e.name artist,a.length 
+FROM song a
+INNER JOIN songplaylist b ON a.id = b.idsong
+INNER JOIN playlist c ON c.id = b.idplaylist
+INNER JOIN songartist d ON a.id = d.idsong
+INNER JOIN artist e ON d.idartist = e.id
+WHERE b.idplaylist = 1
+ORDER BY b.position ASC;";
+
 
 //Runs the SQL query
 $result = $connection->query($sql);
