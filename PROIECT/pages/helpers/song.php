@@ -1,4 +1,5 @@
 <?php
+$connection = mysqli_connect("localhost","root","","playversity");
 
 //Sanitises and stores the playlistid in a variable
 $tempPlaylist = 1;
@@ -48,23 +49,14 @@ if($result->num_rows == 0)
 	exit();
 }
 else    {
-    echo "Song list:
-					<br><br>
-					<table class=\"table\">
-					<tr>
-    				<th>Artist</th>
-    				<th>Name</th>
-                    <th>Length</th>
-                      </tr>";	
-
 	while($row = $result->fetch_assoc()) {
 		echo "<tr>";
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
         echo "<td>" . $row["length"] . "</td>";
 		echo "</tr>";
-		                        		}
-		echo "</table>";
+		 }
+		 echo "</table>";
 			}
 
 	//Show the all other pages as a dropdown list
