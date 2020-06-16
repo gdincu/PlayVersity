@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 16, 2020 at 10:17 AM
+-- Generation Time: Jun 16, 2020 at 02:55 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -46,14 +46,14 @@ SET @tempCount = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = 
 INSERT INTO songplaylist VALUES (a,b,@tempCount);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` (IN `startfrom` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` (IN `startpos` INT, IN `endpos` INT)  BEGIN
 SELECT d.idsong,GROUP_CONCAT(e.name) artist,a.name,a.length 
 FROM song a
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 GROUP BY d.idsong
 ORDER BY d.idartist ASC
-LIMIT startfrom;
+LIMIT startpos,endpos;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylists` (`a` VARCHAR(50))  BEGIN
@@ -64,7 +64,7 @@ INNER JOIN playlist c ON c.id = a.idplaylist
 WHERE b.username = a;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (IN `a` INT(5), IN `b` VARCHAR(30))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (IN `a` INT(5), IN `b` VARCHAR(30), IN `startpos` INT, IN `endpos` INT)  BEGIN
 
 IF b IS NULL THEN 
 SELECT a.id,a.name,a.length,GROUP_CONCAT(e.name) artist,b.position
@@ -74,7 +74,8 @@ INNER JOIN playlist c ON c.id = b.idplaylist
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 WHERE b.idplaylist = a
-GROUP BY a.id;
+GROUP BY a.id
+LIMIT startpos,endpos;
 END IF;
 
 IF UPPER(b) = 'ARTIST' THEN
@@ -86,7 +87,8 @@ INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 WHERE b.idplaylist = a
 GROUP BY a.id
-ORDER BY e.name ASC;
+ORDER BY e.name ASC
+LIMIT startpos,endpos;
 END IF;
 
 IF UPPER(b) = 'NAME' THEN
@@ -98,7 +100,8 @@ INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 WHERE b.idplaylist = a
 GROUP BY a.id
-ORDER BY a.name ASC;
+ORDER BY a.name ASC
+LIMIT startpos,endpos;
     END IF;
 
 END$$
