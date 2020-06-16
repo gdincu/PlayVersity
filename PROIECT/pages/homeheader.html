@@ -23,7 +23,8 @@
 
                 <div class="form-row">
                     <div class="col-sm-4s">
-                        <input  type="text"
+                        <!-- Checks if the user is already logged in  -->
+                        <input  type="<?php echo isLoggedIn() ? 'hidden' : 'text'?>" 
                                 class="form-control form-control-sm col-sm-4s" 
                                 id="username" 
                                 name="username"  
@@ -40,7 +41,8 @@
                     </div>
 
                     <div class="col-sm-4s">
-                        <input  type="password" 
+                        <!-- Checks if the user is already logged in  -->
+                        <input  type="<?php echo isLoggedIn() ? 'hidden' : 'password'?>"
                                 class="form-control form-control-sm border-0" 
                                 id="password" 
                                 name="password" 
@@ -52,6 +54,7 @@
                                     }
                                     echo '"';
                                 ?>
+                               
                         > 
                     </div> 
 

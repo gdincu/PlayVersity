@@ -13,7 +13,7 @@ $orderby = "'".htmlentities($_GET['orderby'],ENT_HTML5,'UTF-8',TRUE)."'";
 
 //Setting the start page to divide result sets containing multiple lines into multiple pages
 $results_per_page = 20;
-if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; }; 
+if (isset($_GET["page"]) && is_numeric($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; }; 
 $start_from = ($page-1) * $results_per_page;
 
 //Find the total nr of records and works out the total nr of pages
