@@ -7,7 +7,7 @@ if (isset($_POST["access"])) {
 	
 	if(isLoggedIn()) {
 		session_destroy();
-		header("Location: index.php?page=home&error=LoggedOut");
+		header("Location: index.php");
 		exit;
 	}
 
