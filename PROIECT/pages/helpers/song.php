@@ -1,5 +1,5 @@
 <?php
-require_once "db_setup/db_connect.php";
+$connection = mysqli_connect("localhost","root","","playversity");
 
 //Sanitises and stores the playlistid in a variable
 $tempPlaylist = 1;
@@ -14,7 +14,7 @@ $orderby = "'".htmlentities($_GET['orderby'],ENT_HTML5,'UTF-8',TRUE)."'";
 
 //Setting the start page to divide result sets containing multiple lines into multiple pages
 $results_per_page = 20;
-if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; }; 
+if (isset($_GET["page"]) && is_numeric($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; }; 
 $start_from = ($page-1) * $results_per_page;
 
 //Find the total nr of records and works out the total nr of pages
@@ -59,23 +59,14 @@ if($result->num_rows == 0)
 	exit();
 }
 else    {
-    echo "Song list:
-					<br><br>
-					<table class=\"table\">
-					<tr>
-    				<th>Artist</th>
-    				<th>Name</th>
-                    <th>Length</th>
-                      </tr>";	
-
 	while($row = $result->fetch_assoc()) {
 		echo "<tr>";
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
         echo "<td>" . $row["length"] . "</td>";
 		echo "</tr>";
-		                        		}
-		echo "</table>";
+		 }
+		 echo "</table>";
 			}
 
 	//Show the all other pages as a dropdown list
