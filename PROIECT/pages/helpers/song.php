@@ -18,8 +18,11 @@ $start_from = ($page-1) * $results_per_page;
 
 //Find the total nr of records and works out the total nr of pages
 $sqlCountAll = "SELECT COUNT(id) AS total FROM song";
-$sqlCount = "SELECT COUNT(id) AS total FROM songplaylist WHERE idplaylist = $tempPlaylist";
+$sqlCount = "SELECT COUNT(*) AS total FROM songplaylist WHERE idplaylist = $tempPlaylist";
+if(isset($_GET['allsongs']))
 $resultCount = $connection->query($sqlCountAll);
+else 
+$resultCount = $connection->query($sqlCount);
 $rowCount = $resultCount->fetch_assoc();
 $total_pages = ceil($rowCount["total"] / $results_per_page);
 
@@ -44,7 +47,6 @@ if($result->num_rows == 0)
 	exit();
 }
 else    {
-	echo $sql;
 	//Return song details from the DB
 	while($row = $result->fetch_assoc()) {
 		echo "<tr>";
@@ -58,13 +60,23 @@ else    {
 
 	//Show the all other pages as a dropdown list
 	echo 'Page: <select name="forma" onchange="location = this.value;">';
-	for ($i=1; $i<=$total_pages; $i++) {
-		$string = $_SERVER["REQUEST_URI"];
-		if(isset($_GET["pageno"])) 
-		$string = removeParam($string,'pageno');
-		echo "<option value='" . $string . "&pageno=".$i."'>".$i."</option> ";  
+	for ($c = 1; $c<=$total_pages; $c++) {
+		
+	if(!isset($_GET["pageno"]))
+		echo "<option value='" . $_SERVER["REQUEST_URI"] . "&pageno=".$c."'>".$c."</option> ";  
+	else {
+		//Un-setting the pageno tag from the URI used to generate option tags
+		$string = removeParam($_SERVER["REQUEST_URI"],'pageno');
+		//Setting the default value for the option tag based on the URI
+		if((int)$c == (int)($_GET["pageno"]))
+		echo "<option selected value='" . $string . "&pageno=".$c."'>".$c."</option> ";  
+		else
+		echo "<option value='" . $string . "&pageno=".$c."'>".$c."</option> ";  
 		}
+	}
+
 	echo '</select>';
+	
 
 	function removeParam($url, $param) {
 		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*$/', '', $url);
