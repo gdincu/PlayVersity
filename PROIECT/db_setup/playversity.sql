@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 16, 2020 at 02:55 PM
+-- Generation Time: Jun 17, 2020 at 10:19 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -54,6 +54,14 @@ INNER JOIN artist e ON d.idartist = e.id
 GROUP BY d.idsong
 ORDER BY d.idartist ASC
 LIMIT startpos,endpos;
+END$$
+
+CREATE DEFINER=`` PROCEDURE `usp_returnPlaylistBasedOnUser` (`a` VARCHAR(50))  BEGIN
+SELECT a.id,a.name 
+FROM playlist a, userplaylist b,user c
+WHERE a.id = b.idplaylist
+AND c.id = b.iduser
+AND UPPER(c.username) = UPPER(a);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylists` (`a` VARCHAR(50))  BEGIN
@@ -24994,7 +25002,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `username`, `password`) VALUES
 (1, 'AAA', 'AAA', 'AAA', 'cb1ad2119d8fafb69566510ee712661f9f14b83385006ef92aec47f523a38358'),
-(2, 'BBB', 'BBB', 'BBB', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273');
+(2, 'BBB', 'BBB', 'BBB', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273'),
+(3, 'FFF', 'FFF', 'FFFFF', '25fc92a14a79502fe359ec1416bf80d711f0ae507f2723441e444e05b93e3d58');
 
 -- --------------------------------------------------------
 
@@ -25135,7 +25144,7 @@ ALTER TABLE `song`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
