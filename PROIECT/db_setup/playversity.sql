@@ -37,12 +37,22 @@ SET @tempCount = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = 
 INSERT INTO songplaylist VALUES (a,b,@tempCount);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` ()  BEGIN
-SELECT e.name artist,a.name,a.length 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` (IN `a` VARCHAR(20))  BEGIN
+IF UPPER(a) = 'ARTIST' THEN
+        SELECT e.name artist,a.name,a.length 
 FROM song a
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
-ORDER BY d.idartist ASC;
+ORDER BY e.name ASC;
+END IF;
+
+IF UPPER(a) = 'NAME' THEN
+        SELECT e.name artist,a.name,a.length 
+FROM song a
+INNER JOIN songartist d ON a.id = d.idsong
+INNER JOIN artist e ON d.idartist = e.id
+ORDER BY a.name ASC;
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (IN `a` INT(5), IN `b` VARCHAR(30))  BEGIN
