@@ -55,7 +55,7 @@ else    {
 		echo "<td>" . $row["length"] . "</td>";
 		if(isset($_GET["playlistid"])) {
 				echo "<form method='post' action=''>";
-				echo '<td><input class="btn btn-sm btn-danger" type="submit" name="deleteItem" value="'. (int)$row['id'] . '"/></td></form>';
+				echo '<td><button class="btn btn-sm btn-danger" type="submit" name="deleteItem" value="'. (int)$row['id'] . '">Delete</button></td></form>';
 			}
 
 		echo "</tr>";

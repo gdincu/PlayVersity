@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2020 at 03:43 PM
+-- Generation Time: Jun 17, 2020 at 04:03 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -4591,7 +4591,16 @@ INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_ite
 (21, 'songplaylist', 'delete', NULL, 'idsong: 333, idplaylist: 1', '2020-06-03 18:37:23', 'root@localhost'),
 (22, 'songplaylist', 'insert', NULL, 'idsong: 555, idplaylist: 1', '2020-06-14 11:14:11', 'root@localhost'),
 (23, 'songplaylist', 'delete', 'idsong: 222, idplaylist: 1', NULL, '2020-06-17 13:01:44', 'root@'),
-(24, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 111', NULL, '2020-06-17 16:43:15', 'root@');
+(24, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 111', NULL, '2020-06-17 16:43:15', 'root@'),
+(25, 'userplaylist', 'delete', 'iduser: 2, idplaylist: 5', NULL, '2020-06-17 16:49:41', 'root@'),
+(26, 'songplaylist', 'delete', 'idsong: 19, idplaylist: 2', NULL, '2020-06-17 16:50:09', 'root@'),
+(27, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 11', NULL, '2020-06-17 16:56:25', 'root@'),
+(28, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 2', '2020-06-17 16:57:32', 'root@'),
+(29, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 5', '2020-06-17 16:57:32', 'root@'),
+(30, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 11', '2020-06-17 16:57:32', 'root@'),
+(31, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 111', '2020-06-17 16:57:32', 'root@'),
+(32, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 5', NULL, '2020-06-17 16:58:34', 'root@'),
+(33, 'songplaylist', 'delete', 'idsong: 123, idplaylist: 1', NULL, '2020-06-17 16:59:48', 'root@');
 
 -- --------------------------------------------------------
 
@@ -24953,8 +24962,6 @@ INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (11, 1, 3),
 (11, 2, 5),
 (12, 2, 4),
-(19, 2, 5),
-(123, 1, 2),
 (555, 1, NULL);
 
 --
@@ -25008,7 +25015,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `username`, `password`) VALUES
 (1, 'AAA', 'AAA', 'AAA', 'cb1ad2119d8fafb69566510ee712661f9f14b83385006ef92aec47f523a38358'),
 (2, 'BBB', 'BBB', 'BBB', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273'),
-(3, 'FFF', 'FFF', 'FFFFF', '25fc92a14a79502fe359ec1416bf80d711f0ae507f2723441e444e05b93e3d58');
+(3, 'FFF', 'FFF', 'FFFFF', '25fc92a14a79502fe359ec1416bf80d711f0ae507f2723441e444e05b93e3d58'),
+(4, 'Vasile', 'Vasilica', 'KKKKK', '25fc92a14a79502fe359ec1416bf80d711f0ae507f2723441e444e05b93e3d58');
 
 -- --------------------------------------------------------
 
@@ -25027,9 +25035,10 @@ CREATE TABLE `userplaylist` (
 
 INSERT INTO `userplaylist` (`iduser`, `idplaylist`) VALUES
 (1, 1),
+(1, 2),
 (1, 11),
-(2, 2),
-(2, 5);
+(1, 111),
+(2, 2);
 
 --
 -- Triggers `userplaylist`
@@ -25130,7 +25139,7 @@ ALTER TABLE `artist`
 -- AUTO_INCREMENT for table `logplaylist`
 --
 ALTER TABLE `logplaylist`
-  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `playlist`
@@ -25148,7 +25157,7 @@ ALTER TABLE `song`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
