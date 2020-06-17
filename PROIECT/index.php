@@ -13,8 +13,6 @@
         $currentPage->renderHead();
         $currentPage->startBody();
         $currentPage->render();
-        //Song.php
-        include "pages/helpers/song.php";
         $currentPage->endBody();
     } else {
         require_once (__DIR__."/pages/ErrorPage.php");

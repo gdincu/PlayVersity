@@ -1,61 +1,66 @@
     <!-- Navigation -->
-    <!-- Name & Logo -->
-    <nav class="navbar navbar-expand-sm fixed-top navbar" style="background-color: #333A56;" id="mainNav">
+    <nav    class="navbar navbar-expand-sm fixed-top p-0"
+            id="mainNav" 
+            style="background-color: #333A56;" 
+        >
 
-        <div class="container input-group input-group-sm mb-3">
-            <a class="navbar-brand js-scroll-trigger" href="index.php" style="color: #E8E8E8">playVersity</a>
+        <!-- Name & Logo -->
+        <div class="container input-group input-group-sm">
+            <a  class="navbar-brand js-scroll-trigger" 
+                href="index.php" 
+                style="color: #E8E8E8">
+
+                <img    src="./images/playversity_logo_6.png" 
+                        class="w-50 h-50" 
+                        alt="logo PlayVersity" 
+                    />
+            </a>
         </div>
 
-        <!--formular login-->
-        <div class="container input-group input-group-sm mb-3">
-            <form method = "post" class="form-inline" > 
+        <!--login form-->
+        <div class="container input-group input-group-sm mb-0">
+            <form method="post" class="form-inline" > 
 
                 <div class="form-row">
                     <div class="col-sm-4s">
-                        <!-- Checks if the user is already logged in -->
-                        <input type="text" aria-label="Small" aria-describedby="inputGroup-sizing-sm" class="form-control col-sm-4s" 
-                        id="username" name="username" 
-                        placeholder="username" value="username"
-                        style="background-color: #F7F5E6;
-                            <?php
-                                    if (isset($_GET['error']) && $_GET['error'] == 'InvalidUserorPassword')
-                                        echo ' border: 2px solid red;';
-                                ?>"
-                        <?php echo isLoggedIn() ? 'hidden' : ''?>
+                        <!-- Checks if the user is already logged in  -->
+                        <input  type="<?php echo isLoggedIn() ? 'hidden' : 'text'?>" 
+                                class="form-control form-control-sm col-sm-4s" 
+                                id="username" 
+                                name="username"  
+                                aria-label="Small" 
+                                aria-describedby="inputGroup-sizing-sm"                                 
+                                placeholder="Username"
+                                style="background-color: #F7F5E6;
+                                    <?php
+                                            if (isset($_GET['error']))
+                                                echo ' border: 2px solid red;';
+                                        ?>"
                         >
                     </div>
 
                     <div class="col-sm-4s">
-                        <input type="password" class="form-control" id="password" name="password" 
-                        placeholder="password" value="password"
-                        style="background-color: #E8E8E8;
-                            <?php
-                                 if (isset($_GET['error']) && $_GET['error'] == 'InvalidPassword')
-                                 echo ' border: 2px solid red;';
-                                ?>"
-                            <?php echo isLoggedIn() ? 'hidden' : ''?>
+                        <!-- Checks if the user is already logged in  -->
+                        <input  type="<?php echo isLoggedIn() ? 'hidden' : 'password'?>"
+                                class="form-control form-control-sm border-0" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Password" 
+                                style="background-color: #E8E8E8;
+                                    <?php 
+                                            if (isset($_GET['error']))
+                                            echo ' border: 2px solid red;';
+                                    ?>"
                         > 
                     </div> 
 
                     <div class="col-sm-2s">
-                            <button type="submit" class="btn btn-sm btn-info btn-block" 
-                            name = "access" style="background-color: #52658F; border-color: #52658F; color: #E8E8E8; margin-left: 3%;">
+                            <button type="submit" 
+                                    class="btn btn-sm btn-info btn-block" 
+                                    name = "access" 
+                                    style="background-color: #52658F; border-color: #52658F; color: #E8E8E8; margin-left: 3%;">
                             <?php echo isLoggedIn() ? 'Log Out' : 'Log In'?></button>
                     </div>
-                </div>
-
-                <!--<div class="form-row">
-                     <div class="col-sm-3">
-                        <button type="submit" class="btn btn-info btn-block" name = "access"><?php echo isLoggedIn() ? 'Log Out' : 'Log In'?></button>
-                    </div> 
-
-                    <div class="col-sm-3">
-                        <a role="button" class="btn btn-info btn-block" href="inscriere.php">Sign Up</a>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <a role="button" class="btn btn-info btn-block" href="parola.php">Reset Password</a>
-                    </div> -->
                 </div>
             </form>
         </div>

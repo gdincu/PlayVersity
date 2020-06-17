@@ -1,100 +1,81 @@
-<!--Formulare de inscriere-->
-<form method="post" enctype="multipart/form-data">
+<!--User SignUp Form-->
+<!--Location: HomePage-->
+<!--htmlspecialchars() function converts special characters to HTML entities-->
+<div class="container form-group form-group-lg mb-3">
+    <form   method="post" 
+            enctype="multipart/form-data" 
+            action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" 
+            name="savedata"
+            target="_self"
+            id="savedata">
 
-    <p>
-        <div class="form-row col-sm-6">
-        <div class="col">
-        <input type="text" class="form-control" id="nume" name="nume" placeholder="<?php echo 'Nume: ' . $this->nume;?>" value="<?php echo $this->nume;?>" required> 
+
+        <div class="form-group row">
+                <div class="col-sm-4" >
+                    <input  type="text"
+                            id="firstname" 
+                            name="firstname"
+                            class="<?php getError('firstname') ?> form-control form-control-sm" 
+                            aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm"                                
+                            placeholder="<?php echo 'First Name ' . $this->firstname;?>" 
+                            value="<?php getPost('firstname') ?>" required>
+                </div>
+            <div><?php getErrorMessage('firstname') ?></div></br>
         </div>
-        <div class="col">
-        <input type="text" class="form-control" id="prenume" name="prenume" placeholder="<?php echo 'Prenume: ' . $this->prenume;?>" value="<?php echo$this->prenume;?>"  required>
+        <div class="form-group row">
+                <div class="col-sm-4">
+                    <input  type="text"
+                            id="lastname"
+                            name="lastname"
+                            class="<?php getError('lastname') ?> form-control form-control-sm" 
+                            aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm" 
+                            placeholder="<?php echo 'Last Name ' . $this->lastname;?>" 
+                            value="<?php getPost('lastname') ?>" required>
+                </div>
+            <div><?php getErrorMessage('lastname') ?></div></br>
         </div>
-        <div class="col">
-        <input type="email" class="form-control" id="email" name="email"  placeholder="<?php echo 'Email: ' . $this->email;?>" value="<?php echo $this->email;?>" required>
+        <div class="form-group row">
+                <div class="col-sm-4">
+                    <input  type="text"
+                            id="username"
+                            name="username"
+                            class="<?php getError('username') ?> form-control form-control-sm" 
+                            aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm" 
+                            placeholder="<?php echo 'Username ' . $this->username;?>" 
+                            value="<?php getPost('username') ?>" required> 
+                </div>
+            <div><?php getErrorMessage('username') ?></div></br>
         </div>
+
+        <div class="form-group row">
+                <div class="col-sm-4">
+                    <input  type="password"
+                            id="password"
+                            name="password"
+                            class="<?php getError('password') ?> form-control form-control-sm" 
+                            aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm"  
+                            placeholder="<?php echo 'Password ' . $this->password;?>" 
+                            value="<?php getPost('password') ?>" required>
+                </div>
+            <div><?php getErrorMessage('password') ?></div></br>
         </div>
-    </p>
-    
-    <p>
-        <script src="passcheck.js"></script>
-        <div class="form-row col-sm-6">
-        <div class="col">
-        <input type="text" class="form-control" id="usernume" name="usernume"  placeholder="<?php echo 'User: ' . $this->user;?>" value="<?php echo $this->user;?>"  required>
-        </div>
-        <div class="col">
-        <input type="password" class="form-control" id="parola" name="parola"  placeholder="<?php echo 'Parola: ' . $this->parola;?>" value="<?php echo $this->parola;?>" required>
-        </div>
-        <div class="col">
-        <input type="password" class="form-control" id="parola2" name="parola2"  placeholder="<?php echo 'Parola: ' . $this->parola2;?>" value="<?php echo $this->parola2;?>" required>
-         
-         <!--Checking pass match client-side-->
-         <div id="chkForm1"></div>
-         <span id='message'></span>
-        </div>
-        </div>
-    </p>
-    
-    
-    
-    <p>
-        <div class="form-row col-sm-6">
         
-        <div class="col">
-        Stare civila
+        <div class="form-group row">
+            <div class="col-sm-4">
+                <button type="submit"
+                        id="savedata" 
+                        name="savedata" 
+                        class="btn btn-secondary btn-sm border-0" 
+                        value="savedata" 
+                        style="background-color: #52658F;">Sign Up
+                </button>
+            </div>    
         </div>
-    
-        <div class="col">
-        <input class="form-check-input" type="checkbox" name="casatorit" value="casatorit">
-        <label class="form-check-label" for="casatorit">Casatorit(a)</label>
-        </div>
-    
-        <div class="col">
-        <input class="form-check-input" type="checkbox" name="necasatorit" value="necasatorit">
-        <label class="form-check-label" for="necasatorit">Necasatorit(a)</label>
-        </div>
-    
-        </div>
-    </p>
-    
-    <p>
-    <div class="form-row col-sm-6">
-        
-    <div class="col">
-    Sex
-    </div>
-    
-    <div class="col">
-    <input class="form-check-input" type="radio" name="barbat" value="barbat">
-    <label class="form-check-label" for="male">Barbat</label>
-    </div>
-    
-    <div class="col">
-    <input class="form-check-input" type="radio" name="femeie" value="femeie">
-    <label class="form-check-label" for="male">Femeie</label>
-    </div>
-    
-    </div>
-    </p>
-    
-    <!--Foto upload-->
-    <p>
-    <div class="form-row col-sm-6">
-    
-    <div class="col">
-    Foto
-    </div>
-    
-    <div class="col">
-    Imagine de profil:<input type="file" name="fileToUpload" id="fileToUpload">
-    </div>
-    
-    </div>
-    </p>
-    
-    <div class="form-row col-sm-6">
-        <div class="col">
-        <button type="submit" name="submit" id="submit" class="btn btn-primary">Adauga</button>
-        </div>
-        </div>
-    
+
     </form>
+</div>
+

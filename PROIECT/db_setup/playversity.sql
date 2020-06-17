@@ -3,9 +3,14 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2020 at 09:39 AM
+-- Generation Time: Jun 17, 2020 at 01:09 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
+
+DROP DATABASE IF EXISTS playversity;
+
+CREATE DATABASE playversity;
+USE playversity;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -26,6 +31,10 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_delSongFromPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
+DELETE FROM songplaylist WHERE idplaylist = a AND idsong = b;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_delSongPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
 SET @tempCount = (SELECT position FROM songplaylist WHERE idsong = a AND idplaylist = b);
 DELETE FROM songplaylist WHERE idsong = a AND idplaylist = b;	
@@ -37,57 +46,70 @@ SET @tempCount = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = 
 INSERT INTO songplaylist VALUES (a,b,@tempCount);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` (IN `a` VARCHAR(20))  BEGIN
-IF UPPER(a) = 'ARTIST' THEN
-        SELECT e.name artist,a.name,a.length 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` (IN `startpos` INT, IN `endpos` INT)  BEGIN
+SELECT d.idsong id,GROUP_CONCAT(e.name) artist,a.name,a.length 
 FROM song a
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
-ORDER BY e.name ASC;
-END IF;
-
-IF UPPER(a) = 'NAME' THEN
-        SELECT e.name artist,a.name,a.length 
-FROM song a
-INNER JOIN songartist d ON a.id = d.idsong
-INNER JOIN artist e ON d.idartist = e.id
-ORDER BY a.name ASC;
-    END IF;
+GROUP BY d.idsong
+ORDER BY d.idartist ASC
+LIMIT startpos,endpos;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (IN `a` INT(5), IN `b` VARCHAR(30))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylistBasedOnUser` (`a` VARCHAR(50))  BEGIN
+SELECT a.id,a.name 
+FROM playlist a, userplaylist b,user c
+WHERE a.id = b.idplaylist
+AND c.id = b.iduser
+AND UPPER(c.username) = UPPER(a);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylists` (`a` VARCHAR(50))  BEGIN
+SELECT c.id,c.name 
+FROM userplaylist a 
+INNER JOIN user b on b.id = a.iduser 
+INNER JOIN playlist c ON c.id = a.idplaylist 
+WHERE b.username = a;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnSongs` (IN `a` INT(5), IN `b` VARCHAR(30), IN `startpos` INT, IN `endpos` INT)  BEGIN
 
 IF b IS NULL THEN 
-       SELECT b.position,a.name,e.name artist,a.length 
+SELECT a.id,a.name,a.length,GROUP_CONCAT(e.name) artist,b.position
 FROM song a
 INNER JOIN songplaylist b ON a.id = b.idsong
 INNER JOIN playlist c ON c.id = b.idplaylist
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 WHERE b.idplaylist = a
-ORDER BY b.position ASC;
+GROUP BY a.id
+LIMIT startpos,endpos;
 END IF;
 
 IF UPPER(b) = 'ARTIST' THEN
-        SELECT b.position,a.name,e.name AS artist,a.length 
+SELECT a.id,a.name,a.length,GROUP_CONCAT(e.name) artist,b.position 
 FROM song a
 INNER JOIN songplaylist b ON a.id = b.idsong
 INNER JOIN playlist c ON c.id = b.idplaylist
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 WHERE b.idplaylist = a
-ORDER BY e.name ASC;
+GROUP BY a.id
+ORDER BY e.name ASC
+LIMIT startpos,endpos;
 END IF;
 
 IF UPPER(b) = 'NAME' THEN
-        SELECT b.position,a.name,e.name AS artist,a.length 
+SELECT a.id,a.name,a.length,GROUP_CONCAT(e.name) artist,b.position 
 FROM song a
 INNER JOIN songplaylist b ON a.id = b.idsong
 INNER JOIN playlist c ON c.id = b.idplaylist
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 WHERE b.idplaylist = a
-ORDER BY a.name ASC;
+GROUP BY a.id
+ORDER BY a.name ASC
+LIMIT startpos,endpos;
     END IF;
 
 END$$
@@ -4528,6 +4550,47 @@ INSERT INTO `artist` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `logplaylist`
+--
+
+CREATE TABLE `logplaylist` (
+  `ID` int(5) UNSIGNED NOT NULL,
+  `updated_table` varchar(50) DEFAULT NULL,
+  `action` varchar(10) DEFAULT NULL,
+  `old_item` varchar(50) DEFAULT NULL,
+  `new_item` varchar(50) DEFAULT NULL,
+  `last_updated_date` datetime DEFAULT NULL,
+  `last_updated_by` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `logplaylist`
+--
+
+INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_item`, `last_updated_date`, `last_updated_by`) VALUES
+(5, 'songplaylist', 'insert', NULL, 'idsong: 3, idplaylist: 111', '2020-05-31 13:03:25', 'root@localhost'),
+(6, 'songplaylist', 'delete', NULL, 'idsong: 3, idplaylist: 111', '2020-05-31 13:04:47', 'root@localhost'),
+(7, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 5', '2020-05-31 13:07:35', 'root@localhost'),
+(8, 'userplaylist', 'delete', NULL, 'iduser: 2, idplaylist: 5', '2020-05-31 13:08:37', 'root@localhost'),
+(9, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 5', '2020-05-31 13:20:49', 'root@localhost'),
+(10, 'songplaylist', 'delete', NULL, 'idsong: 29, idplaylist: 2', '2020-06-03 14:35:06', 'root@localhost'),
+(11, 'songplaylist', 'insert', NULL, 'idsong: 99, idplaylist: 1', '2020-06-03 15:49:52', 'root@localhost'),
+(12, 'songplaylist', 'insert', NULL, 'idsong: 199, idplaylist: 1', '2020-06-03 15:49:59', 'root@localhost'),
+(13, 'songplaylist', 'delete', NULL, 'idsong: 199, idplaylist: 1', '2020-06-03 16:08:29', 'root@localhost'),
+(14, 'songplaylist', 'delete', NULL, 'idsong: 55, idplaylist: 1', '2020-06-03 18:33:30', 'root@localhost'),
+(15, 'songplaylist', 'delete', NULL, 'idsong: 99, idplaylist: 1', '2020-06-03 18:33:58', 'root@localhost'),
+(16, 'songplaylist', 'insert', NULL, 'idsong: 123, idplaylist: 1', '2020-06-03 18:36:37', 'root@localhost'),
+(17, 'songplaylist', 'insert', NULL, 'idsong: 222, idplaylist: 1', '2020-06-03 18:36:37', 'root@localhost'),
+(18, 'songplaylist', 'insert', NULL, 'idsong: 333, idplaylist: 1', '2020-06-03 18:36:37', 'root@localhost'),
+(19, 'songplaylist', 'insert', NULL, 'idsong: 444, idplaylist: 1', '2020-06-03 18:36:37', 'root@localhost'),
+(20, 'songplaylist', 'delete', NULL, 'idsong: 444, idplaylist: 1', '2020-06-03 18:36:49', 'root@localhost'),
+(21, 'songplaylist', 'delete', NULL, 'idsong: 333, idplaylist: 1', '2020-06-03 18:37:23', 'root@localhost'),
+(22, 'songplaylist', 'insert', NULL, 'idsong: 555, idplaylist: 1', '2020-06-14 11:14:11', 'root@localhost'),
+(23, 'songplaylist', 'delete', 'idsong: 222, idplaylist: 1', NULL, '2020-06-17 13:01:44', 'root@');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `playlist`
 --
 
@@ -4543,6 +4606,7 @@ CREATE TABLE `playlist` (
 INSERT INTO `playlist` (`id`, `name`) VALUES
 (1, 'AAAPlaylist'),
 (2, 'TTT'),
+(5, 'TEMP'),
 (11, 'TEST'),
 (111, 'TEST');
 
@@ -24878,8 +24942,6 @@ CREATE TABLE `songplaylist` (
 
 INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (1, 1, 1),
-(1, 111, 1),
-(2, 111, 1),
 (3, 2, 5),
 (5, 1, 4),
 (6, 2, 3),
@@ -24887,8 +24949,38 @@ INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (11, 2, 5),
 (12, 2, 4),
 (19, 2, 5),
-(29, 2, 6),
-(55, 1, 4);
+(123, 1, 2),
+(555, 1, NULL);
+
+--
+-- Triggers `songplaylist`
+--
+DELIMITER $$
+CREATE TRIGGER `utrig_spl_delete` AFTER DELETE ON `songplaylist` FOR EACH ROW INSERT INTO logplaylist (
+
+updated_table,
+action,
+old_item,
+new_item,
+last_updated_date,
+last_updated_by) 
+
+VALUES
+('songplaylist',
+'delete',
+CONCAT('idsong: ',CAST(OLD.idsong AS CHAR),', idplaylist: ',CAST(OLD.idplaylist AS char)),
+NULL,
+sysdate(),
+USER()
+)
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `utrig_spl_insert` AFTER INSERT ON `songplaylist` FOR EACH ROW INSERT INTO logplaylist (updated_table,action,old_item,new_item,last_updated_date,last_updated_by) 
+VALUES
+('songplaylist','insert',NULL,CONCAT('idsong: ',CAST(NEW.idsong AS CHAR),', idplaylist: ',CAST(NEW.idplaylist AS char)),sysdate(),USER())
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -24910,7 +25002,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `username`, `password`) VALUES
 (1, 'AAA', 'AAA', 'AAA', 'cb1ad2119d8fafb69566510ee712661f9f14b83385006ef92aec47f523a38358'),
-(2, 'BBB', 'BBB', 'BBB', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273');
+(2, 'BBB', 'BBB', 'BBB', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273'),
+(3, 'FFF', 'FFF', 'FFFFF', '25fc92a14a79502fe359ec1416bf80d711f0ae507f2723441e444e05b93e3d58');
 
 -- --------------------------------------------------------
 
@@ -24928,7 +25021,41 @@ CREATE TABLE `userplaylist` (
 --
 
 INSERT INTO `userplaylist` (`iduser`, `idplaylist`) VALUES
-(1, 1);
+(1, 1),
+(1, 11),
+(1, 111),
+(2, 2),
+(2, 5);
+
+--
+-- Triggers `userplaylist`
+--
+DELIMITER $$
+CREATE TRIGGER `utrig_upl_delete` AFTER DELETE ON `userplaylist` FOR EACH ROW INSERT INTO logplaylist (
+updated_table,
+action,
+old_item,
+new_item,
+last_updated_date,
+last_updated_by
+) 
+VALUES
+(
+'userplaylist',
+'delete',
+CONCAT('iduser: ',CAST(OLD.iduser AS CHAR),', idplaylist: ',CAST(OLD.idplaylist AS char)),
+NULL,
+sysdate(),
+USER()
+)
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `utrig_upl_insert` AFTER INSERT ON `userplaylist` FOR EACH ROW INSERT INTO logplaylist (updated_table,action,old_item,new_item,last_updated_date,last_updated_by) 
+VALUES
+('userplaylist','insert',NULL,CONCAT('iduser: ',CAST(NEW.iduser AS CHAR),', idplaylist: ',CAST(NEW.idplaylist AS char)),sysdate(),USER())
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -24939,6 +25066,12 @@ INSERT INTO `userplaylist` (`iduser`, `idplaylist`) VALUES
 --
 ALTER TABLE `artist`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `logplaylist`
+--
+ALTER TABLE `logplaylist`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `playlist`
@@ -24990,6 +25123,12 @@ ALTER TABLE `artist`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4413;
 
 --
+-- AUTO_INCREMENT for table `logplaylist`
+--
+ALTER TABLE `logplaylist`
+  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
 -- AUTO_INCREMENT for table `playlist`
 --
 ALTER TABLE `playlist`
@@ -25005,7 +25144,7 @@ ALTER TABLE `song`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

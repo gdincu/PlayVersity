@@ -1,2 +1,2 @@
 
-<div>footer: ©2020<div>
+  <div class="container">PlayVersity ©2020</div>
