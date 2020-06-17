@@ -1,7 +1,16 @@
 <!--Song List based on playlist-->
 <!--Location: SongPage-->
 
-<h2><?php print isset($_GET['playlistid']) ? "Playlist " . $_GET['playlistid'] . ": ": "Song list:" ?></h2>
+<!-- Returns the playlist name rather than displaying its id -->
+<h2><?php 
+    $connection = mysqli_connect("localhost","root","","playversity");
+    $tempId = (int)$_GET['playlistid'];
+    $sqlTemp = "SELECT name FROM playlist WHERE id = $tempId";
+    $resultCount = $connection->query($sqlTemp);
+    $rowCount = $resultCount->fetch_assoc();
+    print isset($_GET['playlistid']) ? "Playlist: " . $rowCount["name"] : "Song list:" 
+    ?>
+</h2>
 <br>
 <label for="cars">Order by:</label>
 <select name="orderby" id="orderby" onchange="location = this.value;">
