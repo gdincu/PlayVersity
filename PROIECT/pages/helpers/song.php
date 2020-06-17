@@ -12,7 +12,7 @@ if(isset($_GET['orderby']))
 $orderby = "'".htmlentities($_GET['orderby'],ENT_HTML5,'UTF-8',TRUE)."'";
 
 //Setting the start page to divide result sets containing multiple lines into multiple pages
-$results_per_page = 5;
+$results_per_page = 7;
 if (isset($_GET["pageno"]) && is_numeric($_GET["pageno"])) { $page  = $_GET["pageno"]; } else { $page=1; };
 $start_from = ($page-1) * $results_per_page;
 

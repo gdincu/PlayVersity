@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2020 at 04:59 PM
+-- Generation Time: Jun 17, 2020 at 07:46 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -31,6 +31,16 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`` PROCEDURE `usp_changeShareStatus` (IN `playlistID` INT(5))  BEGIN
+
+IF (SELECT shared FROM playlist WHERE id = playlistID) > 0 THEN
+UPDATE playlist SET shared = 0 WHERE id = playlistID;
+ELSE
+UPDATE playlist SET shared = 1 WHERE id = playlistID;
+END IF;
+
+END$$
+
 CREATE DEFINER=`` PROCEDURE `usp_delPlaylistFromUser` (IN `playlistID` INT(5), IN `userID` VARCHAR(50))  BEGIN
 DELETE FROM userplaylist WHERE iduser = (SELECT id FROM user WHERE username = userID) AND idplaylist = playlistID;
 END$$
@@ -85,8 +95,8 @@ END IF;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylistBasedOnUser` (`a` VARCHAR(50))  BEGIN
-SELECT a.id,a.name 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylistBasedOnUser` (IN `a` VARCHAR(50))  BEGIN
+SELECT a.id,a.name,a.shared 
 FROM playlist a, userplaylist b,user c
 WHERE a.id = b.idplaylist
 AND c.id = b.iduser
@@ -4625,7 +4635,15 @@ INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_ite
 (30, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 11', '2020-06-17 16:57:32', 'root@'),
 (31, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 111', '2020-06-17 16:57:32', 'root@'),
 (32, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 5', NULL, '2020-06-17 16:58:34', 'root@'),
-(33, 'songplaylist', 'delete', 'idsong: 123, idplaylist: 1', NULL, '2020-06-17 16:59:48', 'root@');
+(33, 'songplaylist', 'delete', 'idsong: 123, idplaylist: 1', NULL, '2020-06-17 16:59:48', 'root@'),
+(34, 'songplaylist', 'insert', NULL, 'idsong: 19, idplaylist: 2', '2020-06-17 18:06:18', 'root@'),
+(35, 'songplaylist', 'insert', NULL, 'idsong: 29, idplaylist: 2', '2020-06-17 18:06:18', 'root@'),
+(36, 'songplaylist', 'insert', NULL, 'idsong: 39, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
+(37, 'songplaylist', 'insert', NULL, 'idsong: 49, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
+(38, 'songplaylist', 'insert', NULL, 'idsong: 59, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
+(39, 'songplaylist', 'insert', NULL, 'idsong: 79, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
+(40, 'songplaylist', 'insert', NULL, 'idsong: 69, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
+(41, 'songplaylist', 'insert', NULL, 'idsong: 89, idplaylist: 2', '2020-06-17 18:06:38', 'root@');
 
 -- --------------------------------------------------------
 
@@ -4635,19 +4653,20 @@ INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_ite
 
 CREATE TABLE `playlist` (
   `id` int(5) UNSIGNED NOT NULL,
-  `name` varchar(50) CHARACTER SET utf8 NOT NULL
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `shared` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_romanian_ci;
 
 --
 -- Dumping data for table `playlist`
 --
 
-INSERT INTO `playlist` (`id`, `name`) VALUES
-(1, 'AAAPlaylist'),
-(2, 'TTT'),
-(5, 'TEMP'),
-(11, 'TEST'),
-(111, 'TEST');
+INSERT INTO `playlist` (`id`, `name`, `shared`) VALUES
+(1, 'AAAPlaylist', 0),
+(2, 'TTT', 1),
+(5, 'TEMP', 1),
+(11, 'TEST', 1),
+(111, 'TEST', 1);
 
 -- --------------------------------------------------------
 
@@ -24981,12 +25000,20 @@ CREATE TABLE `songplaylist` (
 
 INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (1, 1, 1),
-(3, 2, 5),
+(3, 2, 1),
 (5, 1, 4),
 (6, 2, 3),
 (11, 1, 3),
 (11, 2, 5),
 (12, 2, 4),
+(19, 2, 5),
+(29, 2, 6),
+(39, 2, 7),
+(49, 2, 8),
+(59, 2, 9),
+(69, 2, 11),
+(79, 2, 10),
+(89, 2, 12),
 (555, 1, NULL);
 
 --
@@ -25164,7 +25191,7 @@ ALTER TABLE `artist`
 -- AUTO_INCREMENT for table `logplaylist`
 --
 ALTER TABLE `logplaylist`
-  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `playlist`

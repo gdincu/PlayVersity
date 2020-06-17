@@ -29,10 +29,19 @@ class UserPlaylistsPage extends BasePage {
             echo "<tr>";
             $tempId = $row["id"];
             echo "<td><a href='index.php?page=song&playlistid=$tempId'>" . $row["name"] . "</td>";
-            echo "<td>
-            <button type='submit' class='btn btn-sm btn-info' name='share'>
-                    Share</button>
-                  </td>";
+            
+            //Shared checkbox
+            //TO BE REVIEWED - would need a double refresh of the current page
+            echo '<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">';   
+            echo '<td><input type="checkbox" hidden name="checkedValue" checked value="'. (int)$row['id'] . '">';
+            echo ($row["shared"] == "0") ? 
+            '<button type="submit" class="btn btn-sm btn-info" name="shareItem">Share</button>' : 
+            '<button type="submit" class="btn btn-sm btn-info" name="shareItem">Unshare</button>';
+            echo '</td></form>';
+
+            
+
+            //Delete button
             echo '<form method="post" action="">';   
             echo '<td><button type="submit" class="btn btn-sm btn-danger" name="deleteItem" value="'. (int)$row['id'] . '">Delete</button></td></form>';
             echo "</tr>";
@@ -47,6 +56,16 @@ class UserPlaylistsPage extends BasePage {
             $con2 = mysqli_connect("localhost","root","","playversity");
             mysqli_query($con2,$sqlTemp);
             }
+
+            //Update the shared value when checked/ unchecked
+            if(isset($_POST['shareItem']))
+            {
+            $toDel = $_POST['checkedValue']; //playlistid
+            $sqlTemp = "CALL usp_changeShareStatus($toDel);";
+            $con2 = mysqli_connect("localhost","root","","playversity");
+            mysqli_query($con2,$sqlTemp);
+            }
+            
     }
     
 }
