@@ -13,7 +13,7 @@ $orderby = "'".htmlentities($_GET['orderby'],ENT_HTML5,'UTF-8',TRUE)."'";
 
 //Setting the start page to divide result sets containing multiple lines into multiple pages
 $results_per_page = 5;
-if (isset($_GET["pageno"]) && is_numeric($_GET["pageno"])) { $page  = $_GET["pageno"]; } else { $page=1; }; 
+if (isset($_GET["pageno"]) && is_numeric($_GET["pageno"])) { $page  = $_GET["pageno"]; } else { $page=1; };
 $start_from = ($page-1) * $results_per_page;
 
 //Find the total nr of records and works out the total nr of pages
@@ -21,7 +21,7 @@ $sqlCountAll = "SELECT COUNT(id) AS total FROM song";
 $sqlCount = "SELECT COUNT(*) AS total FROM songplaylist WHERE idplaylist = $tempPlaylist";
 if(isset($_GET['allsongs']))
 $resultCount = $connection->query($sqlCountAll);
-else 
+else
 $resultCount = $connection->query($sqlCount);
 $rowCount = $resultCount->fetch_assoc();
 $total_pages = ceil($rowCount["total"] / $results_per_page);
@@ -53,6 +53,9 @@ else    {
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
         echo "<td>" . $row["length"] . "</td>";
+				echo "<form method='post' action=''>";
+				echo '<td><input class="btn btn-sm btn-danger" type="submit" name="deleteItem" value="'. (int)$row['id'] . '"/></td></form>';
+
 		echo "</tr>";
 		 }
 		 echo "</table>";
@@ -61,28 +64,35 @@ else    {
 	//Show the all other pages as a dropdown list
 	echo 'Page: <select name="forma" onchange="location = this.value;">';
 	for ($c = 1; $c<=$total_pages; $c++) {
-		
+
 	if(!isset($_GET["pageno"]))
-		echo "<option value='" . $_SERVER["REQUEST_URI"] . "&pageno=".$c."'>".$c."</option> ";  
+		echo "<option value='" . $_SERVER["REQUEST_URI"] . "&pageno=".$c."'>".$c."</option> ";
 	else {
 		//Un-setting the pageno tag from the URI used to generate option tags
 		$string = removeParam($_SERVER["REQUEST_URI"],'pageno');
 		//Setting the default value for the option tag based on the URI
 		if((int)$c == (int)($_GET["pageno"]))
-		echo "<option selected value='" . $string . "&pageno=".$c."'>".$c."</option> ";  
+		echo "<option selected value='" . $string . "&pageno=".$c."'>".$c."</option> ";
 		else
-		echo "<option value='" . $string . "&pageno=".$c."'>".$c."</option> ";  
+		echo "<option value='" . $string . "&pageno=".$c."'>".$c."</option> ";
 		}
 	}
 
 	echo '</select>';
-	
+
 
 	function removeParam($url, $param) {
 		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*$/', '', $url);
 		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*&/', '$1', $url);
 		return $url;
 	}
+
+	//Deleting items
+	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
+		{
+	$toDel = (int)$_POST['deleteItem'];
+	$sqlTemp = "CALL usp_delSongFromPlaylist($tempPlaylist,$toDel);";
+	$con2 = mysqli_connect("localhost","root","","playversity");
+	mysqli_query($con2,$sqlTemp);
+	}
 ?>
-
-
