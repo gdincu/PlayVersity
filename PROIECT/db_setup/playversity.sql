@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2020 at 01:09 PM
+-- Generation Time: Jun 17, 2020 at 03:43 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -31,6 +31,10 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`` PROCEDURE `usp_delPlaylistFromUser` (IN `playlistID` INT(5), IN `userID` VARCHAR(50))  BEGIN
+DELETE FROM userplaylist WHERE iduser = (SELECT id FROM user WHERE username = userID) AND idplaylist = playlistID;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_delSongFromPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
 DELETE FROM songplaylist WHERE idplaylist = a AND idsong = b;
 END$$
@@ -4586,7 +4590,8 @@ INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_ite
 (20, 'songplaylist', 'delete', NULL, 'idsong: 444, idplaylist: 1', '2020-06-03 18:36:49', 'root@localhost'),
 (21, 'songplaylist', 'delete', NULL, 'idsong: 333, idplaylist: 1', '2020-06-03 18:37:23', 'root@localhost'),
 (22, 'songplaylist', 'insert', NULL, 'idsong: 555, idplaylist: 1', '2020-06-14 11:14:11', 'root@localhost'),
-(23, 'songplaylist', 'delete', 'idsong: 222, idplaylist: 1', NULL, '2020-06-17 13:01:44', 'root@');
+(23, 'songplaylist', 'delete', 'idsong: 222, idplaylist: 1', NULL, '2020-06-17 13:01:44', 'root@'),
+(24, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 111', NULL, '2020-06-17 16:43:15', 'root@');
 
 -- --------------------------------------------------------
 
@@ -25023,7 +25028,6 @@ CREATE TABLE `userplaylist` (
 INSERT INTO `userplaylist` (`iduser`, `idplaylist`) VALUES
 (1, 1),
 (1, 11),
-(1, 111),
 (2, 2),
 (2, 5);
 
@@ -25126,7 +25130,7 @@ ALTER TABLE `artist`
 -- AUTO_INCREMENT for table `logplaylist`
 --
 ALTER TABLE `logplaylist`
-  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `playlist`
