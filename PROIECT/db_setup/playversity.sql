@@ -56,7 +56,7 @@ ORDER BY d.idartist ASC
 LIMIT startpos,endpos;
 END$$
 
-CREATE DEFINER=`` PROCEDURE `usp_returnPlaylistBasedOnUser` (`a` VARCHAR(50))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylistBasedOnUser` (`a` VARCHAR(50))  BEGIN
 SELECT a.id,a.name 
 FROM playlist a, userplaylist b,user c
 WHERE a.id = b.idplaylist
