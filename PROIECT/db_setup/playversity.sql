@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2020 at 10:19 AM
+-- Generation Time: Jun 17, 2020 at 01:09 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -47,7 +47,7 @@ INSERT INTO songplaylist VALUES (a,b,@tempCount);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` (IN `startpos` INT, IN `endpos` INT)  BEGIN
-SELECT d.idsong,GROUP_CONCAT(e.name) artist,a.name,a.length 
+SELECT d.idsong id,GROUP_CONCAT(e.name) artist,a.name,a.length 
 FROM song a
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
@@ -4585,7 +4585,8 @@ INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_ite
 (19, 'songplaylist', 'insert', NULL, 'idsong: 444, idplaylist: 1', '2020-06-03 18:36:37', 'root@localhost'),
 (20, 'songplaylist', 'delete', NULL, 'idsong: 444, idplaylist: 1', '2020-06-03 18:36:49', 'root@localhost'),
 (21, 'songplaylist', 'delete', NULL, 'idsong: 333, idplaylist: 1', '2020-06-03 18:37:23', 'root@localhost'),
-(22, 'songplaylist', 'insert', NULL, 'idsong: 555, idplaylist: 1', '2020-06-14 11:14:11', 'root@localhost');
+(22, 'songplaylist', 'insert', NULL, 'idsong: 555, idplaylist: 1', '2020-06-14 11:14:11', 'root@localhost'),
+(23, 'songplaylist', 'delete', 'idsong: 222, idplaylist: 1', NULL, '2020-06-17 13:01:44', 'root@');
 
 -- --------------------------------------------------------
 
@@ -24949,7 +24950,6 @@ INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (12, 2, 4),
 (19, 2, 5),
 (123, 1, 2),
-(222, 1, 5),
 (555, 1, NULL);
 
 --
@@ -25126,7 +25126,7 @@ ALTER TABLE `artist`
 -- AUTO_INCREMENT for table `logplaylist`
 --
 ALTER TABLE `logplaylist`
-  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `playlist`
