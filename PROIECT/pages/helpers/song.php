@@ -94,5 +94,6 @@ else    {
 	$sqlTemp = "CALL usp_delSongFromPlaylist($tempPlaylist,$toDel);";
 	$con2 = mysqli_connect("localhost","root","","playversity");
 	mysqli_query($con2,$sqlTemp);
+	header("Refresh:0");
 	}
 ?>
