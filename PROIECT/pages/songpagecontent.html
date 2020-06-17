@@ -4,15 +4,16 @@
 <h2><?php print isset($_GET['playlistid']) ? "Playlist " . $_GET['playlistid'] . ": ": "Song list:" ?></h2>
 <br>
 <label for="cars">Order by:</label>
-<select name="orderby" id="orderby">
-    <option value="artist">Artist</option>
-    <option value="name">Song Name</option>
-  </select>
+<select name="orderby" id="orderby" onchange="location = this.value;">
+    <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'artist') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs" : "index.php?page=song&playlistid=" . $_GET["playlistid"]; ?> "></option>
+    <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'artist') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs&orderby=artist" : "index.php?page=song&playlistid=" . $_GET["playlistid"] ."&orderby=artist" ; ?> ">Artist</option>
+    <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'name') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs&orderby=name" : "index.php?page=song&playlistid=" . $_GET["playlistid"] ."&orderby=name" ; ?> ">Name</option>
+</select>
 <br>
 <table class="table">
 <tr>
 <th>Artist</th>
 <th>Name</th>
 <th>Length</th>
-<th>Delete</th>
+<?php print isset($_GET['playlistid']) ? "<th></th>" : "" ?>
 </tr>

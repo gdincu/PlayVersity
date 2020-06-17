@@ -33,12 +33,20 @@ class UserPlaylistsPage extends BasePage {
             <button type='submit' class='btn btn-sm btn-info' name='share'>
                     Share</button>
                   </td>";
-            echo "<td>
-                    <button type='submit' class='btn btn-sm btn-danger' name='delete'>
-                    Delete</button>
-                  </td>";
+            echo '<form method="post" action="">';   
+            echo '<td><button type="submit" class="btn btn-sm btn-danger" name="deleteItem" value="'. (int)$row['id'] . '">Delete</button></td></form>';
             echo "</tr>";
              }
+
+            //Deleting items
+        	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
+            {
+            $toDel = (int)$_POST['deleteItem'];
+            $userDel = "'" . $_SESSION["user"] . "'";
+            $sqlTemp = "CALL usp_delPlaylistFromUser($toDel,$userDel);";
+            $con2 = mysqli_connect("localhost","root","","playversity");
+            mysqli_query($con2,$sqlTemp);
+            }
     }
     
 }
