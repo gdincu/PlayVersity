@@ -3,21 +3,29 @@
 
 <!-- Returns the playlist name rather than displaying its id -->
 <h2><?php 
+    if(isset($_GET['playlistid'])) {
+    
     $connection = mysqli_connect("localhost","root","","playversity");
     $tempId = (int)$_GET['playlistid'];
     $sqlTemp = "SELECT name FROM playlist WHERE id = $tempId";
     $resultCount = $connection->query($sqlTemp);
     $rowCount = $resultCount->fetch_assoc();
-    print isset($_GET['playlistid']) ? "Playlist: " . $rowCount["name"] : "Song list:" 
+    print "Playlist: " . $rowCount["name"];
+}
+else 
+print "Song list:";
     ?>
 </h2>
 <br>
-<label for="cars">Order by:</label>
+
+<!-- Order by -->
+<label for="orderby">Order by:</label>
 <select name="orderby" id="orderby" onchange="location = this.value;">
     <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'artist') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs" : "index.php?page=song&playlistid=" . $_GET["playlistid"]; ?> "></option>
     <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'artist') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs&orderby=artist" : "index.php?page=song&playlistid=" . $_GET["playlistid"] ."&orderby=artist" ; ?> ">Artist</option>
     <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'name') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs&orderby=name" : "index.php?page=song&playlistid=" . $_GET["playlistid"] ."&orderby=name" ; ?> ">Name</option>
 </select>
+
 <br>
 <table class="table">
 <tr>
