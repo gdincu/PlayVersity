@@ -38,16 +38,6 @@ $sql = "CALL usp_returnAllSongs($start_from,$results_per_page);";
 //Exits song.php if the URI doesn't contain the expected variables
 else exit();
 
-$sql = "SELECT b.idsong,b.position,a.name,e.name artist,a.length 
-FROM song a
-INNER JOIN songplaylist b ON a.id = b.idsong
-INNER JOIN playlist c ON c.id = b.idplaylist
-INNER JOIN songartist d ON a.id = d.idsong
-INNER JOIN artist e ON d.idartist = e.id
-WHERE b.idplaylist = 1
-ORDER BY b.position ASC;";
-
-
 //Runs the SQL query
 $result = $connection->query($sql);
 
