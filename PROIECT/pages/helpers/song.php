@@ -52,9 +52,11 @@ else    {
 		echo "<tr>";
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
-        echo "<td>" . $row["length"] . "</td>";
+		echo "<td>" . $row["length"] . "</td>";
+		if(isset($_GET["playlistid"])) {
 				echo "<form method='post' action=''>";
 				echo '<td><input class="btn btn-sm btn-danger" type="submit" name="deleteItem" value="'. (int)$row['id'] . '"/></td></form>';
+			}
 
 		echo "</tr>";
 		 }
