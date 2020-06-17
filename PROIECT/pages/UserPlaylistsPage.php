@@ -29,6 +29,14 @@ class UserPlaylistsPage extends BasePage {
             echo "<tr>";
             $tempId = $row["id"];
             echo "<td><a href='index.php?page=song&playlistid=$tempId'>" . $row["name"] . "</td>";
+            echo "<td>
+            <button type='submit' class='btn btn-sm btn-info' name='share'>
+                    Share</button>
+                  </td>";
+            echo "<td>
+                    <button type='submit' class='btn btn-sm btn-danger' name='delete'>
+                    Delete</button>
+                  </td>";
             echo "</tr>";
              }
     }
