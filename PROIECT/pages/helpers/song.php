@@ -33,7 +33,7 @@ $sql = "CALL usp_returnSongs($tempPlaylist,$orderby,$start_from,$results_per_pag
 
 //Checks if the URI includes "index.php" and allsongs
 else if (strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['allsongs']))
-$sql = "CALL usp_returnAllSongs($start_from,$results_per_page);";
+$sql = "CALL usp_returnAllSongs($start_from,$results_per_page,$orderby);";
 
 //Exits song.php if the URI doesn't contain the expected variables
 else exit();

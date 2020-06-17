@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2020 at 04:03 PM
+-- Generation Time: Jun 17, 2020 at 04:59 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -50,14 +50,39 @@ SET @tempCount = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = 
 INSERT INTO songplaylist VALUES (a,b,@tempCount);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` (IN `startpos` INT, IN `endpos` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnAllSongs` (IN `startpos` INT, IN `endpos` INT, IN `tempOrder` VARCHAR(10))  BEGIN
+
+IF tempOrder IS NULL THEN 
 SELECT d.idsong id,GROUP_CONCAT(e.name) artist,a.name,a.length 
 FROM song a
 INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 GROUP BY d.idsong
-ORDER BY d.idartist ASC
+ORDER BY tempOrder ASC
 LIMIT startpos,endpos;
+END IF;
+
+
+IF UPPER(tempOrder) = 'ARTIST' THEN
+SELECT d.idsong id,GROUP_CONCAT(e.name) artist,a.name,a.length 
+FROM song a
+INNER JOIN songartist d ON a.id = d.idsong
+INNER JOIN artist e ON d.idartist = e.id
+GROUP BY d.idsong
+ORDER BY artist ASC
+LIMIT startpos,endpos;
+END IF;
+
+IF UPPER(tempOrder) = 'NAME' THEN
+SELECT d.idsong id,GROUP_CONCAT(e.name) artist,a.name,a.length 
+FROM song a
+INNER JOIN songartist d ON a.id = d.idsong
+INNER JOIN artist e ON d.idartist = e.id
+GROUP BY d.idsong
+ORDER BY a.name ASC
+LIMIT startpos,endpos;
+END IF;
+
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_returnPlaylistBasedOnUser` (`a` VARCHAR(50))  BEGIN
