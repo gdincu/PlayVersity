@@ -23,10 +23,10 @@ class UserPlaylistsPage extends BasePage {
         $result = $connection->query("CALL usp_returnPlaylistBasedOnUser($userId);");
     
         foreach($result as $rowResult) {
-            var_dump($rowResult);
+            //var_dump($rowResult);
             $out = '';
             $out .= '<tr>';
-            $out .= '<td>'. $rowResult['name'] .'</td>';
+            $out .= '<td><a href="./index.php?page=playlistedit&playlistid='. $rowResult['id'] .'">'. $rowResult['name'] .'</a></td>';
             $out .= '</tr>';
             echo $out;
         }

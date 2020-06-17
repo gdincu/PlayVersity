@@ -13,7 +13,7 @@ $orderby = "'".htmlentities($_GET['orderby'],ENT_HTML5,'UTF-8',TRUE)."'";
 
 //Setting the start page to divide result sets containing multiple lines into multiple pages
 $results_per_page = 20;
-if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; }; 
+if (isset($_GET["pagenr"])) { $page  = $_GET["pagenr"]; } else { $page=1; }; 
 $start_from = ($page-1) * $results_per_page;
 
 //Find the total nr of records and works out the total nr of pages
@@ -22,11 +22,17 @@ $sqlCount = "SELECT COUNT(id) AS total FROM songplaylist WHERE idplaylist = $tem
 // if(isset($_GET['playlistid']))
 // $resultCount = $connection->query($sqlCount);
 // else $resultCount = $connection->query($sqlCountAll);
+global $connection;
 $resultCount = $connection->query($sqlCountAll);
 $rowCount = $resultCount->fetch_assoc();
 $total_pages = ceil($rowCount["total"] / $results_per_page);
 
 //Checks if the URI includes "index.php" and whether it contains a playlist id
+
+//TODO: check for parameter tampering eg:
+//    http://localhost/playversity/PROIECT/index.php?page=playlistedit&playlistid=2
+// when playist id 2 belongs to another user
+
 if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid']))
 //Calls the usp_returnSongs procedure and returns the artist, song name and song length based on the playlist id and orderby value
 $sql = "CALL usp_returnSongs($tempPlaylist,$orderby);";
@@ -42,12 +48,14 @@ else exit();
 //Runs the SQL query
 $result = $connection->query($sql);
 
-if($result->num_rows == 0)
+//TODO: find another way to check that a playlist does not exist because they can also be empty
+//if($result->num_rows == 0)
+//{
+//	echo "Invalid playlist id";
+//	exit();
+//}
+//else   
 {
-	echo "Invalid playlist id";
-	exit();
-}
-else    {
     echo "Song list:
 					<br><br>
 					<table class=\"table\">
@@ -65,11 +73,15 @@ else    {
 		echo "</tr>";
 		                        		}
 		echo "</table>";
-			}
+}
+
+
+// TODO:  check for pagenr duplication when selecting the page multiple times
+// Eg: http://localhost/playversity/PROIECT/index.php?page=playlistedit&playlistid=1&pagenr=16&pagenr=14
 
 	//Show the all other pages as a dropdown list
 	echo 'Page: <select name="forma" onchange="location = this.value;">';
 	for ($i=1; $i<=$total_pages; $i++)
-	echo "<option value='" . $_SERVER["REQUEST_URI"] . "&page=".$i."'>".$i."</option> ";  
+	echo "<option value='" . $_SERVER["REQUEST_URI"] . "&pagenr=".$i."'>".$i."</option> ";  
 	echo '</select>';
 ?>
