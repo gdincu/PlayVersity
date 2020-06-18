@@ -104,7 +104,7 @@ else    {
 			$connection = mysqli_connect("localhost","root","","playversity");
 			$resultCount = $connection->query($sqlTemp);
 			while($rowTemp = $resultCount->fetch_assoc())
-				echo '<option name=' . $rowTemp['id'] . ' value="' . $rowTemp['name'] . '">' . $rowTemp['name'] . '</option>';			
+				echo '<option name="addItem" value="' . $rowTemp['id'] . '">' . $rowTemp['name'] . '</option>';			
 
 			echo '</td>';
 

@@ -37,7 +37,7 @@ class UserPlaylistsPage extends BasePage {
             echo ($row["shared"] == "0") ? 
             '<button type="submit" class="btn btn-sm btn-info" name="shareItem">Share</button>' 
             : 
-            '<button type="submit" class="btn btn-sm btn-info" name="shareItem">Unshare</button>';
+            '<button type="submit" class="btn btn-sm btn-info" name="shareItem">Stop Sharing</button>';
             echo '</td></form>';
 
             //Delete button
