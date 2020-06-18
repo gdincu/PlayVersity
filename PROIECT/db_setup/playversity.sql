@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2020 at 09:24 AM
+-- Generation Time: Jun 18, 2020 at 02:42 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -39,6 +39,13 @@ ELSE
 UPDATE playlist SET shared = 1 WHERE id = playlistID;
 END IF;
 
+END$$
+
+CREATE DEFINER=`` PROCEDURE `usp_createPlaylist` (IN `playlistName` VARCHAR(50), IN `userTemp` VARCHAR(50))  BEGIN
+INSERT INTO playlist (name,shared) VALUES (playlistName,0);
+SET @c1 = (SELECT id FROM user WHERE username = userTemp);
+SET @c2 = (SELECT MAX(id) FROM playlist);
+INSERT INTO userplaylist (iduser,idplaylist) VALUES(@c1,@c2);
 END$$
 
 CREATE DEFINER=`` PROCEDURE `usp_delPlaylistFromUser` (IN `playlistID` INT(5), IN `userID` VARCHAR(50))  BEGIN
@@ -4670,7 +4677,37 @@ INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_ite
 (65, 'songplaylist', 'delete', 'idsong: 59, idplaylist: 2', NULL, '2020-06-18 10:21:27', 'root@'),
 (66, 'songplaylist', 'delete', 'idsong: 85, idplaylist: 2', NULL, '2020-06-18 10:21:28', 'root@'),
 (67, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 11', NULL, '2020-06-18 10:23:11', 'root@'),
-(68, 'songplaylist', 'delete', 'idsong: 5, idplaylist: 1', NULL, '2020-06-18 10:23:23', 'root@');
+(68, 'songplaylist', 'delete', 'idsong: 5, idplaylist: 1', NULL, '2020-06-18 10:23:23', 'root@'),
+(69, 'songplaylist', 'insert', NULL, 'idsong: 66, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(70, 'songplaylist', 'insert', NULL, 'idsong: 62, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(71, 'songplaylist', 'insert', NULL, 'idsong: 63, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(72, 'songplaylist', 'insert', NULL, 'idsong: 61, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(73, 'songplaylist', 'insert', NULL, 'idsong: 65, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(74, 'songplaylist', 'insert', NULL, 'idsong: 64, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(75, 'songplaylist', 'insert', NULL, 'idsong: 67, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(76, 'songplaylist', 'insert', NULL, 'idsong: 68, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(77, 'songplaylist', 'insert', NULL, 'idsong: 69, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(78, 'songplaylist', 'insert', NULL, 'idsong: 76, idplaylist: 1', '2020-06-18 10:28:32', 'root@'),
+(79, 'songplaylist', 'insert', NULL, 'idsong: 71, idplaylist: 1', '2020-06-18 10:28:33', 'root@'),
+(80, 'songplaylist', 'insert', NULL, 'idsong: 72, idplaylist: 1', '2020-06-18 10:28:33', 'root@'),
+(81, 'songplaylist', 'insert', NULL, 'idsong: 73, idplaylist: 1', '2020-06-18 10:28:33', 'root@'),
+(82, 'songplaylist', 'insert', NULL, 'idsong: 74, idplaylist: 1', '2020-06-18 10:28:33', 'root@'),
+(83, 'songplaylist', 'delete', 'idsong: 64, idplaylist: 1', NULL, '2020-06-18 10:28:40', 'root@'),
+(84, 'songplaylist', 'delete', 'idsong: 76, idplaylist: 1', NULL, '2020-06-18 10:28:44', 'root@'),
+(85, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 117', '2020-06-18 10:34:06', 'root@'),
+(86, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 116', '2020-06-18 10:34:06', 'root@'),
+(87, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 5', '2020-06-18 10:34:06', 'root@'),
+(88, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 1', '2020-06-18 10:34:06', 'root@'),
+(89, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 111', '2020-06-18 10:34:06', 'root@'),
+(90, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 112', '2020-06-18 10:34:06', 'root@'),
+(91, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 113', '2020-06-18 10:34:06', 'root@'),
+(92, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 114', '2020-06-18 10:34:06', 'root@'),
+(93, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 115', '2020-06-18 10:34:06', 'root@'),
+(94, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 116', '2020-06-18 10:34:06', 'root@'),
+(95, 'userplaylist', 'insert', NULL, 'iduser: 2, idplaylist: 117', '2020-06-18 10:34:06', 'root@'),
+(96, 'userplaylist', 'delete', 'iduser: 2, idplaylist: 117', NULL, '2020-06-18 10:35:32', 'root@'),
+(97, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 121', '2020-06-18 15:41:50', 'root@'),
+(98, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 122', '2020-06-18 15:42:14', 'root@');
 
 -- --------------------------------------------------------
 
@@ -4689,11 +4726,21 @@ CREATE TABLE `playlist` (
 --
 
 INSERT INTO `playlist` (`id`, `name`, `shared`) VALUES
-(1, 'AAAPlaylist', 1),
-(2, 'TTT', 0),
+(1, 'AAAPlaylist', 0),
+(2, 'TTT', 1),
 (5, 'TEMP', 1),
 (11, 'TEST', 0),
-(111, 'TEST', 0);
+(111, 'TEST', 0),
+(112, 'BBB', 1),
+(113, 'CCC', 1),
+(114, 'DDD', 1),
+(115, 'EEE', 1),
+(116, 'FFFB', 1),
+(117, 'TTT', 1),
+(119, 'VERIFICA', 0),
+(120, 'ABRA', 0),
+(121, 'BROS', 0),
+(122, 'CRIS', 0);
 
 -- --------------------------------------------------------
 
@@ -25033,7 +25080,19 @@ INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (19, 2, 5),
 (55, 2, 5),
 (60, 2, 10),
+(61, 1, 6),
+(62, 1, 4),
+(63, 1, 5),
+(65, 1, 7),
+(66, 1, 3),
+(67, 1, 9),
 (67, 2, 11),
+(68, 1, 10),
+(69, 1, 11),
+(71, 1, 13),
+(72, 1, 14),
+(73, 1, 15),
+(74, 1, 16),
 (95, 2, 13);
 
 --
@@ -25108,7 +25167,19 @@ CREATE TABLE `userplaylist` (
 INSERT INTO `userplaylist` (`iduser`, `idplaylist`) VALUES
 (1, 1),
 (1, 2),
-(2, 2);
+(1, 5),
+(1, 116),
+(1, 117),
+(1, 121),
+(1, 122),
+(2, 1),
+(2, 2),
+(2, 111),
+(2, 112),
+(2, 113),
+(2, 114),
+(2, 115),
+(2, 116);
 
 --
 -- Triggers `userplaylist`
@@ -25209,13 +25280,13 @@ ALTER TABLE `artist`
 -- AUTO_INCREMENT for table `logplaylist`
 --
 ALTER TABLE `logplaylist`
-  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- AUTO_INCREMENT for table `song`

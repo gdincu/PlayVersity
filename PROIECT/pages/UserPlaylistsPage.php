@@ -3,7 +3,6 @@ ob_start();
 require_once (__DIR__ . '/../templates/BasePage.php');
 require_once "helpers/session.php";
 
-
 class UserPlaylistsPage extends BasePage {
 
     private $sql;
@@ -36,17 +35,37 @@ class UserPlaylistsPage extends BasePage {
             echo '<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">';   
             echo '<td><input type="checkbox" hidden name="checkedValue" checked value="'. (int)$row['id'] . '">';
             echo ($row["shared"] == "0") ? 
-            '<button type="submit" class="btn btn-sm btn-info" name="shareItem">Share</button>' : 
+            '<button type="submit" class="btn btn-sm btn-info" name="shareItem">Share</button>' 
+            : 
             '<button type="submit" class="btn btn-sm btn-info" name="shareItem">Unshare</button>';
             echo '</td></form>';
-
-            
 
             //Delete button
             echo '<form method="post" action="">';   
             echo '<td><button type="submit" class="btn btn-sm btn-danger" name="deleteItem" value="'. (int)$row['id'] . '">Delete</button></td></form>';
             echo "</tr>";
-             }
+            }
+
+            //Adding a new playlist
+            echo '<form method="post" action="">';   
+            echo '<tr>
+            <td>
+            <div class="form-group">
+            <div class="form-row">
+
+            <div class="col">
+            <input class="form-control form-control-sm" type="text" placeholder="Name of your new playlist..." name="nameP1"></input>
+            </div>
+
+            <div class="col">
+            <button type="submit" class="btn btn-sm btn-success" name="addItem">Create Playlist</button>
+            </div>
+
+            </div>
+            </div>
+            </td>
+            </tr>
+            </form>';
 
             //Deleting items
         	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
@@ -67,6 +86,18 @@ class UserPlaylistsPage extends BasePage {
             $sqlTemp = "CALL usp_changeShareStatus($toDel);";
             $con2 = mysqli_connect("localhost","root","","playversity");
             mysqli_query($con2,$sqlTemp);
+            }
+
+            //Creating a new playlist
+            if(isset($_POST['addItem']))
+            {
+            header("Refresh:0");     
+            $newPlaylist = "'" . $_POST['nameP1'] . "'";
+            $userAdd = "'" . $_SESSION["user"] . "'";
+            $sqlTemp = "CALL usp_createPlaylist($newPlaylist,$userAdd)";
+            $con2 = mysqli_connect("localhost","root","","playversity");
+            mysqli_query($con2,$sqlTemp);
+            echo 'New playlist created';
             }
             
     }
