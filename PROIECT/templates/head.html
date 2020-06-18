@@ -15,9 +15,27 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
-
   <!-- Theme CSS -->
   <link href="css/style.css" rel="stylesheet">
   <link href="css/freelancer.min.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+            $('select[name="playlists"]').change(function(){
+                //Selected value
+                var inputValue = $(this).val();
+                // alert("value in js "+inputValue);
+
+                //Ajax for calling php function
+                $.post('/playversity/proiect/templates/submit.php', { dropdownValue: inputValue }, function(data){
+                    // alert('ajax completed. Response:  '+data);
+                    console.log(data);
+                    //do after submission operation in DOM
+                    console.log(document.getElementsByName("addItem")[1].value);
+                });
+            });
+        });
+        </script>
 
 </head>

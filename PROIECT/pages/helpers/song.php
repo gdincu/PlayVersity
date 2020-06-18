@@ -97,7 +97,8 @@ else    {
 			/**
 			 * Returns all playlist for the current user
 			 */
-			echo '<td><select name="playlists">';
+			echo '<td><select id="myDropDown" name="playlists">';
+			echo '<option id="0" value="" disabled selected>Select Playlist</option>';
 			$tempUser = "'" . $_SESSION["user"] . "'";
 			$sqlTemp = "SELECT a.name,a.id FROM playlist a,userplaylist b,user c WHERE a.id = b.idplaylist AND b.iduser = c.id AND c.username = $tempUser";
 			$connection = mysqli_connect("localhost","root","","playversity");
@@ -107,13 +108,13 @@ else    {
 
 			echo '</td>';
 
-			echo '<script type="text/javascript">' . 
-      'console.log(document.getElementsByName("playlists")[0]);' .
-      '</script>';
-
-			echo '<td><button class="btn btn-sm btn-danger" type="submit" name="addItem" 
-				value="['. (int)$row['id'] . ',' . $row['id'] . ']">
-				Add</button></td>';
+			echo '<td><button class="btn btn-sm btn-danger" type="submit" name="addItem" ';
+			// song id
+			echo 'value="'. (int)$row['id'] . ',';
+			//row id
+			echo $row['id'] . '">';
+			//Add button
+			echo 'Add</button></td>';
 			
 			echo '</form>';				
 			}
