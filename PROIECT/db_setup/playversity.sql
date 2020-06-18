@@ -31,7 +31,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`` PROCEDURE `usp_changeShareStatus` (IN `playlistID` INT(5))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_changeShareStatus` (IN `playlistID` INT(5))  BEGIN
 
 IF (SELECT shared FROM playlist WHERE id = playlistID) > 0 THEN
 UPDATE playlist SET shared = 0 WHERE id = playlistID;
@@ -41,14 +41,14 @@ END IF;
 
 END$$
 
-CREATE DEFINER=`` PROCEDURE `usp_createPlaylist` (IN `playlistName` VARCHAR(50), IN `userTemp` VARCHAR(50))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_createPlaylist` (IN `playlistName` VARCHAR(50), IN `userTemp` VARCHAR(50))  BEGIN
 INSERT INTO playlist (name,shared) VALUES (playlistName,0);
 SET @c1 = (SELECT id FROM user WHERE username = userTemp);
 SET @c2 = (SELECT MAX(id) FROM playlist);
 INSERT INTO userplaylist (iduser,idplaylist) VALUES(@c1,@c2);
 END$$
 
-CREATE DEFINER=`` PROCEDURE `usp_delPlaylistFromUser` (IN `playlistID` INT(5), IN `userID` VARCHAR(50))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_delPlaylistFromUser` (IN `playlistID` INT(5), IN `userID` VARCHAR(50))  BEGIN
 DELETE FROM userplaylist WHERE iduser = (SELECT id FROM user WHERE username = userID) AND idplaylist = playlistID;
 END$$
 
