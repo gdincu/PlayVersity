@@ -62,13 +62,23 @@
                         </div>    
                     </div>
                 </form>
-                <div class="container" >
-                    <a href="index.php?page=userplaylists" >My Playlists</a>
-                </div></br>
             </div>
         </div>
     </fieldset>
 </div>
+
+<!-- Link to the playlists page -->
+<div class="container" >
+    <a class="btn btn-success btn-sm border-0" href="index.php?page=userplaylists" >My Playlists</a>
+</div>
+
+<br>
+
+<!-- Link to the password reset page -->
+<div class="container" >
+    <a class="btn btn-danger btn-sm border-0" href="index.php?page=resetpass" >Reset Password</a>
+</div>
+
 <div class="container" style=<?php echo $this->hasError() ? "'color:red'" : "'color:green'" ?>'><?php echo $this->getLastSaveStatus()?></div></br>
 
 
