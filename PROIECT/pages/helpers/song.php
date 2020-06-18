@@ -1,4 +1,5 @@
 <?php
+ob_start();
 /**
  * Connecting to the DB using a generic login 
  */
@@ -80,7 +81,7 @@ else    {
 		 * Adds song delete functionality if the URI contains a playlist id
 		 */
 		if(isset($_GET["playlistid"])) {
-				echo "<form method='post' action=''>";
+				echo "<form method='post'>";
 				echo '<td><button class="btn btn-sm btn-danger" type="submit" name="deleteItem" 
 				value="'. (int)$row['id'] . '">Delete
 				</button></td>
@@ -91,20 +92,27 @@ else    {
 		 * Adds song add functionality if the URI contains an allsongs tag
 		 */
 		if(isset($_GET["allsongs"])) {
-			echo "<form method='post' action=''>";
-			echo '<td><select name="forma">';
+			echo "<form method='post'>";
+			
+			/**
+			 * Returns all playlist for the current user
+			 */
+			echo '<td><select name="playlists">';
 			$tempUser = "'" . $_SESSION["user"] . "'";
 			$sqlTemp = "SELECT a.name,a.id FROM playlist a,userplaylist b,user c WHERE a.id = b.idplaylist AND b.iduser = c.id AND c.username = $tempUser";
 			$connection = mysqli_connect("localhost","root","","playversity");
 			$resultCount = $connection->query($sqlTemp);
-			
 			while($rowTemp = $resultCount->fetch_assoc())
-				echo '<option value="' . $rowTemp['name'] . '">' . $rowTemp['name'] . '</option>';			
+				echo '<option name=' . $rowTemp['id'] . ' value="' . $rowTemp['name'] . '">' . $rowTemp['name'] . '</option>';			
 
 			echo '</td>';
 
+			echo '<script type="text/javascript">' . 
+      'console.log(document.getElementsByName("playlists")[0]);' .
+      '</script>';
+
 			echo '<td><button class="btn btn-sm btn-danger" type="submit" name="addItem" 
-				value="['. (int)$rowTemp['id'] . ',' . $rowTemp['name'] . ']">
+				value="['. (int)$row['id'] . ',' . $row['id'] . ']">
 				Add</button></td>';
 			
 			echo '</form>';				
@@ -118,7 +126,7 @@ else    {
 /**
  * Show the all other pages as a dropdown list
  */
-echo 'Page: <select name="forma" onchange="location = this.value;">';
+echo 'Page: <select name="pagenumbers" onchange="location = this.value;">';
 for ($c = 1; $c<=$total_pages; $c++) {
 
 	if(!isset($_GET["pageno"]))
@@ -145,7 +153,8 @@ for ($c = 1; $c<=$total_pages; $c++) {
 
 	//Deleting items
 	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
-		{
+	{
+	header("Refresh:0");
 	$toDel = (int)$_POST['deleteItem'];
 	$sqlTemp = "CALL usp_delSongFromPlaylist($tempPlaylist,$toDel);";
 	$con2 = mysqli_connect("localhost","root","","playversity");

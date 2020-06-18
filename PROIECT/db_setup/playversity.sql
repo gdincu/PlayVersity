@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2020 at 07:46 PM
+-- Generation Time: Jun 18, 2020 at 09:24 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -4643,7 +4643,34 @@ INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_ite
 (38, 'songplaylist', 'insert', NULL, 'idsong: 59, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
 (39, 'songplaylist', 'insert', NULL, 'idsong: 79, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
 (40, 'songplaylist', 'insert', NULL, 'idsong: 69, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
-(41, 'songplaylist', 'insert', NULL, 'idsong: 89, idplaylist: 2', '2020-06-17 18:06:38', 'root@');
+(41, 'songplaylist', 'insert', NULL, 'idsong: 89, idplaylist: 2', '2020-06-17 18:06:38', 'root@'),
+(42, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 111', NULL, '2020-06-18 09:27:36', 'root@'),
+(43, 'songplaylist', 'delete', 'idsong: 555, idplaylist: 1', NULL, '2020-06-18 09:28:01', 'root@'),
+(44, 'songplaylist', 'delete', 'idsong: 89, idplaylist: 2', NULL, '2020-06-18 10:10:21', 'root@'),
+(45, 'songplaylist', 'delete', 'idsong: 39, idplaylist: 2', NULL, '2020-06-18 10:10:38', 'root@'),
+(46, 'songplaylist', 'delete', 'idsong: 6, idplaylist: 2', NULL, '2020-06-18 10:13:20', 'root@'),
+(47, 'songplaylist', 'delete', 'idsong: 79, idplaylist: 2', NULL, '2020-06-18 10:14:39', 'root@'),
+(48, 'songplaylist', 'delete', 'idsong: 29, idplaylist: 2', NULL, '2020-06-18 10:14:47', 'root@'),
+(49, 'songplaylist', 'delete', 'idsong: 69, idplaylist: 2', NULL, '2020-06-18 10:14:54', 'root@'),
+(50, 'songplaylist', 'delete', 'idsong: 59, idplaylist: 2', NULL, '2020-06-18 10:14:56', 'root@'),
+(51, 'songplaylist', 'delete', 'idsong: 49, idplaylist: 2', NULL, '2020-06-18 10:15:36', 'root@'),
+(52, 'songplaylist', 'insert', NULL, 'idsong: 55, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(53, 'songplaylist', 'insert', NULL, 'idsong: 56, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(54, 'songplaylist', 'insert', NULL, 'idsong: 57, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(55, 'songplaylist', 'insert', NULL, 'idsong: 58, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(56, 'songplaylist', 'insert', NULL, 'idsong: 59, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(57, 'songplaylist', 'insert', NULL, 'idsong: 60, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(58, 'songplaylist', 'insert', NULL, 'idsong: 67, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(59, 'songplaylist', 'insert', NULL, 'idsong: 85, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(60, 'songplaylist', 'insert', NULL, 'idsong: 95, idplaylist: 2', '2020-06-18 10:17:16', 'root@'),
+(61, 'songplaylist', 'delete', 'idsong: 57, idplaylist: 2', NULL, '2020-06-18 10:21:13', 'root@'),
+(62, 'songplaylist', 'delete', 'idsong: 56, idplaylist: 2', NULL, '2020-06-18 10:21:16', 'root@'),
+(63, 'songplaylist', 'delete', 'idsong: 58, idplaylist: 2', NULL, '2020-06-18 10:21:19', 'root@'),
+(64, 'songplaylist', 'delete', 'idsong: 3, idplaylist: 2', NULL, '2020-06-18 10:21:24', 'root@'),
+(65, 'songplaylist', 'delete', 'idsong: 59, idplaylist: 2', NULL, '2020-06-18 10:21:27', 'root@'),
+(66, 'songplaylist', 'delete', 'idsong: 85, idplaylist: 2', NULL, '2020-06-18 10:21:28', 'root@'),
+(67, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 11', NULL, '2020-06-18 10:23:11', 'root@'),
+(68, 'songplaylist', 'delete', 'idsong: 5, idplaylist: 1', NULL, '2020-06-18 10:23:23', 'root@');
 
 -- --------------------------------------------------------
 
@@ -4662,11 +4689,11 @@ CREATE TABLE `playlist` (
 --
 
 INSERT INTO `playlist` (`id`, `name`, `shared`) VALUES
-(1, 'AAAPlaylist', 0),
-(2, 'TTT', 1),
+(1, 'AAAPlaylist', 1),
+(2, 'TTT', 0),
 (5, 'TEMP', 1),
-(11, 'TEST', 1),
-(111, 'TEST', 1);
+(11, 'TEST', 0),
+(111, 'TEST', 0);
 
 -- --------------------------------------------------------
 
@@ -25000,21 +25027,14 @@ CREATE TABLE `songplaylist` (
 
 INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
 (1, 1, 1),
-(3, 2, 1),
-(5, 1, 4),
-(6, 2, 3),
 (11, 1, 3),
 (11, 2, 5),
 (12, 2, 4),
 (19, 2, 5),
-(29, 2, 6),
-(39, 2, 7),
-(49, 2, 8),
-(59, 2, 9),
-(69, 2, 11),
-(79, 2, 10),
-(89, 2, 12),
-(555, 1, NULL);
+(55, 2, 5),
+(60, 2, 10),
+(67, 2, 11),
+(95, 2, 13);
 
 --
 -- Triggers `songplaylist`
@@ -25088,8 +25108,6 @@ CREATE TABLE `userplaylist` (
 INSERT INTO `userplaylist` (`iduser`, `idplaylist`) VALUES
 (1, 1),
 (1, 2),
-(1, 11),
-(1, 111),
 (2, 2);
 
 --
@@ -25191,7 +25209,7 @@ ALTER TABLE `artist`
 -- AUTO_INCREMENT for table `logplaylist`
 --
 ALTER TABLE `logplaylist`
-  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `playlist`
