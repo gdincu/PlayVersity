@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once (__DIR__ . '/../templates/BasePage.php');
 require_once "helpers/session.php";
 
@@ -50,6 +51,7 @@ class UserPlaylistsPage extends BasePage {
             //Deleting items
         	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
             {
+            header("Refresh:0");                
             $toDel = (int)$_POST['deleteItem'];
             $userDel = "'" . $_SESSION["user"] . "'";
             $sqlTemp = "CALL usp_delPlaylistFromUser($toDel,$userDel);";
@@ -60,6 +62,7 @@ class UserPlaylistsPage extends BasePage {
             //Update the shared value when checked/ unchecked
             if(isset($_POST['shareItem']))
             {
+            header("Refresh:0");                
             $toDel = $_POST['checkedValue']; //playlistid
             $sqlTemp = "CALL usp_changeShareStatus($toDel);";
             $con2 = mysqli_connect("localhost","root","","playversity");
