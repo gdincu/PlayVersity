@@ -1,0 +1,98 @@
+<?php
+$connection = mysqli_connect("localhost","root","","playversity");
+
+//Sanitises and stores the playlistid in a variable
+$tempPlaylist = 0;
+if(isset($_GET['playlistid']))
+$tempPlaylist = (int)htmlentities($_GET['playlistid'],ENT_HTML5,'UTF-8',TRUE);
+
+//Checks the orderby value and sanitises the value passed through the URI
+$orderby = 'NULL';
+if(isset($_GET['orderby']))
+$orderby = "'".htmlentities($_GET['orderby'],ENT_HTML5,'UTF-8',TRUE)."'";
+
+//Setting the start page to divide result sets containing multiple lines into multiple pages
+$results_per_page = 5;
+if (isset($_GET["pageno"]) && is_numeric($_GET["pageno"])) { $page  = $_GET["pageno"]; } else { $page=1; }; 
+$start_from = ($page-1) * $results_per_page;
+
+//Find the total nr of records and works out the total nr of pages
+$sqlCountAll = "SELECT COUNT(id) AS total FROM song";
+$sqlCount = "SELECT COUNT(*) AS total FROM songplaylist WHERE idplaylist = $tempPlaylist";
+if(isset($_GET['allsongs']))
+$resultCount = $connection->query($sqlCountAll);
+else 
+$resultCount = $connection->query($sqlCount);
+$rowCount = $resultCount->fetch_assoc();
+$total_pages = ceil($rowCount["total"] / $results_per_page);
+
+//Checks if the URI includes "index.php" and whether it contains a playlist id
+if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid']))
+//Calls the usp_returnSongs procedure and returns the artist, song name and song length based on the playlist id and orderby value
+$sql = "CALL usp_returnSongs($tempPlaylist,$orderby,$start_from,$results_per_page);";
+
+//Checks if the URI includes "index.php" and allsongs
+else if (strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['allsongs']))
+$sql = "CALL usp_returnAllSongs($start_from,$results_per_page);";
+
+//Exits song.php if the URI doesn't contain the expected variables
+else exit();
+
+$sql = "SELECT b.idsong,b.position,a.name,e.name artist,a.length 
+FROM song a
+INNER JOIN songplaylist b ON a.id = b.idsong
+INNER JOIN playlist c ON c.id = b.idplaylist
+INNER JOIN songartist d ON a.id = d.idsong
+INNER JOIN artist e ON d.idartist = e.id
+WHERE b.idplaylist = 1
+ORDER BY b.position ASC;";
+
+
+//Runs the SQL query
+$result = $connection->query($sql);
+
+if($result->num_rows == 0)
+{
+	echo "Page not found! Please try again!";
+	exit();
+}
+else    {
+	//Return song details from the DB
+	while($row = $result->fetch_assoc()) {
+		echo "<tr>";
+		echo "<td>" . $row["artist"] . "</td>";
+		echo "<td>" . $row["name"] . "</td>";
+        echo "<td>" . $row["length"] . "</td>";
+		echo "</tr>";
+		 }
+		 echo "</table>";
+			}
+
+	//Show the all other pages as a dropdown list
+	echo 'Page: <select name="forma" onchange="location = this.value;">';
+	for ($c = 1; $c<=$total_pages; $c++) {
+		
+	if(!isset($_GET["pageno"]))
+		echo "<option value='" . $_SERVER["REQUEST_URI"] . "&pageno=".$c."'>".$c."</option> ";  
+	else {
+		//Un-setting the pageno tag from the URI used to generate option tags
+		$string = removeParam($_SERVER["REQUEST_URI"],'pageno');
+		//Setting the default value for the option tag based on the URI
+		if((int)$c == (int)($_GET["pageno"]))
+		echo "<option selected value='" . $string . "&pageno=".$c."'>".$c."</option> ";  
+		else
+		echo "<option value='" . $string . "&pageno=".$c."'>".$c."</option> ";  
+		}
+	}
+
+	echo '</select>';
+	
+
+	function removeParam($url, $param) {
+		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*$/', '', $url);
+		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*&/', '$1', $url);
+		return $url;
+	}
+?>
+
+
