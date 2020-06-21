@@ -1,7 +1,7 @@
 <?php
 ob_start();
 /**
- * Connecting to the DB using a generic login 
+ * Connecting to the DB using a generic login
  */
 include (__DIR__ . '/../../db_setup/db_connect.php');
 
@@ -76,13 +76,13 @@ else    {
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
 		echo "<td>" . $row["length"] . "</td>";
-		
+
 		/**
 		 * Adds song delete functionality if the URI contains a playlist id
 		 */
 		if(isset($_GET["playlistid"])) {
 				echo "<form method='post'>";
-				echo '<td><button class="btn btn-sm btn-danger" type="submit" name="deleteItem" 
+				echo '<td><button class="btn btn-sm btn-danger" type="submit" name="deleteItem"
 				value="'. (int)$row['id'] . '">Delete
 				</button></td>
 				</form>';
@@ -93,7 +93,7 @@ else    {
 		 */
 		if(isset($_GET["allsongs"])) {
 			echo "<form method='post'>";
-			
+
 			/**
 			 * Returns all playlist for the current user
 			 */
@@ -104,7 +104,7 @@ else    {
 			$connection = mysqli_connect("localhost","root","","playversity");
 			$resultCount = $connection->query($sqlTemp);
 			while($rowTemp = $resultCount->fetch_assoc())
-				echo '<option name="addItem" value="' . $rowTemp['id'] . '">' . $rowTemp['name'] . '</option>';			
+				echo '<option name="addItem" value="' . $rowTemp['id'] . '">' . $rowTemp['name'] . '</option>';
 
 			echo '</td>';
 
@@ -115,8 +115,8 @@ else    {
 			echo $row['id'] . '">';
 			//Add button
 			echo 'Add</button></td>';
-			
-			echo '</form>';				
+
+			echo '</form>';
 			}
 
 		echo "</tr>";
@@ -174,4 +174,15 @@ for ($c = 1; $c<=$total_pages; $c++) {
 	// $con3 = mysqli_connect("localhost","root","","playversity");
 	// mysqli_query($con3,$sqlTemp);
 	}
+
+
+	echo  isset($_GET['playlistid']) ?
+	'
+	<br>
+	<br>
+	<div class="col">
+	<a href="/playversity/proiect/index.php?page=song&allsongs"><button type="button" class="btn btn-sm btn-success" name="goToALlSongs">Go to the Song Library</button></a>
+	</div>'
+	: "";
+
 ?>

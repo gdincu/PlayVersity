@@ -2,9 +2,9 @@
 <!--Location: SongPage-->
 
 <!-- Returns the playlist name rather than displaying its id -->
-<h2><?php 
+<h2><?php
     if(isset($_GET['playlistid'])) {
-    
+
     $connection = mysqli_connect("localhost","root","","playversity");
     $tempId = (int)$_GET['playlistid'];
     $sqlTemp = "SELECT name FROM playlist WHERE id = $tempId";
@@ -12,7 +12,7 @@
     $rowCount = $resultCount->fetch_assoc();
     print "Playlist: " . $rowCount["name"];
 }
-else 
+else
 print "Song list:";
     ?>
 </h2>
@@ -36,6 +36,7 @@ print "Song list:";
 <?php print isset($_GET['allsongs']) ? "<th></th><th></th>" : "" ?> <!-- Used for the add button and the playlist list -->
 </tr>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
@@ -53,8 +54,8 @@ print "Song list:";
             //Song id
             console.log(document.getElementsByName("addItem")[4].value);
 
-            // var idSong = document.getElementsByName("addItem")[4 ].value;
-            // var sqlTemp = "CALL usp_insSongPlaylist(idSong,data)";
+            //var idSong = document.getElementsByName("addItem")[4 ].value;
+            //var sqlTemp = "CALL usp_insSongPlaylist(idSong,data)";
         });
     });
 });
