@@ -22,14 +22,16 @@ include (__DIR__ . '/../../db_setup/db_connect.php');
     <p>
     <div class="form-row col-sm-4">
     Parola noua:<div class="col">
-    <input type="password" class="form-control" id="parola2" name="parola2" placeholder="<?php echo $parola2;?>" value="<?php echo $parola2;?>">
+    <input type="password" class="form-control" id="parola2" name="parola2" 
+    placeholder="<?php echo $parola2;?>" value="<?php echo $parola2;?>">
     </div></div>
     </p>
     
     <p>
     <div class="form-row col-sm-4">
     Parola noua:<div class="col">
-    <input type="password" class="form-control" id="parola3" name="parola3"  placeholder="<?php echo $parola3;?>" value="<?php echo $parola3;?>">
+    <input type="password" class="form-control" id="parola3" name="parola3"  
+    placeholder="<?php echo $parola3;?>" value="<?php echo $parola3;?>">
     </div></div>
     </p>
     
@@ -41,6 +43,9 @@ include (__DIR__ . '/../../db_setup/db_connect.php');
     </p>
     
     </form>
+
+    
+
 
 
 <?php
