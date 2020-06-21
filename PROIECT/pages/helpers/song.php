@@ -62,7 +62,7 @@ else exit();
 /**
  * Runs the SQL query
  */
-if(isset($_GET['orderby'])) $connection->query($sql2);
+if(isset($_GET['orderby']) && isset($_GET['playlistid'])) $connection->query($sql2);
 $result = $connection->query($sql);
 
 if($result->num_rows == 0)
