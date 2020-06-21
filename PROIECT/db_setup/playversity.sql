@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2020 at 10:56 AM
+-- Generation Time: Jun 21, 2020 at 12:16 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -67,8 +67,7 @@ SET @tempCount = (SELECT COUNT(idplaylist) FROM songplaylist WHERE idplaylist = 
 INSERT INTO songplaylist VALUES (a,b,@tempCount);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_orderBy` (IN `playlistID` INT(5), IN `columnName` VARCHAR(20))  BEGIN 
-
+CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_orderBy` (IN `playlistID` INT(5), IN `columnName` VARCHAR(20))  BEGIN
 DECLARE postemp INT DEFAULT 0;
 DECLARE idsong1 INT DEFAULT 0;
 DECLARE idplaylist1 INT DEFAULT 0;
@@ -87,20 +86,22 @@ ORDER BY
 (SELECT CASE 
         WHEN columnName='name' THEN a.name
 	WHEN columnName='artist' THEN e.name
-	WHEN columnName='position' THEN b.position
  	END) ASC;
 
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
 OPEN c1;
+
 myloop: LOOP
 FETCH NEXT FROM c1 INTO idsong1, idplaylist1, position;
+
 IF done THEN
 LEAVE myloop;
 END IF;
 
 SET postemp = postemp + 1;
 UPDATE songplaylist SET position = postemp WHERE idplaylist = idplaylist1 AND idsong = idsong1;
-FETCH NEXT FROM c1 INTO idsong1, idplaylist1, position;
+
 END LOOP;
 CLOSE c1;
 END$$
@@ -167,6 +168,7 @@ INNER JOIN songartist d ON a.id = d.idsong
 INNER JOIN artist e ON d.idartist = e.id
 WHERE b.idplaylist = a
 GROUP BY a.id
+ORDER BY b.position
 LIMIT startpos,endpos;
 END IF;
 
@@ -25146,30 +25148,30 @@ CREATE TABLE `songplaylist` (
 --
 
 INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
-(1, 1, 4),
-(11, 1, 5),
+(1, 1, 7),
+(11, 1, 9),
 (11, 2, 1),
 (12, 2, 2),
 (19, 2, 4),
 (55, 2, 5),
 (60, 2, 6),
-(62, 1, 8),
-(63, 1, 9),
-(68, 1, 3),
+(62, 1, 15),
+(63, 1, 17),
+(68, 1, 12),
 (69, 1, 20),
-(71, 1, 3),
-(567, 1, 10),
-(568, 1, 5),
+(71, 1, 5),
+(567, 1, 19),
+(568, 1, 6),
 (569, 1, 4),
-(570, 1, 2),
+(570, 1, 3),
 (571, 1, 18),
-(572, 1, 7),
-(573, 1, 6),
+(572, 1, 16),
+(573, 1, 11),
 (574, 1, 14),
-(575, 1, 9),
+(575, 1, 10),
 (576, 1, 2),
-(577, 1, 10),
-(578, 1, 7);
+(577, 1, 8),
+(578, 1, 13);
 
 --
 -- Triggers `songplaylist`
