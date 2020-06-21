@@ -42,8 +42,10 @@ $total_pages = ceil($rowCount["total"] / $results_per_page);
  * Checks if the URI includes "index.php" and whether it contains a playlist id
  * Then calls the usp_returnSongs procedure and returns the artist, song name and song length based on the playlist id and orderby value
  */
-if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid']))
+if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid'])) {
 $sql = "CALL usp_returnSongs($tempPlaylist,$orderby,$start_from,$results_per_page);";
+$sql2 = "CALL usp_orderBy ($tempPlaylist,$orderby);";
+}
 
 /**
  * Checks if the URI includes "index.php" and allsongs
@@ -60,6 +62,7 @@ else exit();
 /**
  * Runs the SQL query
  */
+if(isset($_GET['orderby'])) $connection->query($sql2);
 $result = $connection->query($sql);
 
 if($result->num_rows == 0)
