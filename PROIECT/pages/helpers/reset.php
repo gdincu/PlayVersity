@@ -63,9 +63,11 @@ $currentUser = "'".$_SESSION["user"]."'";
 $currentPass = "'".$_SESSION["password"]."'";
 
 $sql = "UPDATE user SET password = $newpass WHERE username = $currentUser AND password = $currentPass";
-
-if(mysqli_query($connection,$sql))
+if(mysqli_query($connection,$sql)) {
+    $_SESSION["password"] = hash("sha256", htmlentities($_POST["parola2"],ENT_HTML5,'UTF-8',TRUE));
     echo "Added!";
+}
+    
 else
     echo "Error:".$sql."<br>".$connection->error;
 }
