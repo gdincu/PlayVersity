@@ -7,15 +7,6 @@
             <a class="navbar-brand js-scroll-trigger" href="index.php" style="color: #E8E8E8"><img src="./images/playversity_logo_6.png" class="w-50 h-50" alt="logo PlayVersity" /></a>
         </div>
 
-        <!--Reset Password-->
-        <form method="post" class="form-inline" action="index.php?page=playlist"> 
-            <div class="col-sm-2s" style="margin-right: 5px;">
-                <button type="submit" 
-                        class="btn btn-sm btn-info btn-block" 
-                        name = "profile" 
-                        style="background-color: #52658F; border-color: #52658F; color: #E8E8E8; margin-left: 1%; width: 150px;">Playlist options</button>
-            </div>
-        </form>
 
         <!--Reset Password-->
         <form method="post" class="form-inline" action="index.php?page=resetpassok"> 
@@ -43,7 +34,7 @@
                 <button type="submit" 
                         class="btn btn-sm btn-info btn-block" 
                         name = "access" 
-                        style="background-color: #52658F; border-color: #52658F; color: #E8E8E8; margin-left: 3%; width: 80px">Log Out</button>
+                        style="background-color: #52658F; border-color: #52658F; color: #E8E8E8; margin-left: 3%;">Log Out</button>
             </div>
         </form>
 

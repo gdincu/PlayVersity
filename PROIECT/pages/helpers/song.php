@@ -1,54 +1,68 @@
 <?php
-$connection = mysqli_connect("localhost","root","","playversity");
+ob_start();
+/**
+ * Connecting to the DB using a generic login
+ */
+include (__DIR__ . '/../../db_setup/db_connect.php');
 
-//Sanitises and stores the playlistid in a variable
+/**
+ * Sanitises and stores the playlistid in a variable
+ */
 $tempPlaylist = 0;
 if(isset($_GET['playlistid']))
 $tempPlaylist = (int)htmlentities($_GET['playlistid'],ENT_HTML5,'UTF-8',TRUE);
 
-//Checks the orderby value and sanitises the value passed through the URI
+/**
+ * Checks the orderby value and sanitises the value passed through the URI
+*/
 $orderby = 'NULL';
 if(isset($_GET['orderby']))
 $orderby = "'".htmlentities($_GET['orderby'],ENT_HTML5,'UTF-8',TRUE)."'";
 
-//Setting the start page to divide result sets containing multiple lines into multiple pages
-$results_per_page = 5;
-if (isset($_GET["pageno"]) && is_numeric($_GET["pageno"])) { $page  = $_GET["pageno"]; } else { $page=1; }; 
+/**
+ * Setting the start page to divide result sets containing multiple lines into multiple pages
+ */
+$results_per_page = 7; //<== value to be changed
+if (isset($_GET["pageno"]) && is_numeric($_GET["pageno"])) { $page  = $_GET["pageno"]; } else { $page=1; };
 $start_from = ($page-1) * $results_per_page;
 
-//Find the total nr of records and works out the total nr of pages
+/**
+ * Find the total nr of records and works out the total nr of pages
+ */
 $sqlCountAll = "SELECT COUNT(id) AS total FROM song";
 $sqlCount = "SELECT COUNT(*) AS total FROM songplaylist WHERE idplaylist = $tempPlaylist";
 if(isset($_GET['allsongs']))
 $resultCount = $connection->query($sqlCountAll);
-else 
+else
 $resultCount = $connection->query($sqlCount);
 $rowCount = $resultCount->fetch_assoc();
 $total_pages = ceil($rowCount["total"] / $results_per_page);
 
-//Checks if the URI includes "index.php" and whether it contains a playlist id
-if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid']))
-//Calls the usp_returnSongs procedure and returns the artist, song name and song length based on the playlist id and orderby value
+/**
+ * Checks if the URI includes "index.php" and whether it contains a playlist id
+ * Then calls the usp_returnSongs procedure and returns the artist, song name and song length based on the playlist id and orderby value
+ */
+if ( strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['playlistid'])) {
 $sql = "CALL usp_returnSongs($tempPlaylist,$orderby,$start_from,$results_per_page);";
+$sql2 = "CALL usp_orderBy ($tempPlaylist,$orderby);";
+}
 
-//Checks if the URI includes "index.php" and allsongs
+/**
+ * Checks if the URI includes "index.php" and allsongs
+ * Then calls the usp_returnAllSongs procedure and returns the artist, song name and song length
+ */
 else if (strpos($_SERVER['REQUEST_URI'], 'index.php') !== false && isset($_GET['allsongs']))
-$sql = "CALL usp_returnAllSongs($start_from,$results_per_page);";
+$sql = "CALL usp_returnAllSongs($start_from,$results_per_page,$orderby);";
 
-//Exits song.php if the URI doesn't contain the expected variables
+/**
+ * Exits song.php if the URI doesn't contain the expected variables
+ */
 else exit();
 
-$sql = "SELECT b.idsong,b.position,a.name,e.name artist,a.length 
-FROM song a
-INNER JOIN songplaylist b ON a.id = b.idsong
-INNER JOIN playlist c ON c.id = b.idplaylist
-INNER JOIN songartist d ON a.id = d.idsong
-INNER JOIN artist e ON d.idartist = e.id
-WHERE b.idplaylist = 1
-ORDER BY b.position ASC;";
-
-
-//Runs the SQL query
+/**
+ * Runs the SQL query
+ */
+if(isset($_GET['orderby']) && isset($_GET['playlistid'])) $connection->query($sql2);
 $result = $connection->query($sql);
 
 if($result->num_rows == 0)
@@ -57,42 +71,120 @@ if($result->num_rows == 0)
 	exit();
 }
 else    {
-	//Return song details from the DB
+	/**
+	 * Return song details from the DB
+	 */
 	while($row = $result->fetch_assoc()) {
 		echo "<tr>";
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
-        echo "<td>" . $row["length"] . "</td>";
-		echo "</tr>";
-		 }
-		 echo "</table>";
+		echo "<td>" . $row["length"] . "</td>";
+
+		/**
+		 * Adds song delete functionality if the URI contains a playlist id
+		 */
+		if(isset($_GET["playlistid"])) {
+				echo "<form method='post'>";
+				echo '<td><button class="btn btn-sm btn-danger" type="submit" name="deleteItem"
+				value="'. (int)$row['id'] . '">Delete
+				</button></td>
+				</form>';
+				}
+
+		/**
+		 * Adds song add functionality if the URI contains an allsongs tag
+		 */
+		if(isset($_GET["allsongs"])) {
+			echo "<form method='post'>";
+
+			/**
+			 * Returns all playlist for the current user
+			 */
+			echo '<td><select id="myDropDown" name="playlists">';
+			echo '<option id="0" value="" disabled selected>Select Playlist</option>';
+			$tempUser = "'" . $_SESSION["user"] . "'";
+			$sqlTemp = "SELECT a.name,a.id FROM playlist a,userplaylist b,user c WHERE a.id = b.idplaylist AND b.iduser = c.id AND c.username = $tempUser";
+			$connection = mysqli_connect("localhost","root","","playversity");
+			$resultCount = $connection->query($sqlTemp);
+			while($rowTemp = $resultCount->fetch_assoc())
+				echo '<option name="addItem" value="' . $rowTemp['id'] . '">' . $rowTemp['name'] . '</option>';
+
+			echo '</td>';
+
+			echo '<td><button class="btn btn-sm btn-danger" type="submit" name="addItem" ';
+			// song id
+			echo 'value="'. (int)$row['id'] . ',';
+			//row id
+			echo $row['id'] . '">';
+			//Add button
+			echo 'Add</button></td>';
+
+			echo '</form>';
 			}
 
-	//Show the all other pages as a dropdown list
-	echo 'Page: <select name="forma" onchange="location = this.value;">';
-	for ($c = 1; $c<=$total_pages; $c++) {
-		
+		echo "</tr>";
+	}
+	echo "</table>";
+}
+
+/**
+ * Show the all other pages as a dropdown list
+ */
+echo 'Page: <select name="pagenumbers" onchange="location = this.value;">';
+for ($c = 1; $c<=$total_pages; $c++) {
+
 	if(!isset($_GET["pageno"]))
-		echo "<option value='" . $_SERVER["REQUEST_URI"] . "&pageno=".$c."'>".$c."</option> ";  
+		echo "<option value='" . $_SERVER["REQUEST_URI"] . "&pageno=".$c."'>".$c."</option> ";
 	else {
 		//Un-setting the pageno tag from the URI used to generate option tags
 		$string = removeParam($_SERVER["REQUEST_URI"],'pageno');
 		//Setting the default value for the option tag based on the URI
 		if((int)$c == (int)($_GET["pageno"]))
-		echo "<option selected value='" . $string . "&pageno=".$c."'>".$c."</option> ";  
+		echo "<option selected value='" . $string . "&pageno=".$c."'>".$c."</option> ";
 		else
-		echo "<option value='" . $string . "&pageno=".$c."'>".$c."</option> ";  
+		echo "<option value='" . $string . "&pageno=".$c."'>".$c."</option> ";
 		}
 	}
 
 	echo '</select>';
-	
 
 	function removeParam($url, $param) {
 		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*$/', '', $url);
 		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*&/', '$1', $url);
 		return $url;
 	}
+
+	//Deleting items
+	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
+	{
+	header("Refresh:0");
+	$toDel = (int)$_POST['deleteItem'];
+	$sqlTemp = "CALL usp_delSongFromPlaylist($tempPlaylist,$toDel);";
+	$con2 = mysqli_connect("localhost","root","","playversity");
+	mysqli_query($con2,$sqlTemp);
+	header("Refresh:0");
+	}
+
+	//Adding items
+	if(isset($_POST['addItem']))
+	{
+	$toAdd = (int)$_POST['addItem'];
+	echo $toAdd;
+	$plToAdd = $_POST['cPlaylist'];
+	echo $plToAdd;
+	// $sqlTemp = "CALL usp_insSongPlaylist($idsongg, $idplaylistt);";
+	// $con3 = mysqli_connect("localhost","root","","playversity");
+	// mysqli_query($con3,$sqlTemp);
+	}
+
+
+	echo  isset($_GET['playlistid']) ?
+	'
+	<br>
+	<br>
+	<div class="col">
+	<a href="/playversity/proiect/index.php?page=song&allsongs"><button type="button" class="btn btn-sm btn-success" name="goToALlSongs">Go to the Song Library</button></a>
+	</div>'
+	: "";
+
 ?>
-
-
