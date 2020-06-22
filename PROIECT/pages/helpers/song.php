@@ -36,7 +36,9 @@ $resultCount = $connection->query($sqlCountAll);
 else
 $resultCount = $connection->query($sqlCount);
 $rowCount = $resultCount->fetch_assoc();
+$totalCount = $rowCount["total"];
 $total_pages = ceil($rowCount["total"] / $results_per_page);
+
 
 /**
  * Checks if the URI includes "index.php" and whether it contains a playlist id
@@ -164,12 +166,27 @@ for ($c = 1; $c<=$total_pages; $c++) {
 	//Deleting items
 	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
 	{
-	header("Refresh:0");
+	// header("Refresh:0");
 	$toDel = (int)$_POST['deleteItem'];
 	$sqlTemp = "CALL usp_delSongFromPlaylist($tempPlaylist,$toDel);";
 	$con2 = mysqli_connect("localhost","root","","playversity");
 	mysqli_query($con2,$sqlTemp);
-	header("Refresh:0");
+
+	$tempPgNo = 0;
+
+	if(isset($_GET["pageno"])) {
+	$tempPgNo = (int)($_GET["pageno"]);
+	$results_per_current_page = $totalCount - ($results_per_page * ($tempPgNo - 1)) - 1;
+	}
+
+	if($results_per_current_page == 0 && ($tempPgNo == 1 || $tempPgNo == 0)) 
+	header("Location: index.php?page=userplaylists");
+
+	else if($results_per_current_page == 0 && $tempPgNo > 1) 
+	header("Location: index.php?page=song&playlistid=" . $tempPlaylist . '&pageno=' . ($tempPgNo-1));
+
+	else
+	header("Refresh:0"); //Refreshes the same page
 	}
 
 	//Adding items
