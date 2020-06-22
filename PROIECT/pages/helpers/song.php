@@ -83,7 +83,7 @@ else    {
 		/**
 		 * Adds song delete functionality if the URI contains a playlist id
 		 */
-		if(isset($_GET["playlistid"])) {
+		if(isset($_GET["playlistid"]) && !isset($_GET["shared"])) {
 				echo "<form method='post'>";
 				echo '<td><button class="btn btn-sm btn-danger" type="submit" name="deleteItem"
 				value="'. (int)$row['id'] . '">Delete
