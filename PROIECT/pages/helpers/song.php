@@ -101,7 +101,7 @@ else    {
 			/**
 			 * Returns all playlist for the current user
 			 */
-			echo "<form method='post'><div>";
+			echo "<form method='post'>";
 			
 			echo '<td><select id="myDropDown" name="playlists">';
 			echo '<option value="" selected disabled>Select Playlist</option>';
@@ -113,14 +113,15 @@ else    {
 			
 			while($rowTemp = $resultCount->fetch_assoc())
 				echo '<option value="' . $rowTemp['id'] . '">' . $rowTemp['name'] . '</option>';
-			echo '</select></div>';
-			// echo '</td>';
+			echo '</select>';
+			echo '</td><td>';
 
-			echo '<div><button class="btn btn-sm btn-danger" type="submit" name="addItem1" ';
+
+			echo '<button class="btn btn-sm btn-danger" type="submit" name="addItem1" ';
 			// song id
 			echo 'value="'. (int)$row['id'] . '"';
 			//Add button
-			echo '>Add</button></div></td>';
+			echo '>Add</button></td>';
 			echo '</form>';
 
 			}
