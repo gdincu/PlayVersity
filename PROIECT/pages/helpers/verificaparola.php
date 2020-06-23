@@ -21,22 +21,22 @@ $fail .= validate_parola($parola,$parola2,$parola3);
 function validate_parola($parola,$parola2,$parola3) {
 
 if(strcmp(hash("sha256", htmlentities($parola,ENT_HTML5,'UTF-8',TRUE)) , $_SESSION["password"]) != 0 )
-return "Current password is incorrect<br />";
+return "Parola veche este incorecta<br>";
 
 if ( !preg_match("/[a-z]/", $parola2) || !preg_match("/[A-Z]/", $parola2) || !preg_match("/[0-9]/", $parola2))     
 return "New password requires one of each: a-z, A-Z and 0-9";  
 
 if ($parola2 == "" || $parola3 == "" )
-return "Both passwords must be completed<br />";
+return "Ambele parole noi trebuie completate<br />";
 
 if (strcmp($parola3,$parola2) != 0 )
-return "New passwords do not match<br />";
+return "Parolele noi nu sunt la fel<br />";
 
 if (strcmp($parola,$parola2) == 0 )
-return "New passwords are similar with the current one<br />";
+return "Parolele noi sunt la fel ca parola veche<br />";
 
 if(strlen($parola2) < 8 || strlen($parola3) < 8)
-return "Passwords must be at least 8 characters<br/>";   
+return "Passwords must be at least 8 characters.<br/>";   
 
 return "";
 }
