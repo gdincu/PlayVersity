@@ -116,10 +116,26 @@ function saveUser() {
 if(isset($_POST["savedata"])) {
     $success = saveUser();
     
-    if($success)
+    if($success) {
     echo 'User saved to database.<br>';
-    else die();
+    sleep(3);
+    $userFinal = "'".htmlentities($_POST["username"],ENT_HTML5,'UTF-8',TRUE)."'";
+    $passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
+    $sql = "SELECT id, username,password FROM user WHERE username=$userFinal";
+    $connection = mysqli_connect("localhost","root","","playversity");
+	$result = $connection->query($sql);
+	
+	while($row = $result->fetch_assoc()) {
+        $_SESSION["user"] = $row["username"];
+        $_SESSION["password"] = $row["password"];
+        $_SESSION["userid"] = $row["id"];
 
-    
+            session_start();
+
+            header("Location: index.php?page=user");
+        }
+    }
+
+    else die();
 }
 ?>
