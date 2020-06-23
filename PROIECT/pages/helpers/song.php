@@ -156,7 +156,6 @@ for ($c = 1; $c<=$total_pages; $c++) {
 
 	echo '</select>';
 
-
 	function removeParam($url, $param) {
 		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*$/', '', $url);
 		$url = preg_replace('/(&|\?)'.preg_quote($param).'=[^&]*&/', '$1', $url);

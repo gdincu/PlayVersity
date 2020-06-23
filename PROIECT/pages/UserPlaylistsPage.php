@@ -7,7 +7,6 @@ class UserPlaylistsPage extends BasePage {
 
     private $sql;
 
-
     function render() {
         self::renderHeader();
         $this->content();//self::renderContent();
