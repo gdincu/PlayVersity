@@ -1,7 +1,6 @@
 <?php
 
 require_once (__DIR__ . '/../templates/BasePage.php');
-require_once (__DIR__ . '/helpers/save_user_into_db.php');
 
 //require_once(__DIR__ . '/../db_setup/db_connect.php');
 
@@ -14,6 +13,7 @@ class HomePage extends BasePage {
     
     public function render() {
         $this->renderHeader();
+        require_once (__DIR__ . '/helpers/save_user_into_db.php');
         $this->renderContent();
         self::renderFooter();
     }
