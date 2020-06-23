@@ -1,24 +1,19 @@
-//Adaugare EventListener la incarcarea paginii verificarea valorii judetului
+//Adaugare EventListener la incarcarea paginii 
 window.addEventListener("load", start, false);
 
-//Adaugare EventListener la fiecare selectie de judet
+//Adaugare EventListener la introducerea parolelor noi
 function start(){
-document.getElementById('parola2').addEventListener('input',verEgalitate,false);
-document.getElementById('parola').addEventListener('input',verEgalitate,false);
+	document.getElementById('parola3').addEventListener('input',verEgalitate,false);
+	document.getElementById('parola2').addEventListener('input',verEgalitate,false);
 }
 
 function verEgalitate() {
-	if(document.getElementById("parola").value == document.getElementById("parola2").value) {
+	if(document.getElementById("parola2").value == document.getElementById("parola3").value) {
 	document.getElementById("chkForm1").style.backgroundColor = "green";
-	document.getElementById("message").innerHTML = 'Matching';
+	document.getElementById("message").innerHTML = 'New passwords match';
 	}
 else {
 	document.getElementById("chkForm1").style.backgroundColor = "red";
-	document.getElementById("message").innerHTML = 'Not Matching';
+	document.getElementById("message").innerHTML = 'New passwords do not match';
 }
 }
-
-/* document.getElementById('submit').onclick = function() {
-   if(document.getElementById("parola").value != document.getElementById("parola2").value)
-	   
-}​;​*/
