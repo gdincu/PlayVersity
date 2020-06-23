@@ -173,16 +173,15 @@ for ($c = 1; $c<=$total_pages; $c++) {
 	mysqli_query($con2,$sqlTemp);
 
 	$tempPgNo = 0;
-
-	if(isset($_GET["pageno"])) {
+	if(isset($_GET["pageno"]))
 	$tempPgNo = (int)($_GET["pageno"]);
-	$results_per_current_page = $totalCount - ($results_per_page * ($tempPgNo - 1)) - 1;
-	}
 
-	if($results_per_current_page == 0 && ($tempPgNo == 1 || $tempPgNo == 0)) 
+	$results_per_current_page = $totalCount - ($results_per_page * ($tempPgNo - 1)) - 1;
+
+	if(($results_per_current_page == 0 && ($tempPgNo == 1 || !isset($_GET["pageno"])))) 
 	header("Location: index.php?page=userplaylists");
 
-	else if($results_per_current_page == 0 && $tempPgNo > 1) 
+	else if($results_per_current_page == 0 && ($tempPgNo > 1 || isset($_GET["pageno"])))
 	header("Location: index.php?page=song&playlistid=" . $tempPlaylist . '&pageno=' . ($tempPgNo-1));
 
 	else

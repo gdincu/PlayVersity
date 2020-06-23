@@ -99,7 +99,6 @@ function saveUser() {
         $stmt->bindParam(":3", $lastname, PDO::PARAM_STR);
         $stmt->bindParam(":4", $password, PDO::PARAM_STR);
 
-        
         // execute
         $stmt->execute();
     }
@@ -108,18 +107,19 @@ function saveUser() {
         $success = false;
     }
 
+    // Close connection -- $conn = null;
     $conn = null;
-
-    if ($success) {
-        echo 'User ' . $username . ' saved to database. </br>';
-    } else {
-        die();
-    }
 
     return $success;
 }
 
 if(isset($_POST["savedata"])) {
-    saveUser();
+    $success = saveUser();
+    
+    if($success)
+    echo 'User saved to database.<br>';
+    else die();
+
+    
 }
 ?>
