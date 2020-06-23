@@ -20,8 +20,8 @@ print "Song list:";
 <br>
 
 <!-- Order by -->
-<label for="orderby">Order by:</label>
-<select name="orderby" id="orderby" onchange="location = this.value;">
+<label for="orderby" <?php if(isset($_GET["shared"])) echo ' hidden' ?>>Order by:</label>
+<select name="orderby" id="orderby" onchange="location = this.value;" <?php if(isset($_GET["shared"])) echo ' hidden' ?>>
     <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'artist') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs" : "index.php?page=song&playlistid=" . $_GET["playlistid"]; ?> "></option>
     <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'artist') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs&orderby=artist" : "index.php?page=song&playlistid=" . $_GET["playlistid"] ."&orderby=artist" ; ?> ">Artist</option>
     <option <?php if(isset($_GET["orderby"]) && $_GET["orderby"] == 'name') echo ' selected '; ?> value=" <?php print isset($_GET["allsongs"]) ? "index.php?page=song&allsongs&orderby=name" : "index.php?page=song&playlistid=" . $_GET["playlistid"] ."&orderby=name" ; ?> ">Name</option>
