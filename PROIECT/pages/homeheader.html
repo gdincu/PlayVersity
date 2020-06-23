@@ -7,7 +7,7 @@
         <!-- Name & Logo -->
         <div class="container input-group input-group-sm">
             <a  class="navbar-brand js-scroll-trigger" 
-                href="index.php" 
+                href="<?php echo isLoggedIn() ? 'index.php?page=user' : 'index.php'?>" 
                 style="color: #E8E8E8">
 
                 <img    src="./images/playversity_logo_6.png" 

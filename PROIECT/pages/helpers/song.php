@@ -36,7 +36,9 @@ $resultCount = $connection->query($sqlCountAll);
 else
 $resultCount = $connection->query($sqlCount);
 $rowCount = $resultCount->fetch_assoc();
+$totalCount = $rowCount["total"];
 $total_pages = ceil($rowCount["total"] / $results_per_page);
+
 
 /**
  * Checks if the URI includes "index.php" and whether it contains a playlist id
@@ -75,7 +77,8 @@ else    {
 	 * Return song details from the DB
 	 */
 	while($row = $result->fetch_assoc()) {
-		echo "<tr>";
+		
+		echo "<tr>";		
 		echo "<td>" . $row["artist"] . "</td>";
 		echo "<td>" . $row["name"] . "</td>";
 		echo "<td>" . $row["length"] . "</td>";
@@ -83,47 +86,52 @@ else    {
 		/**
 		 * Adds song delete functionality if the URI contains a playlist id
 		 */
-		if(isset($_GET["playlistid"])) {
+		if(isset($_GET["playlistid"]) && !isset($_GET["shared"])) {
 				echo "<form method='post'>";
-				echo '<td><button class="btn btn-sm btn-danger" type="submit" name="deleteItem"
-				value="'. (int)$row['id'] . '">Delete
-				</button></td>
-				</form>';
+				echo '<td><button class="btn btn-sm btn-danger" type="submit" name="deleteItem"';
+				echo 'value="' . (int)$row['id'];
+				echo '">Delete</button></td>';
+				echo '</form>';
 				}
 
 		/**
 		 * Adds song add functionality if the URI contains an allsongs tag
 		 */
+		
 		if(isset($_GET["allsongs"])) {
-			echo "<form method='post'>";
 
 			/**
 			 * Returns all playlist for the current user
 			 */
+			echo "<form method='post'>";
+			
 			echo '<td><select id="myDropDown" name="playlists">';
-			echo '<option id="0" value="" disabled selected>Select Playlist</option>';
+			echo '<option value="" selected disabled>Select Playlist</option>';
+			
 			$tempUser = "'" . $_SESSION["user"] . "'";
 			$sqlTemp = "SELECT a.name,a.id FROM playlist a,userplaylist b,user c WHERE a.id = b.idplaylist AND b.iduser = c.id AND c.username = $tempUser";
 			$connection = mysqli_connect("localhost","root","","playversity");
 			$resultCount = $connection->query($sqlTemp);
+			
 			while($rowTemp = $resultCount->fetch_assoc())
-				echo '<option name="addItem" value="' . $rowTemp['id'] . '">' . $rowTemp['name'] . '</option>';
+				echo '<option value="' . $rowTemp['id'] . '">' . $rowTemp['name'] . '</option>';
+			echo '</select>';
+			echo '</td><td>';
 
-			echo '</td>';
 
-			echo '<td><button class="btn btn-sm btn-danger" type="submit" name="addItem" ';
+			echo '<button class="btn btn-sm btn-danger" type="submit" name="addItem1" ';
 			// song id
-			echo 'value="'. (int)$row['id'] . ',';
-			//row id
-			echo $row['id'] . '">';
+			echo 'value="'. (int)$row['id'] . '"';
 			//Add button
-			echo 'Add</button></td>';
-
+			echo '>Add</button></td>';
 			echo '</form>';
-			}
 
+			}
+			
 		echo "</tr>";
+		
 	}
+	echo '</form>';
 	echo "</table>";
 }
 
@@ -157,32 +165,40 @@ for ($c = 1; $c<=$total_pages; $c++) {
 	//Deleting items
 	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
 	{
-	header("Refresh:0");
+	// header("Refresh:0");
 	$toDel = (int)$_POST['deleteItem'];
 	$sqlTemp = "CALL usp_delSongFromPlaylist($tempPlaylist,$toDel);";
 	$con2 = mysqli_connect("localhost","root","","playversity");
 	mysqli_query($con2,$sqlTemp);
-	header("Refresh:0");
+
+	$tempPgNo = 0;
+	if(isset($_GET["pageno"]))
+	$tempPgNo = (int)($_GET["pageno"]);
+
+	$results_per_current_page = $totalCount - ($results_per_page * ($tempPgNo - 1)) - 1;
+
+	if(($results_per_current_page == 0 && ($tempPgNo == 1 || !isset($_GET["pageno"])))) 
+	header("Location: index.php?page=userplaylists");
+
+	else if($results_per_current_page == 0 && ($tempPgNo > 1 || isset($_GET["pageno"])))
+	header("Location: index.php?page=song&playlistid=" . $tempPlaylist . '&pageno=' . ($tempPgNo-1));
+
+	else
+	header("Refresh:0"); //Refreshes the same page
 	}
 
 	//Adding items
-	if(isset($_POST['addItem']))
+	if(isset($_POST['addItem1']))
 	{
-	$toAdd = (int)$_POST['addItem'];
-	echo $toAdd;
-	$plToAdd = $_POST['cPlaylist'];
-	echo $plToAdd;
-	// $sqlTemp = "CALL usp_insSongPlaylist($idsongg, $idplaylistt);";
-	// $con3 = mysqli_connect("localhost","root","","playversity");
-	// mysqli_query($con3,$sqlTemp);
+	$plToAdd = (int)$_POST['playlists']; //playlist id to be added
+	$sgToAdd = (int)$_POST['addItem1']; //song id to be added
+	$sqlTemp = "CALL usp_insSongPlaylist($sgToAdd, $plToAdd);";
+	$con3 = mysqli_connect("localhost","root","","playversity");
+	mysqli_query($con3,$sqlTemp);
 	}
 
-
-	echo  isset($_GET['playlistid']) ?
-	'
-	<br>
-	<br>
-	<div class="col">
+	echo  isset($_GET['playlistid']) ? 
+	'<br><br><div class="col">
 	<a href="/playversity/proiect/index.php?page=song&allsongs"><button type="button" class="btn btn-sm btn-success" name="goToALlSongs">Go to the Song Library</button></a>
 	</div>'
 	: "";

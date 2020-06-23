@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2020 at 12:16 PM
+-- Generation Time: Jun 22, 2020 at 02:41 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -50,6 +50,12 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_delPlaylistFromUser` (IN `playlistID` INT(5), IN `userID` VARCHAR(50))  BEGIN
 DELETE FROM userplaylist WHERE iduser = (SELECT id FROM user WHERE username = userID) AND idplaylist = playlistID;
+SET @c1 = (SELECT COUNT(iduser) FROM userplaylist WHERE idplaylist = playlistID);
+IF @c1 = 0 THEN
+DELETE FROM songplaylist WHERE idplaylist = playlistID;
+DELETE FROM playlist WHERE id = playlistID;
+END IF;
+
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_delSongFromPlaylist` (`a` INT(5), `b` INT(5))  BEGIN
@@ -4776,7 +4782,57 @@ INSERT INTO `logplaylist` (`ID`, `updated_table`, `action`, `old_item`, `new_ite
 (124, 'songplaylist', 'insert', NULL, 'idsong: 575, idplaylist: 1', '2020-06-21 11:47:49', 'root@'),
 (125, 'songplaylist', 'insert', NULL, 'idsong: 576, idplaylist: 1', '2020-06-21 11:47:49', 'root@'),
 (126, 'songplaylist', 'insert', NULL, 'idsong: 577, idplaylist: 1', '2020-06-21 11:47:49', 'root@'),
-(127, 'songplaylist', 'insert', NULL, 'idsong: 578, idplaylist: 1', '2020-06-21 11:47:49', 'root@');
+(127, 'songplaylist', 'insert', NULL, 'idsong: 578, idplaylist: 1', '2020-06-21 11:47:49', 'root@'),
+(128, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 128', NULL, '2020-06-21 13:23:59', 'root@'),
+(129, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 129', '2020-06-21 13:24:04', 'root@'),
+(130, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 129', NULL, '2020-06-21 13:24:07', 'root@'),
+(131, 'songplaylist', 'delete', 'idsong: 578, idplaylist: 1', NULL, '2020-06-21 13:26:06', 'root@'),
+(132, 'songplaylist', 'delete', 'idsong: 577, idplaylist: 1', NULL, '2020-06-21 13:26:07', 'root@'),
+(133, 'songplaylist', 'delete', 'idsong: 576, idplaylist: 1', NULL, '2020-06-21 13:26:07', 'root@'),
+(134, 'songplaylist', 'delete', 'idsong: 575, idplaylist: 1', NULL, '2020-06-21 13:26:08', 'root@'),
+(135, 'songplaylist', 'delete', 'idsong: 574, idplaylist: 1', NULL, '2020-06-21 13:26:11', 'root@'),
+(136, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 130', '2020-06-21 13:44:57', 'root@'),
+(137, 'songplaylist', 'delete', 'idsong: 71, idplaylist: 1', NULL, '2020-06-21 13:46:06', 'root@'),
+(138, 'songplaylist', 'insert', NULL, 'idsong: 11, idplaylist: 5', '2020-06-22 08:28:39', 'root@'),
+(139, 'songplaylist', 'insert', NULL, 'idsong: 12, idplaylist: 5', '2020-06-22 08:28:39', 'root@'),
+(140, 'songplaylist', 'insert', NULL, 'idsong: 13, idplaylist: 5', '2020-06-22 08:28:39', 'root@'),
+(141, 'songplaylist', 'insert', NULL, 'idsong: 14, idplaylist: 5', '2020-06-22 08:28:39', 'root@'),
+(142, 'songplaylist', 'insert', NULL, 'idsong: 15, idplaylist: 5', '2020-06-22 08:28:39', 'root@'),
+(143, 'songplaylist', 'insert', NULL, 'idsong: 16, idplaylist: 5', '2020-06-22 08:28:39', 'root@'),
+(144, 'songplaylist', 'insert', NULL, 'idsong: 17, idplaylist: 5', '2020-06-22 08:28:39', 'root@'),
+(145, 'songplaylist', 'delete', 'idsong: 17, idplaylist: 5', NULL, '2020-06-22 08:29:39', 'root@'),
+(146, 'songplaylist', 'insert', NULL, 'idsong: 11, idplaylist: 123', '2020-06-22 08:35:59', 'root@'),
+(147, 'songplaylist', 'insert', NULL, 'idsong: 111, idplaylist: 123', '2020-06-22 08:35:59', 'root@'),
+(148, 'songplaylist', 'insert', NULL, 'idsong: 1111, idplaylist: 123', '2020-06-22 08:35:59', 'root@'),
+(149, 'songplaylist', 'insert', NULL, 'idsong: 1161, idplaylist: 123', '2020-06-22 08:35:59', 'root@'),
+(150, 'songplaylist', 'insert', NULL, 'idsong: 1211, idplaylist: 123', '2020-06-22 08:35:59', 'root@'),
+(151, 'songplaylist', 'insert', NULL, 'idsong: 141, idplaylist: 123', '2020-06-22 08:35:59', 'root@'),
+(152, 'songplaylist', 'delete', 'idsong: 1211, idplaylist: 123', NULL, '2020-06-22 08:36:51', 'root@'),
+(153, 'songplaylist', 'delete', 'idsong: 569, idplaylist: 1', NULL, '2020-06-22 14:41:07', 'root@'),
+(154, 'songplaylist', 'delete', 'idsong: 55, idplaylist: 2', NULL, '2020-06-22 14:50:41', 'root@'),
+(155, 'songplaylist', 'insert', NULL, 'idsong: 1, idplaylist: 130', '2020-06-22 15:12:20', 'root@'),
+(156, 'songplaylist', 'insert', NULL, 'idsong: 2, idplaylist: 130', '2020-06-22 15:12:23', 'root@'),
+(157, 'songplaylist', 'delete', 'idsong: 2, idplaylist: 130', NULL, '2020-06-22 15:12:30', 'root@'),
+(158, 'songplaylist', 'insert', NULL, 'idsong: 5, idplaylist: 130', '2020-06-22 15:13:08', 'root@'),
+(159, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 130', NULL, '2020-06-22 15:28:31', 'root@'),
+(160, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 131', '2020-06-22 15:29:27', 'root@'),
+(161, 'songplaylist', 'delete', 'idsong: 1, idplaylist: 130', NULL, '2020-06-22 15:30:20', 'root@'),
+(162, 'songplaylist', 'delete', 'idsong: 5, idplaylist: 130', NULL, '2020-06-22 15:30:20', 'root@'),
+(163, 'songplaylist', 'insert', NULL, 'idsong: 1, idplaylist: 131', '2020-06-22 15:30:39', 'root@'),
+(164, 'songplaylist', 'insert', NULL, 'idsong: 2, idplaylist: 131', '2020-06-22 15:30:41', 'root@'),
+(165, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 131', NULL, '2020-06-22 15:31:35', 'root@'),
+(166, 'songplaylist', 'delete', 'idsong: 1, idplaylist: 131', NULL, '2020-06-22 15:32:31', 'root@'),
+(167, 'songplaylist', 'delete', 'idsong: 2, idplaylist: 131', NULL, '2020-06-22 15:32:31', 'root@'),
+(168, 'userplaylist', 'insert', NULL, 'iduser: 1, idplaylist: 132', '2020-06-22 15:32:44', 'root@'),
+(169, 'songplaylist', 'insert', NULL, 'idsong: 1, idplaylist: 132', '2020-06-22 15:32:50', 'root@'),
+(170, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 132', NULL, '2020-06-22 15:33:08', 'root@'),
+(171, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 121', NULL, '2020-06-22 15:35:51', 'root@'),
+(172, 'songplaylist', 'insert', NULL, 'idsong: 3, idplaylist: 122', '2020-06-22 15:38:28', 'root@'),
+(173, 'songplaylist', 'insert', NULL, 'idsong: 6, idplaylist: 122', '2020-06-22 15:38:31', 'root@'),
+(174, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 122', NULL, '2020-06-22 15:38:57', 'root@'),
+(175, 'songplaylist', 'delete', 'idsong: 3, idplaylist: 122', NULL, '2020-06-22 15:38:57', 'root@'),
+(176, 'songplaylist', 'delete', 'idsong: 6, idplaylist: 122', NULL, '2020-06-22 15:38:57', 'root@'),
+(177, 'userplaylist', 'delete', 'iduser: 1, idplaylist: 116', NULL, '2020-06-22 15:39:27', 'root@');
 
 -- --------------------------------------------------------
 
@@ -4795,11 +4851,11 @@ CREATE TABLE `playlist` (
 --
 
 INSERT INTO `playlist` (`id`, `name`, `shared`) VALUES
-(1, 'AAAPlaylist', 0),
-(2, 'TTT', 0),
+(1, 'AAAPlaylist', 1),
+(2, 'TTT', 1),
 (5, 'TEMP', 1),
 (11, 'TEST', 0),
-(111, 'TEST', 0),
+(111, 'TEST', 1),
 (112, 'BBB', 1),
 (113, 'CCC', 1),
 (114, 'DDD', 1),
@@ -4809,13 +4865,14 @@ INSERT INTO `playlist` (`id`, `name`, `shared`) VALUES
 (119, 'VERIFICA', 0),
 (120, 'ABRA', 0),
 (121, 'BROS', 0),
-(122, 'CRIS', 0),
 (123, 'PL1', 1),
 (124, 'PL2', 1),
 (125, 'PL3', 1),
 (126, 'FFPL1', 0),
 (127, 'BRT', 1),
-(128, 'YYY', 0);
+(128, 'YYY', 0),
+(129, 'HYYH', 1),
+(132, 'YYTT', 0);
 
 -- --------------------------------------------------------
 
@@ -25148,30 +25205,34 @@ CREATE TABLE `songplaylist` (
 --
 
 INSERT INTO `songplaylist` (`idsong`, `idplaylist`, `position`) VALUES
-(1, 1, 7),
-(11, 1, 9),
+(1, 1, 5),
+(1, 132, 1),
+(11, 1, 6),
 (11, 2, 1),
+(11, 5, 1),
+(11, 123, 1),
 (12, 2, 2),
+(12, 5, 2),
+(13, 5, 3),
+(14, 5, 4),
+(15, 5, 5),
+(16, 5, 6),
 (19, 2, 4),
-(55, 2, 5),
 (60, 2, 6),
-(62, 1, 15),
-(63, 1, 17),
-(68, 1, 12),
-(69, 1, 20),
-(71, 1, 5),
-(567, 1, 19),
-(568, 1, 6),
-(569, 1, 4),
-(570, 1, 3),
-(571, 1, 18),
-(572, 1, 16),
-(573, 1, 11),
-(574, 1, 14),
-(575, 1, 10),
-(576, 1, 2),
-(577, 1, 8),
-(578, 1, 13);
+(62, 1, 9),
+(63, 1, 11),
+(68, 1, 8),
+(69, 1, 14),
+(111, 123, 2),
+(141, 123, 6),
+(567, 1, 13),
+(568, 1, 4),
+(570, 1, 2),
+(571, 1, 12),
+(572, 1, 10),
+(573, 1, 7),
+(1111, 123, 3),
+(1161, 123, 4);
 
 --
 -- Triggers `songplaylist`
@@ -25222,7 +25283,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `username`, `password`) VALUES
-(1, 'AAA', 'AAA', 'AAA', '25fc92a14a79502fe359ec1416bf80d711f0ae507f2723441e444e05b93e3d58'),
+(1, 'Vasile', 'Vasilica', 'AAA', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273'),
 (2, 'BBB', 'BBB', 'BBB', 'dcdb704109a454784b81229d2b05f368692e758bfa33cb61d04c1b93791b0273'),
 (3, 'FFF', 'FFF', 'FFFFF', '25fc92a14a79502fe359ec1416bf80d711f0ae507f2723441e444e05b93e3d58'),
 (4, 'Vasile', 'Vasilica', 'KKKKK', '25fc92a14a79502fe359ec1416bf80d711f0ae507f2723441e444e05b93e3d58');
@@ -25246,11 +25307,7 @@ INSERT INTO `userplaylist` (`iduser`, `idplaylist`) VALUES
 (1, 1),
 (1, 2),
 (1, 5),
-(1, 116),
 (1, 117),
-(1, 121),
-(1, 122),
-(1, 128),
 (2, 1),
 (2, 2),
 (2, 111),
@@ -25362,13 +25419,13 @@ ALTER TABLE `artist`
 -- AUTO_INCREMENT for table `logplaylist`
 --
 ALTER TABLE `logplaylist`
-  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `ID` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
 -- AUTO_INCREMENT for table `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT for table `song`
