@@ -8,7 +8,7 @@ function start(){
 }
 
 function verEgalitate() {
-	if(document.getElementById("parola").value == document.getElementById("parola2").value) {
+	if(document.getElementById("parola2").value == document.getElementById("parola3").value) {
 	document.getElementById("chkForm1").style.backgroundColor = "green";
 	document.getElementById("message").innerHTML = 'New passwords match';
 	}
@@ -18,7 +18,3 @@ else {
 }
 }
 
-/* document.getElementById('submit').onclick = function() {
-   if(document.getElementById("parola").value != document.getElementById("parola2").value)
-	   
-}​;​*/

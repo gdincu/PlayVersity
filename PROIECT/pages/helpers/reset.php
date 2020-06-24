@@ -9,12 +9,13 @@ include (__DIR__ . '/../../db_setup/db_connect.php');
 ?>
 
 <?php include "verificaparola.php"; ?>
+<script src="http://localhost/PlayVersity/PROIECT/js/passcheck.js"></script>
 
 <form method="post">
 
 <p>  
     <div class="form-row col-sm-4"> 
-    Current password:<div class="col">
+    Current password <div class="col">
     <input type="password" class="form-control" id="parola" name="parola" 
     placeholder="<?php echo $parola;?>" value="<?php echo $parola;?>" required> 
     </div></div>
@@ -22,7 +23,7 @@ include (__DIR__ . '/../../db_setup/db_connect.php');
     
     <p>
     <div class="form-row col-sm-4">
-    New password:<div class="col">
+    New password <div class="col">
     <input type="password" class="form-control" id="parola2" name="parola2" 
     placeholder="<?php echo $parola2;?>" value="<?php echo $parola2;?>" required>
     </div></div>
@@ -30,17 +31,16 @@ include (__DIR__ . '/../../db_setup/db_connect.php');
     
     <p>
     <div class="form-row col-sm-4">
-    Confirm new password:<div class="col">
+    Confirm new password <div class="col">
     <input type="password" class="form-control" id="parola3" name="parola3"  
     placeholder="<?php echo $parola3;?>" value="<?php echo $parola3;?>" required>
-    </div></div>
-    
-    <br>
-     <!--Checking pass match client-side-->
-     <div id="chkForm1"></div>
-     <span id='message'></span>
-     </div></div>
-     </p>
+   
+    <br>	
+	<!--Checking pass match client-side-->
+	<div id="chkForm1"></div>
+	<span id='message'></span>
+	</div></div>
+	</p>
 
     <p>
     <div class="form-row col-sm-6">
