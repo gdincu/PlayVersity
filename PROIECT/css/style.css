@@ -19,3 +19,9 @@
   .valuenok {
       background-color: ff000029 !important;
   }
+
+.buttonblue {
+  background-color: #52658F; 
+  border-color: #52658F; 
+  color: #E8E8E8;
+}

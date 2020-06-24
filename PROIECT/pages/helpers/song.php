@@ -172,16 +172,16 @@ for ($c = 1; $c<=$total_pages; $c++) {
 	$con2 = mysqli_connect("localhost","root","","playversity");
 	mysqli_query($con2,$sqlTemp);
 
-	$tempPgNo = 0;
+	$tempPgNo = 1;
 	if(isset($_GET["pageno"]))
 	$tempPgNo = (int)($_GET["pageno"]);
 
 	$results_per_current_page = $totalCount - ($results_per_page * ($tempPgNo - 1)) - 1;
 
-	if(($results_per_current_page == 0 && ($tempPgNo == 1 || !isset($_GET["pageno"])))) 
+	if(($results_per_current_page == 0 && $tempPgNo == 1)) 
 	header("Location: index.php?page=userplaylists");
 
-	else if($results_per_current_page == 0 && ($tempPgNo > 1 || isset($_GET["pageno"])))
+	else if($results_per_current_page == 0 && ($tempPgNo > 1))
 	header("Location: index.php?page=song&playlistid=" . $tempPlaylist . '&pageno=' . ($tempPgNo-1));
 
 	else
