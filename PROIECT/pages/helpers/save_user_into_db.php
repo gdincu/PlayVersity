@@ -76,7 +76,7 @@ function saveUser() {
 
     $_SESSION["error"] = $errorArray;
     if ($error) {
-        echo 'Not saved to database. Please check for errors.</br>';
+        //echo 'Not saved to database. Please check for errors.</br>';
         return false;
     }
 
@@ -103,7 +103,8 @@ function saveUser() {
         $stmt->execute();
     }
     catch(PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        //echo "Error: " . $e->getMessage();
+        $_SESSION["error"]['username'] = "User already exists.";
         $success = false;
     }
 
@@ -117,25 +118,26 @@ if(isset($_POST["savedata"])) {
     $success = saveUser();
     
     if($success) {
-    echo 'User saved to database.<br>';
-    sleep(3);
-    $userFinal = "'".htmlentities($_POST["username"],ENT_HTML5,'UTF-8',TRUE)."'";
-    $passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
-    $sql = "SELECT id, username,password FROM user WHERE username=$userFinal";
-    $connection = mysqli_connect("localhost","root","","playversity");
-	$result = $connection->query($sql);
-	
-	while($row = $result->fetch_assoc()) {
-        $_SESSION["user"] = $row["username"];
-        $_SESSION["password"] = $row["password"];
-        $_SESSION["userid"] = $row["id"];
-
-            session_start();
+        //echo 'User saved to database.<br>';
+        //sleep(3);
+        $userFinal = "'".htmlentities($_POST["username"],ENT_HTML5,'UTF-8',TRUE)."'";
+        $passwordFinal =  "'".hash("sha256", htmlentities($_POST["password"],ENT_HTML5,'UTF-8',TRUE))."'";
+        $sql = "SELECT id, username,password FROM user WHERE username=$userFinal";
+        $connection = mysqli_connect("localhost","root","","playversity");
+        $result = $connection->query($sql);
+        
+        if($row = $result->fetch_assoc()) {
+            $_SESSION["user"] = $row["username"];
+            $_SESSION["password"] = $row["password"];
+            $_SESSION["userid"] = $row["id"];
 
             header("Location: index.php?page=user");
         }
+    } else {
+        //die;
+        //header("Location: index.php");
     }
 
-    else die();
+    
 }
 ?>

@@ -30,7 +30,5 @@ function storeUserToSession($userFinal,$passwordFinal, $userId) {
     $_SESSION["userid"] = $userId;
 }
 
-if(!isLoggedIn()) {
-    session_start();
-}
+session_start();
 ?>

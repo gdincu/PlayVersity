@@ -8,6 +8,7 @@ header("Location: index.php");
 include (__DIR__ . '/../../db_setup/db_connect.php');
 ?>
 
+<!-- Includes the validation file with validation scripts for password -->
 <?php include "verificaparola.php"; ?>
 <script src="http://localhost/PlayVersity/PROIECT/js/passcheck.js"></script>
 
