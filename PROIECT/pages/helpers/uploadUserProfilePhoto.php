@@ -13,7 +13,7 @@ if (!isLoggedIn()) {
             $statusMsg = "Sorry, your file is too large.";
         } else {
             // Get file info 
-            $fileName = basename($_FILES["image"]["name"]); 
+            $fileName = strtolower(basename($_FILES["image"]["name"])); 
             $fileType = pathinfo($fileName, PATHINFO_EXTENSION); 
             // Allow certain file formats 
             $allowTypes = array('jpg','png','jpeg','gif'); 
