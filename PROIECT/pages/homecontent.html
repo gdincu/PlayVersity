@@ -2,8 +2,11 @@
 <!--Location: HomePage-->
 <!--htmlspecialchars() function converts special characters to HTML entities-->
 
-<div class ="container"><h2>Welcome to playversity</h2><p>The place where you can find your favourite music.</p><div>
-<div class="container form-group form-group-lg mb-3">
+<div class="row container-fluid">
+
+    <div class="col-lg-2"></div>
+
+    <div class="container col-lg-5 form-group form-group-lg mb-3">
     <form   method="post"
             enctype="multipart/form-data"
             action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>"
@@ -79,4 +82,13 @@
         </div>
 
     </form>
+</div>
+
+<div class ="col-lg-4">
+    <h2>Welcome to Playversity</h2>
+    <p>The place where you can find your favourite music.</p>
+</div>
+
+<div class="col-lg-1"></div>
+
 </div>
