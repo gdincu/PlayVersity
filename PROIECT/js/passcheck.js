@@ -7,6 +7,7 @@ function start(){
 	document.getElementById('parola2').addEventListener('input',verEgalitate,false);
 }
 
+//Functie pentru verificarea egalitatii dintre parolele noi
 function verEgalitate() {
 	if(document.getElementById("parola2").value == document.getElementById("parola3").value) {
 	document.getElementById("chkForm1").style.backgroundColor = "green";

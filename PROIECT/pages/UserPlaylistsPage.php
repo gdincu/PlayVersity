@@ -7,10 +7,9 @@ class UserPlaylistsPage extends BasePage {
 
     private $sql;
 
-
     function render() {
         self::renderHeader();
-        $this->content();//self::renderContent();
+        $this->content();
         self::renderFooter();
     }
 
@@ -30,8 +29,7 @@ class UserPlaylistsPage extends BasePage {
             $tempId = $row["id"];
             echo "<td><a href='index.php?page=song&playlistid=$tempId'>" . $row["name"] . "</td>";
 
-            //Shared checkbox
-            //TO BE REVIEWED - would need a double refresh of the current page
+            //Shared button
             echo '<form method="post" action="' . $_SERVER['REQUEST_URI'] . '">';
             echo '<td><input type="checkbox" hidden name="checkedValue" checked value="'. (int)$row['id'] . '">';
             echo ($row["shared"] == "0") ?
@@ -46,7 +44,7 @@ class UserPlaylistsPage extends BasePage {
             echo "</tr>";
             }
 
-            //Adding a new playlist
+            //Adding a new playlist form
             echo '<form method="post" action="">';
             echo '<tr>
             <td>
@@ -74,7 +72,7 @@ class UserPlaylistsPage extends BasePage {
             </tr>
             </form>';
 
-            //Deleting items
+            //Delete button
         	if(isset($_POST['deleteItem']) and is_numeric($_POST['deleteItem']))
             {
             header("Refresh:0");
@@ -85,7 +83,7 @@ class UserPlaylistsPage extends BasePage {
             mysqli_query($con2,$sqlTemp);
             }
 
-            //Update the shared value when checked/ unchecked
+            //Share functionality
             if(isset($_POST['shareItem']))
             {
             header("Refresh:0");

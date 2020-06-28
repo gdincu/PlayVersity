@@ -13,7 +13,7 @@ class UserPage extends BasePage {
     function render() {
         $this->fetchDbContent();
         self::renderHeader();
-        $this->renderContent();//self::renderContent();
+        $this->renderContent();
         self::renderFooter();
     }
 
@@ -21,6 +21,7 @@ class UserPage extends BasePage {
        include "userpagecontent.html";
     }
 
+    //Returns user details from the DB
     function fetchDbContent() {
         if (isLoggedIn()) {
             $user = getLoggedInUser();
