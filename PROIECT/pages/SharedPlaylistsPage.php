@@ -17,7 +17,7 @@ class SharedPlaylistsPage extends BasePage {
     function content() {
        include "sharedplaylistspagecontent.html";
     }
-
+//function wich return shows the shared playlist of a user
     function returnSharedPlaylists() {
 
         $tempUser = "'" . $_SESSION["user"] . "'";

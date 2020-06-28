@@ -44,7 +44,7 @@ class UserPage extends BasePage {
             }
         }
     }
-
+//function wich shows the last status from a user session
     function getLastSaveStatus() {
         $status = isset($_SESSION["saveUserStatus"]) ? $_SESSION["saveUserStatus"] : '';
         $_SESSION["saveUserStatus"] = '';
