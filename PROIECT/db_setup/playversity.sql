@@ -25275,8 +25275,12 @@ CREATE TABLE `user` (
   `firstname` varchar(50) CHARACTER SET utf8 NOT NULL,
   `lastname` varchar(50) CHARACTER SET utf8 NOT NULL,
   `username` varchar(50) CHARACTER SET utf8 NOT NULL,
-  `password` varchar(150) COLLATE utf8_romanian_ci NOT NULL
+  `password` varchar(150) COLLATE utf8_romanian_ci NOT NULL,
+  `image` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_romanian_ci;
+
+-- username unique
+ALTER TABLE `playversity`.`user` DROP INDEX `username`, ADD UNIQUE `username` (`username`) USING BTREE;
 
 --
 -- Dumping data for table `user`
