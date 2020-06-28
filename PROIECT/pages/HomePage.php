@@ -23,7 +23,6 @@ class HomePage extends BasePage {
     }
 
     function renderContent() {
-        //echo file_get_contents(__DIR__ ."/homepage.html");
         include "homecontent.html";
 
         // use the data only once

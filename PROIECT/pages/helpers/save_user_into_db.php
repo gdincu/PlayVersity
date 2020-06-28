@@ -114,6 +114,9 @@ function saveUser() {
     return $success;
 }
 
+/**
+ * Saving user details
+ */
 if(isset($_POST["savedata"])) {
     $success = saveUser();
     
