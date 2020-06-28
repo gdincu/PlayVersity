@@ -19,3 +19,17 @@
   .valuenok {
       background-color: ff000029 !important;
   }
+
+  input[type="file"] {
+    display: none;
+}
+
+  ::-webkit-file-upload-button {
+    border: 1px solid transparent;
+    color: #F7F5E6;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #52658F;
+  }
