@@ -11,28 +11,30 @@ include (__DIR__ . '/../../db_setup/db_connect.php');
 <?php include "verificaparola.php"; ?>
 <script src="http://localhost/PlayVersity/PROIECT/js/passcheck.js"></script>
 
+<div class="container">
 <form method="post">
-
-<p>  
+    <p>  
+    <h3>Reset your password</h3>
+    <br><br>
     <div class="form-row col-sm-4"> 
-    Current password <div class="col">
-    <input type="password" class="form-control" id="parola" name="parola" 
+    <label for="currentpassword">Current password</label> <div class="col">
+    <input type="password" class="formreset  " id="parola" name="parola" 
     placeholder="<?php echo $parola;?>" value="<?php echo $parola;?>" required> 
     </div></div>
     </p>
     
     <p>
     <div class="form-row col-sm-4">
-    New password <div class="col">
-    <input type="password" class="form-control" id="parola2" name="parola2" 
+    <label for="newpassword">New password</label> <div class="col">
+    <input type="password" class="formreset" id="parola2" name="parola2" 
     placeholder="<?php echo $parola2;?>" value="<?php echo $parola2;?>" required>
     </div></div>
     </p>
     
     <p>
     <div class="form-row col-sm-4">
-    Confirm new password <div class="col">
-    <input type="password" class="form-control" id="parola3" name="parola3"  
+    <label for="confirmnewpassword">Confirm new password</label> <div class="col">
+    <input type="password" class="formreset" id="parola3" name="parola3"  
     placeholder="<?php echo $parola3;?>" value="<?php echo $parola3;?>" required>
    
     <br>	
@@ -48,9 +50,9 @@ include (__DIR__ . '/../../db_setup/db_connect.php');
     <button type="submit" name="submit" id="submit" class="btn btn-success">Update</button>
     </div></div>
     </p>
-    
-    </form>
 
+</form>
+</div>
     
 
 
