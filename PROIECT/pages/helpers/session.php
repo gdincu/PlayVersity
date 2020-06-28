@@ -1,12 +1,15 @@
 <?php
-/**
- * Session management.
- */
 
+/**
+ * Checks if the user is already logged in
+ */
 function isLoggedIn() {
     return isset($_SESSION["user"]);
 }
 
+/**
+ * Returns the logged in user
+ */
 function getLoggedInUser() {
     $user = null;
     if (isLoggedIn()) {
@@ -15,6 +18,9 @@ function getLoggedInUser() {
     return $user;
 }
 
+/**
+ * Returns the id of the logged in user
+ */
 function getLoggedInUserId() {
     $userId = 0;
     if (isLoggedIn()) {
@@ -23,6 +29,9 @@ function getLoggedInUserId() {
     return $userId;
 }
 
+/**
+ * Stores user details to the login session
+ */
 function storeUserToSession($userFinal,$passwordFinal, $userId) {
     //Session management.
     $_SESSION["user"] = $userFinal;

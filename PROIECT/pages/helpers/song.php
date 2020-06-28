@@ -96,8 +96,7 @@ else    {
 
 		/**
 		 * Adds song add functionality if the URI contains an allsongs tag
-		 */
-		
+		 */		
 		if(isset($_GET["allsongs"])) {
 
 			/**
